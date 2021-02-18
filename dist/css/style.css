@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 body {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -114,44 +112,83 @@ table {
 }
 
 input {
-  -webkit-appearance: none;
   border-radius: 0;
 }
 
 .side {
-  background-color: #8fb17c;
-  width: 33.3vw;
+  background-color: #39810f;
+  width: 33.4vw;
 }
 
 .menu {
-  background-color: #fff;
+  width: 80%;
+  margin: auto;
+  margin-top: 10%;
+  padding: 20px 30px;
+  border-radius: 16px;
+  background-color: #e9e9e9;
+  font-family: "Roboto", sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
-.checkbox {
+.menu__title {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 2rem;
+  color: #d47568;
+  text-shadow: 1px 1px 2px black;
+}
+
+.menu__name {
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.menu .input__name {
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-left: 20px;
+}
+
+.menu .input__name:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
+          box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
+}
+
+.menu__checkbox {
   vertical-align: top;
   margin: 0 3px 0 0;
   width: 17px;
   height: 17px;
 }
 
-.checkbox + label {
+.menu__checkbox + label {
   cursor: pointer;
 }
 
-.checkbox:not(checked) {
+.menu__checkbox:not(checked) {
   position: absolute;
   opacity: 0;
 }
 
-.checkbox:not(checked) + label {
+.menu__checkbox:not(checked) + label {
   position: relative;
+  padding: 0 0 0 100px;
 }
 
-.checkbox:not(checked) + label label {
-  padding: 0 0 0 60px;
-}
-
-.checkbox:not(checked) + label:before {
+.menu__checkbox:not(checked) + label:before {
   content: '';
   position: absolute;
   top: -4px;
@@ -164,7 +201,7 @@ input {
           box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
-.checkbox:not(checked) + label:after {
+.menu__checkbox:not(checked) + label:after {
   content: '';
   position: absolute;
   top: -2px;
@@ -180,20 +217,20 @@ input {
   transition: all .2s;
 }
 
-.checkbox:checked + label:before {
-  background: #9FD468;
+.menu__checkbox:checked + label:before {
+  background: #d47568;
 }
 
-.checkbox:checked + label:after {
+.menu__checkbox:checked + label:after {
   left: 26px;
 }
 
-.checkbox:focus + label:before {
+.menu__checkbox:focus + label:before {
   -webkit-box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
           box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
 }
 
 .game-area {
   width: 33.3vw;
-  background-color: #5b5b5b;
+  background-color: #363636;
 }
