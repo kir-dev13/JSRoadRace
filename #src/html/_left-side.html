@@ -1,14 +1,19 @@
 <div class="left-side side">
   <div class="menu">
     <h2 class="menu__title">меню игры</h2>
-    <div class="menu__name">
-      <label for="input-name">Ваше имя</label>
-      <input id="input-name" class="input__name" type="text">
+    <div class="menu__row menu__name">
+      <label for="input-name" class="label label__user-name">Ваше имя</label>
+      <input id="input-name" class="input__user-name" type="text">
     </div>
 
-    <div class="menu__music">
-      <input class="menu__checkbox" type="checkbox" id="checkbox-music">
-      <label class="label__music" for="checkbox-music">музыка</label>
+    <div class="menu__row menu__music">
+      <input class="menu__checkbox checkbox" type="checkbox" id="checkbox-music" onchange="checkboxChecked()">
+      <label class="label label__music" for="checkbox-music"></label>
+      <span>музыка</span>
+    </div>
+
+    <div class="menu__row menu__music-change">
+
     </div>
   </div>
 </div>

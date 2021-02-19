@@ -11,6 +11,7 @@ let path = {
     js: project_folder + "/js",
     img: project_folder + "/img",
     fonts: project_folder + "/fonts",
+    audio: project_folder + "/audio",
   },
 
   src: {
@@ -19,12 +20,14 @@ let path = {
     js: source_folder + "/js/script.js",
     img: source_folder + "/img/**/*.{jpg,jpeg,png,svg,gif,ico,webp}",
     fonts: source_folder + "/fonts/*.ttf",
+    audio: source_folder + "/audio/*.*",
   },
   watch: {
     html: source_folder + "/**/*.html",
     css: source_folder + "/scss/**/*.{scss,sass}",
     js: source_folder + "/js/**/*.js",
     img: source_folder + "/img/**/*.{jpg,jpeg,png,svg,gif,ico,webp}",
+    audio: source_folder + "/audio/**/*.*",
   },
   clean: "./" + project_folder + "/",
 };
@@ -58,6 +61,12 @@ function browserSync(params) {
     port: 3000,
     notify: false,
   });
+}
+
+function audio() {
+  return src(path.src.audio)
+    .pipe(dest(path.build.audio))
+    .pipe(browsersync.stream());
 }
 
 function html() {
@@ -205,17 +214,19 @@ function watchFiles(params) {
     gulp.watch([path.watch.css], css);
     gulp.watch([path.watch.js], js);
     gulp.watch([path.watch.img], images);
+    gulp.watch([path.watch.audio], audio);
   }, 1000);
 }
 
 let build = gulp.series(
   clean,
-  gulp.parallel(js, css, html, images, fonts),
+  gulp.parallel(js, css, html, images, audio, fonts),
   fontStyle
 );
 // let build = gulp.series(clean, html);
 let watch = gulp.parallel(build, watchFiles, browserSync);
 
+exports.audio = audio;
 exports.fontStyle = fontStyle;
 exports.fonts = fonts;
 exports.images = images;
