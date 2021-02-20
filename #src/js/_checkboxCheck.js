@@ -7,7 +7,7 @@ function checkboxChecked(params) {
   } else {
     musicSelectors.forEach((elem) => {
       elem.setAttribute("disabled", "disabled");
-      elem.removeAttribute("checked");
+      // elem.removeAttribute("checked");
     });
     console.log("Не Выбран");
   }

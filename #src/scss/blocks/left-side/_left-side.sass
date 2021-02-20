@@ -28,9 +28,10 @@ input,label, span
     align-items: center
     justify-content: start
     margin-bottom: 20px
+    flex-wrap: wrap
     // flex-basis: 50%
     *
-      flex-basis: 40%
+      flex-basis: 50%
   &__title
     text-align: center
     text-transform: uppercase
@@ -39,23 +40,56 @@ input,label, span
     font-size: 2rem
     color: #d47568
     text-shadow: 1px 1px 2px black
+    letter-spacing: .4rem
   &__name
     padding: 10px 0
     font-size: 1rem
     font-weight: 500
-    margin-bottom: 10px
+    margin-bottom: 30px
 
   .input__user-name
     padding: 5px
     border: 1px solid black
     border-radius: 4px
     // margin-left: 20px
-    // flex-basis: 50%
-    // width: 100%
+    // flex-basis: 10%
+    width: 10%
     flex-grow: 1
+    color: #6d3737
+    font-weight: bold
+    font-size: 16px
+    text-shadow: 0.5px 0.5px 0.5px #000000
+    letter-spacing: .2rem
+    text-transform: capitalize
     &:focus
       outline: none
       box-shadow: 0 0 0 3px rgba(255,255,0,.5)
       // border: 1px solid black
 .label
   flex-basis: 40%
+.menu__difficulty
+  margin-top: 30px
+  // flex-direction: column
+
+.difficulty
+  &__title
+    letter-spacing: .2rem
+    text-transform: uppercase
+    font-weight: bold
+    text-align: center
+    // margin-right: 45px
+    flex-basis: 100%
+    margin-bottom: 20px
+
+  &__row
+    display: flex
+    justify-content: end
+    flex-basis: 100%
+    // label
+      // flex-basis: 30%
+    label
+      &:nth-child(4)
+        margin-left: 8px
+
+  &__radio + label
+    // flex-basis: 10%

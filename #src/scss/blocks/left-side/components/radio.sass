@@ -6,11 +6,18 @@
 
   & + label
     cursor: pointer
+    transition: all .3s
   &[disabled] + label
     color: grey
     cursor: default
+    opacity: 0
+
     &::before
-      background: #a7a7a7
+      // background: #a7a7a7
+
+    &::after
+      opacity: 0 !important
+      // background: #a7a7a7
 
   &:not(checked)
     position: absolute
@@ -31,6 +38,7 @@
     border: 1px solid #CDD1DA
     border-radius: 50%
     background: #FFF
+    // margin-bottom: 5px
 
   &:not(checked) + label:after
     content: ''
@@ -50,3 +58,7 @@
 
   &:focus + label:before
     box-shadow: 0 0 0 3px rgba(255,255,0,.5)
+
+.difficulty__radio
+  &:not(checked) + label
+    padding-left: 25px

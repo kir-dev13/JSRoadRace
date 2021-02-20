@@ -192,15 +192,19 @@ input {
 
 .radio + label {
   cursor: pointer;
+  -webkit-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
 }
 
 .radio[disabled] + label {
   color: grey;
   cursor: default;
+  opacity: 0;
 }
 
-.radio[disabled] + label::before {
-  background: #a7a7a7;
+.radio[disabled] + label::after {
+  opacity: 0 !important;
 }
 
 .radio:not(checked) {
@@ -252,6 +256,10 @@ input {
           box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
 }
 
+.difficulty__radio:not(checked) + label {
+  padding-left: 25px;
+}
+
 .menu {
   width: 80%;
   margin: auto;
@@ -280,11 +288,13 @@ input {
       -ms-flex-pack: start;
           justify-content: start;
   margin-bottom: 20px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .menu__row * {
-  -ms-flex-preferred-size: 40%;
-      flex-basis: 40%;
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
 }
 
 .menu__title {
@@ -295,22 +305,30 @@ input {
   font-size: 2rem;
   color: #d47568;
   text-shadow: 1px 1px 2px black;
+  letter-spacing: .4rem;
 }
 
 .menu__name {
   padding: 10px 0;
   font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .menu .input__user-name {
   padding: 5px;
   border: 1px solid black;
   border-radius: 4px;
+  width: 10%;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  color: #6d3737;
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 0.5px 0.5px 0.5px #000000;
+  letter-spacing: .2rem;
+  text-transform: capitalize;
 }
 
 .menu .input__user-name:focus {
@@ -322,6 +340,35 @@ input {
 .label {
   -ms-flex-preferred-size: 40%;
       flex-basis: 40%;
+}
+
+.menu__difficulty {
+  margin-top: 30px;
+}
+
+.difficulty__title {
+  letter-spacing: .2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  margin-bottom: 20px;
+}
+
+.difficulty__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.difficulty__row label:nth-child(4) {
+  margin-left: 8px;
 }
 
 .game-area {
