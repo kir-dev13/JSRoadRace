@@ -6,9 +6,10 @@
   // border-right: 6px dashed red
 
 @import "components/checkbox.sass"
+@import "components/radio.sass"
 
 input,label, span
-  border: 1px solid red
+  // border: 1px solid red
 
 .menu
   width: 80%
@@ -20,11 +21,16 @@ input,label, span
   font-family: "Roboto", sans-serif
   display: flex
   flex-direction: column
+  *
+    // flex-basis: 40%
   &__row
     display: flex
     align-items: center
     justify-content: start
+    margin-bottom: 20px
     // flex-basis: 50%
+    *
+      flex-basis: 40%
   &__title
     text-align: center
     text-transform: uppercase
@@ -45,7 +51,8 @@ input,label, span
     border-radius: 4px
     // margin-left: 20px
     // flex-basis: 50%
-    width: 60%
+    // width: 100%
+    flex-grow: 1
     &:focus
       outline: none
       box-shadow: 0 0 0 3px rgba(255,255,0,.5)

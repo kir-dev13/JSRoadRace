@@ -17,11 +17,17 @@ testWebP(function (support) {
 });
 ;
 function checkboxChecked(params) {
+  let musicSelectors = document.querySelectorAll(".music__radio");
   let checkboxMusic = document.querySelector("#checkbox-music");
   if (checkboxMusic.checked) {
-    alert("Выбран");
+    console.log("Выбран");
+    musicSelectors.forEach((elem) => elem.removeAttribute("disabled"));
   } else {
-    alert("Не выбран");
+    musicSelectors.forEach((elem) => {
+      elem.setAttribute("disabled", "disabled");
+      elem.removeAttribute("checked");
+    });
+    console.log("Не Выбран");
   }
 }
 ;

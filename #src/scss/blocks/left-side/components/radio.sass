@@ -1,0 +1,52 @@
+.radio
+  vertical-align: top
+  width: 17px
+  height: 17px
+  margin: 0 3px 0 0
+
+  & + label
+    cursor: pointer
+  &[disabled] + label
+    color: grey
+    cursor: default
+    &::before
+      background: #a7a7a7
+
+  &:not(checked)
+    position: absolute
+    z-index: -100
+    opacity: 0
+
+  &:not(checked) + label
+    position: relative
+    padding: 0 0 0 35px
+
+  &:not(checked) + label:before
+    content: ''
+    position: absolute
+    top: -3px
+    left: 0
+    width: 22px
+    height: 22px
+    border: 1px solid #CDD1DA
+    border-radius: 50%
+    background: #FFF
+
+  &:not(checked) + label:after
+    content: ''
+    position: absolute
+    top: 0px
+    left: 3px
+    width: 16px
+    height: 16px
+    border-radius: 50%
+    background: #d47568
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.5)
+    opacity: 0
+    transition: all .2s
+
+  &:checked + label:after
+    opacity: 1
+
+  &:focus + label:before
+    box-shadow: 0 0 0 3px rgba(255,255,0,.5)
