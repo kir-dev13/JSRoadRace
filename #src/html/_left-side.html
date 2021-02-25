@@ -1,12 +1,12 @@
 <div class="left-side side">
   <div class="menu">
     <h2 class="menu__title">меню игры</h2>
-    <div class="menu__row menu__name">
+    <div onmouseover="displayHint('name')" onmouseout="hideHint('name')" class="menu__row menu__name">
       <label for="input-name" class="label label__user-name">Ваше имя</label>
       <input id="input-name" class="input__user-name" type="text">
     </div>
 
-    <div class="menu__row menu__music">
+    <div onmouseover="displayHint('music')" onmouseout="hideHint('music')" class="menu__row menu__music">
       <span>музыка</span>
       <input class="menu__checkbox checkbox" type="checkbox" id="checkbox-music" onchange="checkboxChecked()">
       <label class="label label__music" for="checkbox-music"></label>
@@ -20,14 +20,15 @@
       <label for="contemprary">современная</label>
     </div>
 
-    <div class="menu__row menu__sound">
+    <div onmouseover="displayHint('sound')" onmouseout="hideHint('sound')" class="menu__row menu__sound">
       <span>звуковые эффекты</span>
       <input checked class="menu__checkbox checkbox" type="checkbox" id="checkbox-sound" onchange="">
       <label class="label label__sound" for="checkbox-sound"></label>
     </div>
 
     <!-- СЛОЖНОСТЬ -->
-    <div class="menu__row menu__difficulty difficulty">
+    <div onmouseover="displayHint('difficulty')" onmouseout="hideHint('difficulty')"
+      class="menu__row menu__difficulty difficulty">
       <span class="difficulty__title">сложность</span>
       <div class="difficulty__row">
         <input type="radio" class="radio difficulty__radio" id="easy" name="difficulty" />
