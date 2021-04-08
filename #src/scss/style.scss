@@ -1,19 +1,23 @@
 @mixin font($font_name, $file_name, $weigth, $style) {
-  @font-face {
-    font-family: $font_name;
-    font-display: swap;
-    src: url("../fonts/#{$file_name}.woff") format("woff"),
-      url("../fonts/#{$file_name}.woff2") format("woff2");
-    font-weight: #{$weigth};
-    font-style: #{$style};
-  }
+    @font-face {
+        font-family: $font_name;
+        font-display: swap;
+        src: url("../fonts/#{$file_name}.woff") format("woff"),
+            url("../fonts/#{$file_name}.woff2") format("woff2");
+        font-weight: #{$weigth};
+        font-style: #{$style};
+    }
 }
 
 @import "fonts";
 
 body {
-  display: flex;
-  height: 100vh;
+    display: flex;
+    height: 100vh;
+}
+
+.hide {
+    display: none;
 }
 
 @import "_reset";

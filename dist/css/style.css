@@ -5,6 +5,10 @@ body {
   height: 100vh;
 }
 
+.hide {
+  display: none;
+}
+
 *,
 *:before,
 *:after {
@@ -375,9 +379,11 @@ input {
   width: 33.3vw;
   background-color: #363636;
   position: relative;
+  overflow: hidden;
 }
 
 .game-area__button {
+  text-align: center;
   border: none;
   padding: 10px 40px 15px;
   position: absolute;
@@ -386,10 +392,10 @@ input {
   width: 100%;
   top: 20px;
   background-color: white;
-  background-image: -o-linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 74%, #0000008f 75%, #0000008f), -o-linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 74%, #0000008f 75%, #0000008f);
-  background-image: linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 74%, #0000008f 75%, #0000008f), linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 74%, #0000008f 75%, #0000008f);
-  background-size: 20px 20px;
-  background-position: 0 0, 10px 10px;
+  background-image: -o-linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 75%, #0000008f 75%, #0000008f), -o-linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 75%, #0000008f 75%, #0000008f);
+  background-image: linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 75%, #0000008f 75%, #0000008f), linear-gradient(45deg, #0000008f 25%, transparent 25%, transparent 75%, #0000008f 75%, #0000008f);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
   font-size: 2rem;
   font-weight: 900;
   color: #d47568;
@@ -411,13 +417,36 @@ input {
   font-weight: bold;
 }
 
-.title__word {
+.game__title .title__word {
   display: block;
   background: -o-linear-gradient(268deg, #49140b 22%, #d47568 55%, #d6cb8a);
   background: linear-gradient(182deg, #49140b 22%, #d47568 55%, #d6cb8a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(0, 0, 0, 0);
   color: #0B2349;
+}
+
+.no-webp .car {
+  background: transparent url("../img/player.png") center/contain no-repeat; }
+
+.car {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  width: 9%;
+  height: 20%;
+  -o-object-fit: containt;
+     object-fit: containt;
+}
+
+.road-mark {
+  width: 5px;
+  position: absolute;
+  left: 50%;
+  background-color: white;
+  -webkit-transform: translate(-50%, 0);
+      -ms-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
 }
 
 .rigth-side {
@@ -435,3 +464,5 @@ input {
   font-size: 2rem;
   font-weight: 400;
 }
+
+.webp .car { background: transparent url(../img/player.webp) center/contain no-repeat; }
