@@ -92,8 +92,8 @@ const player = {
         car.style.left = this.x + "px";
     },
 };
-
-startBtn.addEventListener("click", startGame);
+;
+startBtn.addEventListener("click", initGame);
 
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -117,6 +117,12 @@ function prepareToStart() {
 
     createRoadMarks(); // создание полосок
 
+    if (!userName.value) {
+        userName.value = "player";
+    }
+    player.name = userName.value.capitalize();
+    userName.disabled = "true";
+
     gameArea.appendChild(car);
     car.classList.add("car");
     car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px"; // создание машины
@@ -124,6 +130,11 @@ function prepareToStart() {
     player.x = car.offsetLeft;
     player.render();
     title.style.fontSize = "6rem";
+    timeToStart();
+}
+
+function timeToStart() {
+    title.classList.remove("hide");
     titleWord.innerHTML = "3";
     setTimeout(() => {
         titleWord.innerHTML = "2";
@@ -143,9 +154,6 @@ function createRoadMarks() {
         roadMark.style.top = roadMark.y + "px";
         gameArea.appendChild(roadMark);
         // console.log(roadMark);
-        if (i === 9) {
-            roadMark.style.backgroundColor = "grey";
-        }
     }
 }
 
@@ -155,6 +163,7 @@ function moveRoad() {
     lines.forEach(function (line) {
         line.y += player.speed;
         line.style.top = line.y + "px";
+        // console.log(player.speed);
         // console.log(line.y);
         if (line.y >= document.documentElement.clientHeight) {
             // line.y = -((3 * windowHeight) / 20);
@@ -203,23 +212,26 @@ function stopRun(event) {
 }
 
 function startGame() {
-    if (!userName.value) {
-        userName.value = "player";
-    }
-    player.name = userName.value.capitalize();
-    userName.disabled = "true";
-    console.log(player.name);
-    prepareToStart();
-    // setTimeout(() => {
-    //     title.classList.add("hide"); // закрытие меню
+    player.speed = 0;
+    gameSetting.play = false;
+    timeToStart();
+    setTimeout(() => {
+        title.classList.add("hide"); // закрытие меню
+        gameSetting.play = true;
+        player.speed = gameSetting.speed;
+        console.log(gameSetting.play);
+        requestAnimationFrame(playGame);
+    }, 3000);
+}
 
-    //     gameSetting.play = true;
-    //     requestAnimationFrame(playGame); // запуск функции playGame
-    // }, 3000);
-    title.classList.add("hide");
-    gameSetting.play = true;
-    player.speed = gameSetting.speed;
-    requestAnimationFrame(playGame);
+function initGame() {
+    prepareToStart();
+    startGame();
+
+    // title.classList.add("hide");
+    // gameSetting.play = true;
+    // player.speed = gameSetting.speed;
+    // requestAnimationFrame(playGame);
 }
 
 function playGame() {
