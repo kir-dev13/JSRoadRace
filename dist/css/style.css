@@ -237,7 +237,7 @@ input {
 .radio:not(checked) + label:after {
   content: '';
   position: absolute;
-  top: 0px;
+  top: center;
   left: 3px;
   width: 16px;
   height: 16px;
@@ -402,6 +402,7 @@ input {
   text-shadow: 2px 2px 2px black;
   letter-spacing: .4rem;
   cursor: pointer;
+  z-index: 4;
 }
 
 .game__title {
@@ -415,6 +416,7 @@ input {
   font-family: 'Lora', serif;
   font-size: 4rem;
   font-weight: bold;
+  z-index: 3;
 }
 
 .game__title .title__word {
@@ -424,6 +426,7 @@ input {
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(0, 0, 0, 0);
   color: #0B2349;
+  z-index: 3;
 }
 
 .no-webp .car {
@@ -437,6 +440,7 @@ input {
   height: 20%;
   -o-object-fit: containt;
      object-fit: containt;
+  z-index: 10;
 }
 
 .road-mark {
@@ -447,6 +451,7 @@ input {
   -webkit-transform: translate(-50%, 0);
       -ms-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
+  z-index: 1;
 }
 
 .rigth-side {

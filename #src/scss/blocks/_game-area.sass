@@ -27,6 +27,7 @@ $carWidth: 50px
       text-shadow: 2px 2px 2px black
       letter-spacing: .4rem
       cursor: pointer
+      z-index: 4
 
   &__title
     text-align: center
@@ -37,6 +38,7 @@ $carWidth: 50px
     font-family: 'Lora', serif
     font-size: 4rem
     font-weight: bold
+    z-index: 3
 
     .title__word
       display: block
@@ -44,6 +46,7 @@ $carWidth: 50px
       -webkit-background-clip: text
       -webkit-text-fill-color: rgba(0,0,0,0)
       color: #0B2349
+      z-index: 3
 
 .car
   position: absolute
@@ -55,6 +58,7 @@ $carWidth: 50px
   height: 20%
   object-fit: containt
   background: transparent url('../img/player.png') center / contain no-repeat
+  z-index: 10
 
 .road-mark
   // height: 80px
@@ -64,3 +68,4 @@ $carWidth: 50px
   left: 50%
   background-color: white
   transform: translate(-50%, 0)
+  z-index: 1
