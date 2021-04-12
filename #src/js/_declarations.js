@@ -9,6 +9,8 @@ const userName = document.querySelector(".input__user-name");
 
 let windowHeight = document.documentElement.clientHeight;
 
+//вспомогательные переменные
+
 const car = document.createElement("div");
 
 const keys = {

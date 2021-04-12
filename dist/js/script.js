@@ -49,6 +49,8 @@ const userName = document.querySelector(".input__user-name");
 
 let windowHeight = document.documentElement.clientHeight;
 
+//вспомогательные переменные
+
 const car = document.createElement("div");
 
 const keys = {
@@ -99,41 +101,74 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-function moveElement() {
-    startBtn.y += player.speed;
-    startBtn.style.top = startBtn.y + "px";
-    // console.log(startBtn.y);
+function removeStartBtn() {
+    //задействована startGame()
     if (startBtn.y >= document.documentElement.clientHeight) {
         startBtn.remove();
+        console.log("StartBtn ушла...");
+        return;
     }
+    startBtn.y += player.speed;
+    startBtn.style.top = startBtn.y + "px";
+
+    // console.log(startBtn.y);
+
+    requestAnimationFrame(removeStartBtn);
+}
+
+//! не задействованная функция !
+function moveElement(elem) {
+    let canceled = false;
+    return function (elem) {
+        if (canceled) {
+            return;
+        }
+        elem.y += player.speed;
+        elem.style.top = elem.y + "px";
+        // console.log(startBtn.y);
+        if (elem.y >= document.documentElement.clientHeight) {
+            elem.remove();
+            canceled = true;
+            console.log("объект " + elem + " покинул предел экрана");
+            return;
+        }
+    };
 }
 
 function prepareToStart() {
-    let heightStartBtn = startBtn.offsetHeight;
-    // console.log(heightStartBtn);
-    startBtn.innerHTML = "";
-    startBtn.style.height = heightStartBtn + "px";
-    titleWords.forEach((word) => (word.innerText = ""));
+    //* Получение элементов со страницы
 
-    createRoadMarks(); // создание полосок
-
+    //*имя игрока
     if (!userName.value) {
         userName.value = "player";
     }
     player.name = userName.value.capitalize();
     userName.disabled = "true";
+    //TODO сложность, музыка
 
+    //* трансформация кнопки старт
+    startBtn.style.height = startBtn.offsetHeight + "px";
+    startBtn.innerHTML = "";
+
+    //*Скрытие меню
+    titleWords.forEach((word) => (word.innerText = ""));
+
+    createRoadMarks(); //* создание и вставка полосок
+
+    //* создание машины и вставка машины
     gameArea.appendChild(car);
     car.classList.add("car");
-    car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px"; // создание машины
+    car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px";
+    player.x = car.offsetLeft; //присваивание координат в объект
 
-    player.x = car.offsetLeft;
-    player.render();
-    title.style.fontSize = "6rem";
-    timeToStart();
+    player.render(); //рендер
+
+    timeToStart(); //обратный отсчёт
 }
 
 function timeToStart() {
+    //*Обратный отсчёт до старта
+    title.style.fontSize = "6rem";
     title.classList.remove("hide");
     titleWord.innerHTML = "3";
     setTimeout(() => {
@@ -146,12 +181,16 @@ function timeToStart() {
 
 function createRoadMarks() {
     // console.log(windowHeight);
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 6; i++) {
         const roadMark = document.createElement("div");
         roadMark.classList.add("road-mark");
         roadMark.style.height = windowHeight / 15 + "px";
         roadMark.y = i * ((4 * windowHeight) / 20);
         roadMark.style.top = roadMark.y + "px";
+        // if (i === 0) {
+        //     roadMark.style.backgroundColor = "green";
+        // }
+
         gameArea.appendChild(roadMark);
         // console.log(roadMark);
     }
@@ -172,6 +211,38 @@ function moveRoad() {
     });
 }
 
+function initGame() {
+    prepareToStart();
+    startGame();
+
+    // title.classList.add("hide");
+    // gameSetting.play = true;
+    // player.speed = gameSetting.speed;
+    // requestAnimationFrame(playGame);
+}
+;
+function stopGame() {
+    gameSetting.play = false;
+    // player.speed = 0;
+}
+
+function startGame() {
+    // player.speed = 0;
+    gameSetting.play = false;
+    timeToStart(); // запуск обратный отсчёт
+    setTimeout(() => {
+        // запуск playGame после таймера
+        title.classList.add("hide"); // закрытие меню
+        gameSetting.play = true;
+        player.speed = gameSetting.speed;
+
+        //* Функция скрытия кнопки
+        requestAnimationFrame(removeStartBtn);
+
+        requestAnimationFrame(playGame);
+    }, 3000);
+}
+;
 function startRun(event) {
     event.preventDefault();
     // console.log("start");
@@ -210,40 +281,18 @@ function stopRun(event) {
     }
     // console.log("stop");
 }
-
-function startGame() {
-    player.speed = 0;
-    gameSetting.play = false;
-    timeToStart();
-    setTimeout(() => {
-        title.classList.add("hide"); // закрытие меню
-        gameSetting.play = true;
-        player.speed = gameSetting.speed;
-        console.log(gameSetting.play);
-        requestAnimationFrame(playGame);
-    }, 3000);
-}
-
-function initGame() {
-    prepareToStart();
-    startGame();
-
-    // title.classList.add("hide");
-    // gameSetting.play = true;
-    // player.speed = gameSetting.speed;
-    // requestAnimationFrame(playGame);
-}
-
+;
 function playGame() {
-    // console.log("play!");
-
     if (gameSetting.play) {
         document.addEventListener("keydown", startRun);
         document.addEventListener("keyup", stopRun);
         // moveElement(startBtn);
         player.movePlayer();
         moveRoad();
-        moveElement();
+
+        // moveElement();
+        // moveElement(startBtn); // убирание кнопки
+
         requestAnimationFrame(playGame);
     }
 }
