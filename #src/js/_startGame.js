@@ -1,6 +1,27 @@
+function removeStartBtn() {
+    //задействована в startGame()
+    if (startBtn.y >= document.documentElement.clientHeight) {
+        startBtn.remove();
+        console.log("StartBtn ушла...");
+        return;
+    }
+    startBtn.y += player.speed;
+    startBtn.style.top = startBtn.y + "px";
+
+    // console.log(startBtn.y);
+
+    requestAnimationFrame(removeStartBtn);
+}
+
 function stopGame() {
     gameSetting.play = false;
     // player.speed = 0;
+}
+
+function initGame() {
+    //* нажатие кнопки StartBtn
+    prepareToStart();
+    startGame();
 }
 
 function startGame() {
@@ -17,5 +38,5 @@ function startGame() {
         requestAnimationFrame(removeStartBtn);
 
         requestAnimationFrame(playGame);
-    }, 3000);
+    }, 0);
 }

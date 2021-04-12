@@ -54,3 +54,9 @@ const player = {
         car.style.left = this.x + "px";
     },
 };
+
+startBtn.addEventListener("click", initGame);
+
+String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
