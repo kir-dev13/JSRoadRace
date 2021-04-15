@@ -18,9 +18,9 @@ function createRoadMarks() {
         roadMark.style.height = windowHeight / 15 + "px";
         roadMark.y = i * ((4 * windowHeight) / 20);
         roadMark.style.top = roadMark.y + "px";
-        // if (i === 0) {
-        //     roadMark.style.backgroundColor = "green";
-        // }
+        if (i === 0) {
+            roadMark.style.backgroundColor = "green";
+        }
 
         gameArea.appendChild(roadMark);
         // console.log(roadMark);
@@ -31,9 +31,11 @@ function createPlayerCar() {
     //prepareToStart()
     gameArea.appendChild(car);
     car.classList.add("car");
-    car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px";
-    player.x = car.offsetLeft; //присваивание координат в объект
 
+    //присваивание координат в объект
+    car.style.backgroundImage = `url(${player.imgSrc})`;
+    // car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px";
+    player.x = car.offsetLeft;
     player.render(); //рендер
 }
 
@@ -64,7 +66,8 @@ function prepareToStart() {
     createRoadMarks(); //* создание и вставка полосок
 
     //* создание машины и вставка машины
-    createPlayerCar();
+    //! createPlayerCar();
+    player.create();
 
     // timeToStart(); //обратный отсчёт
 }

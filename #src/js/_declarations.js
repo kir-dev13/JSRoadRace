@@ -11,7 +11,55 @@ let windowHeight = document.documentElement.clientHeight;
 
 //вспомогательные переменные
 
-const car = document.createElement("div");
+// const car = document.createElement("div");
+
+class Car {
+    constructor(imgSrc, speed, ...classes) {
+        this.imgSrc = imgSrc;
+        this.speed = speed;
+        this.classes = [...classes];
+    }
+    create() {
+        this.car = document.createElement("div");
+        gameArea.appendChild(this.car);
+        // this.classes.forEach((className) => car.classList.add(className));
+        this.car.classList.add("car");
+        this.car.style.backgroundImage = this.imgSrc;
+        this.x = this.car.offsetLeft;
+        this.y = this.car.offsetTop;
+        console.log(
+            "🚀 ~ file: _declarations.js ~ line 30 ~ Car ~ create ~ this.car.offsetHeight",
+            this.car.offsetHeight
+        );
+        this.render();
+    }
+    render() {
+        this.car.style.left = this.x + "px";
+        this.car.style.top = this.y + "px";
+    }
+}
+
+let player = new Car(`url('../img/player.png')`, 0, "car");
+player.move = function (event) {
+    if (keys.ArrowLeft && this.x > 0) {
+        this.x -= this.speed / 2;
+        this.car.style.transform = "rotate(-10deg)";
+    }
+    if (
+        keys.ArrowRight &&
+        this.x < gameArea.offsetWidth - this.car.offsetWidth
+    ) {
+        this.x += this.speed / 2;
+        this.car.style.transform = "rotate(10deg)";
+    }
+    if (!keys.ArrowRight && !keys.ArrowLeft) {
+        this.car.style.transform = "rotate(0deg)";
+    }
+    // if (keys.ArrowUp) {
+    //     gameSetting.speed += 2;
+    // }
+    this.render();
+};
 
 const keys = {
     ArrowUp: false,
@@ -27,33 +75,35 @@ const gameSetting = {
     boost: 2,
 };
 
-const player = {
-    speed: 0,
-    movePlayer(event) {
-        if (keys.ArrowLeft && this.x > 0) {
-            this.x -= this.speed / 2;
-            car.style.transform = "rotate(-10deg)";
-        }
-        if (
-            keys.ArrowRight &&
-            this.x < gameArea.offsetWidth - car.offsetWidth
-        ) {
-            this.x += this.speed / 2;
-            car.style.transform = "rotate(10deg)";
-        }
-        if (!keys.ArrowRight && !keys.ArrowLeft) {
-            car.style.transform = "rotate(0deg)";
-        }
-        // if (keys.ArrowUp) {
-        //     gameSetting.speed += 2;
-        // }
+// const player = {
+//     imgSrc: "../img/player.png",
+//     speed: 0,
 
-        this.render();
-    },
-    render() {
-        car.style.left = this.x + "px";
-    },
-};
+//     movePlayer(event) {
+//         if (keys.ArrowLeft && this.x > 0) {
+//             this.x -= this.speed / 2;
+//             car.style.transform = "rotate(-10deg)";
+//         }
+//         if (
+//             keys.ArrowRight &&
+//             this.x < gameArea.offsetWidth - car.offsetWidth
+//         ) {
+//             this.x += this.speed / 2;
+//             car.style.transform = "rotate(10deg)";
+//         }
+//         if (!keys.ArrowRight && !keys.ArrowLeft) {
+//             car.style.transform = "rotate(0deg)";
+//         }
+//         // if (keys.ArrowUp) {
+//         //     gameSetting.speed += 2;
+//         // }
+
+//         this.render();
+//     },
+//     render() {
+//         car.style.left = this.x + "px";
+//     },
+// };
 
 startBtn.addEventListener("click", initGame);
 

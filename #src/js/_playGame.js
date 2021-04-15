@@ -38,7 +38,7 @@ function playGame() {
         document.addEventListener("keydown", startRun);
         document.addEventListener("keyup", stopRun);
         // moveElement(startBtn);
-        player.movePlayer();
+        player.move();
         moveRoad();
 
         // moveElement();

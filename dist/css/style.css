@@ -429,17 +429,15 @@ input {
   z-index: 3;
 }
 
-.no-webp .car {
-  background: transparent url("../img/player.png") center/contain no-repeat; }
-
 .car {
   position: absolute;
   bottom: 5%;
-  left: 50%;
+  left: 45.5%;
   width: 9%;
   height: 20%;
   -o-object-fit: containt;
      object-fit: containt;
+  background: transparent center / contain no-repeat;
   z-index: 10;
 }
 
@@ -469,5 +467,3 @@ input {
   font-size: 2rem;
   font-weight: 400;
 }
-
-.webp .car { background: transparent url(../img/player.webp) center/contain no-repeat; }
