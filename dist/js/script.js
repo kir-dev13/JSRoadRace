@@ -63,8 +63,7 @@ class Car {
     create() {
         this.car = document.createElement("div");
         gameArea.appendChild(this.car);
-        // this.classes.forEach((className) => car.classList.add(className));
-        this.car.classList.add("car");
+        this.classes.forEach((className) => this.car.classList.add(className));
         this.car.style.backgroundImage = this.imgSrc;
         this.x = this.car.offsetLeft;
         this.y = this.car.offsetTop;
@@ -96,9 +95,6 @@ player.move = function (event) {
     if (!keys.ArrowRight && !keys.ArrowLeft) {
         this.car.style.transform = "rotate(0deg)";
     }
-    // if (keys.ArrowUp) {
-    //     gameSetting.speed += 2;
-    // }
     this.render();
 };
 
@@ -115,36 +111,6 @@ const gameSetting = {
     speed: 3,
     boost: 2,
 };
-
-// const player = {
-//     imgSrc: "../img/player.png",
-//     speed: 0,
-
-//     movePlayer(event) {
-//         if (keys.ArrowLeft && this.x > 0) {
-//             this.x -= this.speed / 2;
-//             car.style.transform = "rotate(-10deg)";
-//         }
-//         if (
-//             keys.ArrowRight &&
-//             this.x < gameArea.offsetWidth - car.offsetWidth
-//         ) {
-//             this.x += this.speed / 2;
-//             car.style.transform = "rotate(10deg)";
-//         }
-//         if (!keys.ArrowRight && !keys.ArrowLeft) {
-//             car.style.transform = "rotate(0deg)";
-//         }
-//         // if (keys.ArrowUp) {
-//         //     gameSetting.speed += 2;
-//         // }
-
-//         this.render();
-//     },
-//     render() {
-//         car.style.left = this.x + "px";
-//     },
-// };
 
 startBtn.addEventListener("click", initGame);
 
@@ -182,18 +148,6 @@ function createRoadMarks() {
     }
 }
 
-function createPlayerCar() {
-    //prepareToStart()
-    gameArea.appendChild(car);
-    car.classList.add("car");
-
-    //присваивание координат в объект
-    car.style.backgroundImage = `url(${player.imgSrc})`;
-    // car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px";
-    player.x = car.offsetLeft;
-    player.render(); //рендер
-}
-
 function timeToStart() {
     //startGame()
 
@@ -221,7 +175,7 @@ function prepareToStart() {
     createRoadMarks(); //* создание и вставка полосок
 
     //* создание машины и вставка машины
-    //! createPlayerCar();
+
     player.create();
 
     // timeToStart(); //обратный отсчёт
@@ -231,7 +185,6 @@ function removeStartBtn() {
     //задействована в startGame()
     if (startBtn.y >= document.documentElement.clientHeight) {
         startBtn.remove();
-        console.log("StartBtn ушла...");
         return;
     }
     startBtn.y += player.speed;
@@ -244,7 +197,7 @@ function removeStartBtn() {
 
 function stopGame() {
     gameSetting.play = false;
-    // player.speed = 0;
+    player.speed = 0;
 }
 
 function initGame() {
@@ -254,14 +207,25 @@ function initGame() {
 }
 
 function startGame() {
-    // player.speed = 0;
+    player.speed = 0;
+
     gameSetting.play = false;
+
+    console.log(
+        "🚀 ~ file: _startGame.js ~ line 30 ~ startGame ~ player.speed",
+        player.speed
+    );
+
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
         title.classList.add("hide"); // закрытие меню
         gameSetting.play = true;
         player.speed = gameSetting.speed;
+        console.log(
+            "🚀 ~ file: _startGame.js ~ line 41 ~ setTimeout ~ player.speed ",
+            player.speed
+        );
 
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
@@ -300,7 +264,6 @@ function startRun(event) {
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                console.log(player.speed);
 
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
                     console.log("предел скорости");
@@ -330,12 +293,10 @@ function stopRun(event) {
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.02;
                 player.speed -= 0.02;
-                console.log(player.speed);
 
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
                     console.log("вернулись");
-                    console.log(player.speed);
                     return;
                 }
                 requestAnimationFrame(unBoosting);
@@ -352,24 +313,24 @@ function stopRun(event) {
     // console.log("stop");
 }
 ;
-//! не задействованная функция !
-function moveElement(elem) {
-    let canceled = false;
-    return function (elem) {
-        if (canceled) {
-            return;
-        }
-        elem.y += player.speed;
-        elem.style.top = elem.y + "px";
-        // console.log(startBtn.y);
-        if (elem.y >= document.documentElement.clientHeight) {
-            elem.remove();
-            canceled = true;
-            console.log("объект " + elem + " покинул предел экрана");
-            return;
-        }
-    };
-}
+// //! не задействованная функция !
+// function moveElement(elem) {
+//     let canceled = false;
+//     return function (elem) {
+//         if (canceled) {
+//             return;
+//         }
+//         elem.y += player.speed;
+//         elem.style.top = elem.y + "px";
+//         // console.log(startBtn.y);
+//         if (elem.y >= document.documentElement.clientHeight) {
+//             elem.remove();
+//             canceled = true;
+//             console.log("объект " + elem + " покинул предел экрана");
+//             return;
+//         }
+//     };
+// }
 
 function moveRoad() {
     // задействована в playGame()

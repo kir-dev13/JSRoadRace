@@ -22,8 +22,7 @@ class Car {
     create() {
         this.car = document.createElement("div");
         gameArea.appendChild(this.car);
-        // this.classes.forEach((className) => car.classList.add(className));
-        this.car.classList.add("car");
+        this.classes.forEach((className) => this.car.classList.add(className));
         this.car.style.backgroundImage = this.imgSrc;
         this.x = this.car.offsetLeft;
         this.y = this.car.offsetTop;
@@ -55,9 +54,6 @@ player.move = function (event) {
     if (!keys.ArrowRight && !keys.ArrowLeft) {
         this.car.style.transform = "rotate(0deg)";
     }
-    // if (keys.ArrowUp) {
-    //     gameSetting.speed += 2;
-    // }
     this.render();
 };
 
@@ -74,36 +70,6 @@ const gameSetting = {
     speed: 3,
     boost: 2,
 };
-
-// const player = {
-//     imgSrc: "../img/player.png",
-//     speed: 0,
-
-//     movePlayer(event) {
-//         if (keys.ArrowLeft && this.x > 0) {
-//             this.x -= this.speed / 2;
-//             car.style.transform = "rotate(-10deg)";
-//         }
-//         if (
-//             keys.ArrowRight &&
-//             this.x < gameArea.offsetWidth - car.offsetWidth
-//         ) {
-//             this.x += this.speed / 2;
-//             car.style.transform = "rotate(10deg)";
-//         }
-//         if (!keys.ArrowRight && !keys.ArrowLeft) {
-//             car.style.transform = "rotate(0deg)";
-//         }
-//         // if (keys.ArrowUp) {
-//         //     gameSetting.speed += 2;
-//         // }
-
-//         this.render();
-//     },
-//     render() {
-//         car.style.left = this.x + "px";
-//     },
-// };
 
 startBtn.addEventListener("click", initGame);
 

@@ -27,18 +27,6 @@ function createRoadMarks() {
     }
 }
 
-function createPlayerCar() {
-    //prepareToStart()
-    gameArea.appendChild(car);
-    car.classList.add("car");
-
-    //присваивание координат в объект
-    car.style.backgroundImage = `url(${player.imgSrc})`;
-    // car.style.left = car.offsetLeft - car.offsetWidth / 2 + "px";
-    player.x = car.offsetLeft;
-    player.render(); //рендер
-}
-
 function timeToStart() {
     //startGame()
 
@@ -66,7 +54,7 @@ function prepareToStart() {
     createRoadMarks(); //* создание и вставка полосок
 
     //* создание машины и вставка машины
-    //! createPlayerCar();
+
     player.create();
 
     // timeToStart(); //обратный отсчёт

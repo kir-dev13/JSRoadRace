@@ -1,21 +1,21 @@
-//! не задействованная функция !
-function moveElement(elem) {
-    let canceled = false;
-    return function (elem) {
-        if (canceled) {
-            return;
-        }
-        elem.y += player.speed;
-        elem.style.top = elem.y + "px";
-        // console.log(startBtn.y);
-        if (elem.y >= document.documentElement.clientHeight) {
-            elem.remove();
-            canceled = true;
-            console.log("объект " + elem + " покинул предел экрана");
-            return;
-        }
-    };
-}
+// //! не задействованная функция !
+// function moveElement(elem) {
+//     let canceled = false;
+//     return function (elem) {
+//         if (canceled) {
+//             return;
+//         }
+//         elem.y += player.speed;
+//         elem.style.top = elem.y + "px";
+//         // console.log(startBtn.y);
+//         if (elem.y >= document.documentElement.clientHeight) {
+//             elem.remove();
+//             canceled = true;
+//             console.log("объект " + elem + " покинул предел экрана");
+//             return;
+//         }
+//     };
+// }
 
 function moveRoad() {
     // задействована в playGame()

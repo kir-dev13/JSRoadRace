@@ -28,7 +28,6 @@ function startRun(event) {
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                console.log(player.speed);
 
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
                     console.log("предел скорости");
@@ -58,12 +57,10 @@ function stopRun(event) {
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.02;
                 player.speed -= 0.02;
-                console.log(player.speed);
 
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
                     console.log("вернулись");
-                    console.log(player.speed);
                     return;
                 }
                 requestAnimationFrame(unBoosting);
