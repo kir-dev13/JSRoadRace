@@ -3,6 +3,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   height: 100vh;
+  overflow: hidden;
 }
 
 .hide {
@@ -123,6 +124,8 @@ input {
 .side {
   background-color: #39810f;
   width: 33.4vw;
+  position: relative;
+  z-index: 1;
 }
 
 .checkbox {
@@ -379,7 +382,7 @@ input {
   width: 33.3vw;
   background-color: #363636;
   position: relative;
-  overflow: hidden;
+  z-index: 2;
 }
 
 .game-area__button {
@@ -435,10 +438,14 @@ input {
   left: 45.5%;
   width: 9%;
   height: 20%;
-  -o-object-fit: containt;
-     object-fit: containt;
-  background: transparent center / contain no-repeat;
+  -o-object-fit: cover;
+     object-fit: cover;
+  background: transparent center / cover no-repeat;
   z-index: 10;
+}
+
+.enemy {
+  top: -10px;
 }
 
 .road-mark {

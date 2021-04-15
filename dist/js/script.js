@@ -67,10 +67,6 @@ class Car {
         this.car.style.backgroundImage = this.imgSrc;
         this.x = this.car.offsetLeft;
         this.y = this.car.offsetTop;
-        console.log(
-            "🚀 ~ file: _declarations.js ~ line 30 ~ Car ~ create ~ this.car.offsetHeight",
-            this.car.offsetHeight
-        );
         this.render();
     }
     render() {
@@ -81,20 +77,34 @@ class Car {
 
 let player = new Car(`url('../img/player.png')`, 0, "car");
 player.move = function (event) {
-    if (keys.ArrowLeft && this.x > 0) {
+    if (keys.ArrowLeft && this.x > -3) {
         this.x -= this.speed / 2;
         this.car.style.transform = "rotate(-10deg)";
     }
     if (
         keys.ArrowRight &&
-        this.x < gameArea.offsetWidth - this.car.offsetWidth
+        this.x < gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.x += this.speed / 2;
         this.car.style.transform = "rotate(10deg)";
     }
-    if (!keys.ArrowRight && !keys.ArrowLeft) {
+    if (
+        (!keys.ArrowRight && !keys.ArrowLeft) ||
+        this.x <= -1 ||
+        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 3
+    ) {
         this.car.style.transform = "rotate(0deg)";
     }
+
+    this.render();
+};
+
+let enemy = new Car(`url('../img/enemy1.png')`, 2, "enemy", "car");
+enemy.move = function () {
+    // console.log(this.y);
+    // console.log(this.speed);
+    // console.log(this.y);
+    this.y += player.speed - this.speed;
     this.render();
 };
 
@@ -108,7 +118,7 @@ const keys = {
 const gameSetting = {
     play: false,
     score: 0,
-    speed: 3,
+    speed: 4,
     boost: 2,
 };
 
@@ -207,29 +217,19 @@ function initGame() {
 }
 
 function startGame() {
-    player.speed = 0;
-
     gameSetting.play = false;
 
-    console.log(
-        "🚀 ~ file: _startGame.js ~ line 30 ~ startGame ~ player.speed",
-        player.speed
-    );
-
+    player.speed = 0;
+    // player.x = gameArea.offsetWidth / 2 - player.car.offsetWidth / 2; центрирование машины
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
         title.classList.add("hide"); // закрытие меню
         gameSetting.play = true;
         player.speed = gameSetting.speed;
-        console.log(
-            "🚀 ~ file: _startGame.js ~ line 41 ~ setTimeout ~ player.speed ",
-            player.speed
-        );
-
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
-
+        enemy.create();
         requestAnimationFrame(playGame);
     }, 0);
 }
@@ -248,25 +248,12 @@ function startRun(event) {
                 break;
             }
             boostStop = false;
-            // player.speed += gameSetting.boost;
-            // (function () {
-            //     let boostDelta = 0;
-            //     let boostingInterval = setInterval(function () {
-            //         boostDelta += 0.5;
-            //         player.speed += 0.5;
-            //         if (boostDelta >= gameSetting.boost) {
-            //             console.log("предел скорости");
-
-            //             clearInterval(boostingInterval);
-            //         }
-            //     }, 500);
-            // })();
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-
+                console.log(player.speed);
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
-                    console.log("предел скорости");
+                    console.log("предел скорости " + player.speed);
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -276,7 +263,20 @@ function startRun(event) {
             if (event.repeat) {
                 break;
             }
-            player.speed -= gameSetting.boost - 1;
+            boostStop = false;
+            // player.speed -= gameSetting.boost - 1;
+            // break;
+            requestAnimationFrame(function boosting() {
+                boostDelta += 0.04;
+                player.speed -= 0.01;
+                console.log(player.speed);
+
+                if (boostDelta >= gameSetting.boost || boostStop == true) {
+                    console.log("предел замедления " + player.speed);
+                    return;
+                }
+                requestAnimationFrame(boosting);
+            });
             break;
     }
 }
@@ -289,14 +289,13 @@ function stopRun(event) {
                 break;
             }
             boostStop = true;
-            // player.speed -= gameSetting.boost;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.02;
                 player.speed -= 0.02;
-
+                console.log("отпустил кнопку газ " + player.speed);
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    console.log("вернулись");
+                    console.log("вернулись " + player.speed);
                     return;
                 }
                 requestAnimationFrame(unBoosting);
@@ -307,7 +306,20 @@ function stopRun(event) {
             if (event.repeat) {
                 break;
             }
-            player.speed += gameSetting.boost - 1;
+            // player.speed += gameSetting.boost - 1;
+            boostStop = true;
+            // player.speed -= gameSetting.boost;
+            requestAnimationFrame(function unBoosting() {
+                boostDelta -= 0.04;
+                player.speed += 0.01;
+                console.log("отпустил кнопку тормоз " + player.speed);
+                if (boostDelta <= 0) {
+                    player.speed = Math.round(player.speed);
+                    console.log("вернулись " + player.speed);
+                    return;
+                }
+                requestAnimationFrame(unBoosting);
+            });
             break;
     }
     // console.log("stop");
@@ -355,7 +367,7 @@ function playGame() {
         // moveElement(startBtn);
         player.move();
         moveRoad();
-
+        enemy.move();
         // moveElement();
         // moveElement(startBtn); // убирание кнопки
 

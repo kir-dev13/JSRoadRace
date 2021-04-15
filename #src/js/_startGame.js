@@ -24,29 +24,19 @@ function initGame() {
 }
 
 function startGame() {
-    player.speed = 0;
-
     gameSetting.play = false;
 
-    console.log(
-        "🚀 ~ file: _startGame.js ~ line 30 ~ startGame ~ player.speed",
-        player.speed
-    );
-
+    player.speed = 0;
+    // player.x = gameArea.offsetWidth / 2 - player.car.offsetWidth / 2; центрирование машины
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
         title.classList.add("hide"); // закрытие меню
         gameSetting.play = true;
         player.speed = gameSetting.speed;
-        console.log(
-            "🚀 ~ file: _startGame.js ~ line 41 ~ setTimeout ~ player.speed ",
-            player.speed
-        );
-
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
-
+        enemy.create();
         requestAnimationFrame(playGame);
     }, 0);
 }

@@ -12,25 +12,12 @@ function startRun(event) {
                 break;
             }
             boostStop = false;
-            // player.speed += gameSetting.boost;
-            // (function () {
-            //     let boostDelta = 0;
-            //     let boostingInterval = setInterval(function () {
-            //         boostDelta += 0.5;
-            //         player.speed += 0.5;
-            //         if (boostDelta >= gameSetting.boost) {
-            //             console.log("предел скорости");
-
-            //             clearInterval(boostingInterval);
-            //         }
-            //     }, 500);
-            // })();
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-
+                console.log(player.speed);
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
-                    console.log("предел скорости");
+                    console.log("предел скорости " + player.speed);
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -40,7 +27,20 @@ function startRun(event) {
             if (event.repeat) {
                 break;
             }
-            player.speed -= gameSetting.boost - 1;
+            boostStop = false;
+            // player.speed -= gameSetting.boost - 1;
+            // break;
+            requestAnimationFrame(function boosting() {
+                boostDelta += 0.04;
+                player.speed -= 0.01;
+                console.log(player.speed);
+
+                if (boostDelta >= gameSetting.boost || boostStop == true) {
+                    console.log("предел замедления " + player.speed);
+                    return;
+                }
+                requestAnimationFrame(boosting);
+            });
             break;
     }
 }
@@ -53,14 +53,13 @@ function stopRun(event) {
                 break;
             }
             boostStop = true;
-            // player.speed -= gameSetting.boost;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.02;
                 player.speed -= 0.02;
-
+                console.log("отпустил кнопку газ " + player.speed);
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    console.log("вернулись");
+                    console.log("вернулись " + player.speed);
                     return;
                 }
                 requestAnimationFrame(unBoosting);
@@ -71,7 +70,20 @@ function stopRun(event) {
             if (event.repeat) {
                 break;
             }
-            player.speed += gameSetting.boost - 1;
+            // player.speed += gameSetting.boost - 1;
+            boostStop = true;
+            // player.speed -= gameSetting.boost;
+            requestAnimationFrame(function unBoosting() {
+                boostDelta -= 0.04;
+                player.speed += 0.01;
+                console.log("отпустил кнопку тормоз " + player.speed);
+                if (boostDelta <= 0) {
+                    player.speed = Math.round(player.speed);
+                    console.log("вернулись " + player.speed);
+                    return;
+                }
+                requestAnimationFrame(unBoosting);
+            });
             break;
     }
     // console.log("stop");

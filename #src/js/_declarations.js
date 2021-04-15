@@ -26,10 +26,6 @@ class Car {
         this.car.style.backgroundImage = this.imgSrc;
         this.x = this.car.offsetLeft;
         this.y = this.car.offsetTop;
-        console.log(
-            "🚀 ~ file: _declarations.js ~ line 30 ~ Car ~ create ~ this.car.offsetHeight",
-            this.car.offsetHeight
-        );
         this.render();
     }
     render() {
@@ -40,20 +36,34 @@ class Car {
 
 let player = new Car(`url('../img/player.png')`, 0, "car");
 player.move = function (event) {
-    if (keys.ArrowLeft && this.x > 0) {
+    if (keys.ArrowLeft && this.x > -3) {
         this.x -= this.speed / 2;
         this.car.style.transform = "rotate(-10deg)";
     }
     if (
         keys.ArrowRight &&
-        this.x < gameArea.offsetWidth - this.car.offsetWidth
+        this.x < gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.x += this.speed / 2;
         this.car.style.transform = "rotate(10deg)";
     }
-    if (!keys.ArrowRight && !keys.ArrowLeft) {
+    if (
+        (!keys.ArrowRight && !keys.ArrowLeft) ||
+        this.x <= -1 ||
+        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 3
+    ) {
         this.car.style.transform = "rotate(0deg)";
     }
+
+    this.render();
+};
+
+let enemy = new Car(`url('../img/enemy1.png')`, 2, "enemy", "car");
+enemy.move = function () {
+    // console.log(this.y);
+    // console.log(this.speed);
+    // console.log(this.y);
+    this.y += player.speed - this.speed;
     this.render();
 };
 
@@ -67,7 +77,7 @@ const keys = {
 const gameSetting = {
     play: false,
     score: 0,
-    speed: 3,
+    speed: 4,
     boost: 2,
 };
 

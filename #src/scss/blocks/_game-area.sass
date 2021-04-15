@@ -4,7 +4,8 @@ $carWidth: 9%
     width: 33.3vw
     background-color: #363636
     position: relative
-    overflow: hidden
+    // overflow: hidden
+    z-index: 2
     &__button
       // margin: 40px
       text-align: center
@@ -56,9 +57,12 @@ $carWidth: 9%
   // transform: translate(-50%, 0)
   width: $carWidth
   height: 20%
-  object-fit: containt
-  background: transparent center / contain no-repeat
+  object-fit: cover
+  background: transparent center / cover no-repeat
   z-index: 10
+
+.enemy
+  top: -10px
 
 .road-mark
   // height: 80px
