@@ -437,10 +437,9 @@ input {
   bottom: 5%;
   left: 45.5%;
   width: 9%;
-  height: 20%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  background: transparent center / cover no-repeat;
+  height: 15%;
+  -o-object-fit: fill;
+     object-fit: fill;
   z-index: 10;
 }
 

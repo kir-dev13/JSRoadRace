@@ -20,10 +20,10 @@ class Car {
         this.classes = [...classes];
     }
     create() {
-        this.car = document.createElement("div");
+        this.car = document.createElement("img");
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
-        this.car.style.backgroundImage = this.imgSrc;
+        this.car.src = this.imgSrc;
         this.x = this.car.offsetLeft;
         this.y = this.car.offsetTop;
         this.render();
@@ -34,7 +34,7 @@ class Car {
     }
 }
 
-let player = new Car(`url('../img/player.png')`, 0, "car");
+let player = new Car("../img/player.png", 0, "car");
 player.move = function (event) {
     if (keys.ArrowLeft && this.x > -3) {
         this.x -= this.speed / 2;
@@ -58,7 +58,7 @@ player.move = function (event) {
     this.render();
 };
 
-let enemy = new Car(`url('../img/enemy1.png')`, 2, "enemy", "car");
+let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
 enemy.move = function () {
     // console.log(this.y);
     // console.log(this.speed);

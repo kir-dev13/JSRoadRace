@@ -5,7 +5,7 @@ function startRun(event) {
     event.preventDefault();
 
     // console.log("start");
-    keys[event.key] = true;
+    // keys[event.key] = true;
     switch (event.keyCode) {
         case 38:
             if (event.repeat) {
