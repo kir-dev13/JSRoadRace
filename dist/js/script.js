@@ -241,7 +241,7 @@ function startRun(event) {
     event.preventDefault();
 
     // console.log("start");
-    // keys[event.key] = true;
+    keys[event.key] = true;
     switch (event.keyCode) {
         case 38:
             if (event.repeat) {
@@ -267,11 +267,14 @@ function startRun(event) {
             // player.speed -= gameSetting.boost - 1;
             // break;
             requestAnimationFrame(function boosting() {
-                boostDelta += 0.04;
+                boostDelta -= 0.01;
                 player.speed -= 0.01;
                 console.log(player.speed);
 
-                if (boostDelta >= gameSetting.boost || boostStop == true) {
+                if (
+                    boostDelta <= gameSetting.boost * -1 + 1 ||
+                    boostStop == true
+                ) {
                     console.log("предел замедления " + player.speed);
                     return;
                 }
@@ -290,8 +293,8 @@ function stopRun(event) {
             }
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
-                boostDelta -= 0.02;
-                player.speed -= 0.02;
+                boostDelta -= 0.01;
+                player.speed -= 0.01;
                 console.log("отпустил кнопку газ " + player.speed);
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
@@ -310,10 +313,10 @@ function stopRun(event) {
             boostStop = true;
             // player.speed -= gameSetting.boost;
             requestAnimationFrame(function unBoosting() {
-                boostDelta -= 0.04;
+                boostDelta += 0.01;
                 player.speed += 0.01;
                 console.log("отпустил кнопку тормоз " + player.speed);
-                if (boostDelta <= 0) {
+                if (boostDelta >= 0) {
                     player.speed = Math.round(player.speed);
                     console.log("вернулись " + player.speed);
                     return;
