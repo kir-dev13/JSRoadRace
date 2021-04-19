@@ -58,14 +58,15 @@ player.move = function (event) {
     this.render();
 };
 
-let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
-enemy.move = function () {
-    // console.log(this.y);
-    // console.log(this.speed);
-    // console.log(this.y);
-    this.y += player.speed - this.speed;
-    this.render();
-};
+// let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
+
+// enemy.move = function () {
+//     // console.log(this.y);
+//     // console.log(this.speed);
+//     // console.log(this.y);
+//     this.y += player.speed - this.speed;
+//     this.render();
+// };
 
 const keys = {
     ArrowUp: false,
@@ -79,6 +80,7 @@ const gameSetting = {
     score: 0,
     speed: 4,
     boost: 2,
+    traffic: 3,
 };
 
 startBtn.addEventListener("click", initGame);

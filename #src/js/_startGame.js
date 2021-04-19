@@ -36,7 +36,44 @@ function startGame() {
         player.speed = gameSetting.speed;
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
-        enemy.create();
+        // enemy.create();
+        createEnemies();
         requestAnimationFrame(playGame);
     }, 0);
+}
+
+function createEnemies() {
+    for (let i = 0; i <= gameSetting.traffic; i++) {
+        let enemy = document.createElement("img");
+        enemy.classList.add("car", "enemy");
+        enemy.src = "../img/enemy1.png";
+        // enemies[i].create();
+        let enemyYChoords = (i * 5 + 1) * -100;
+        enemy.style.top = enemyYChoords + "px";
+        gameArea.appendChild(enemy);
+    }
+}
+// function createEnemies() {
+//     let enemies = [];
+//     for (let i = 0; i <= gameSetting.traffic; i++) {
+//         enemies[i] = new Car("../img/enemy1.png", 2, "enemy", "car");
+//         // enemy[i] = document.createElement("img");
+//         // enemy[i].src = "../img/enemy1.png";
+//         // enemy[i].classList.add("car", "enemy");
+//         enemies[i].create();
+//         enemies[i].y = (i + 1) * 100;
+//         // enemy[i].style.top = enemy[i].y + "px";
+//     }
+//     document
+//         .querySelectorAll(".enemy")
+//         .forEach((enemy, i) => (enemy.style.top = (2 * i + 1) * -100) + "px");
+// }
+
+function moveEnemy() {
+    let enemies = document.querySelectorAll(".enemy");
+    enemies.forEach((enemy) => {
+        let enemyYChoords = enemy.y;
+        enemyYChoords += player.speed - 2;
+        enemy.style.top = enemyYChoords + "px";
+    });
 }

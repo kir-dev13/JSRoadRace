@@ -40,7 +40,8 @@ function playGame() {
         // moveElement(startBtn);
         player.move();
         moveRoad();
-        enemy.move();
+        moveEnemy();
+        // enemy.move();
         // moveElement();
         // moveElement(startBtn); // убирание кнопки
 
