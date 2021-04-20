@@ -434,10 +434,9 @@ input {
 
 .car {
   position: absolute;
-  bottom: 5%;
   left: 45.5%;
   width: 9%;
-  height: 12%;
+  height: 11%;
   -o-object-fit: fill;
      object-fit: fill;
   z-index: 10;

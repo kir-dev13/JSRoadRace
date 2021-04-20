@@ -42,17 +42,17 @@ function startGame() {
     }, 0);
 }
 
-function createEnemies() {
-    for (let i = 0; i <= gameSetting.traffic; i++) {
-        let enemy = document.createElement("img");
-        enemy.classList.add("car", "enemy");
-        enemy.src = "../img/enemy1.png";
-        // enemies[i].create();
-        let enemyYChoords = (i * 5 + 1) * -100;
-        enemy.style.top = enemyYChoords + "px";
-        gameArea.appendChild(enemy);
-    }
-}
+// function createEnemies() {
+//     for (let i = 0; i <= gameSetting.traffic; i++) {
+//         let enemy = document.createElement("img");
+//         enemy.classList.add("car", "enemy");
+//         enemy.src = "../img/enemy1.png";
+//         // enemies[i].create();
+//         let enemyYChoords = (i * 5 + 1) * -100;
+//         enemy.style.top = enemyYChoords + "px";
+//         gameArea.appendChild(enemy);
+//     }
+// }
 // function createEnemies() {
 //     let enemies = [];
 //     for (let i = 0; i <= gameSetting.traffic; i++) {
@@ -76,4 +76,18 @@ function moveEnemy() {
         enemyYChoords += player.speed - 2;
         enemy.style.top = enemyYChoords + "px";
     });
+}
+
+function createEnemies() {
+    for (let i = 0; i <= gameSetting.traffic; i++) {
+        let enemy = new Car(
+            "../img/enemy1.png",
+            2,
+            (2 * i + 1) * -100,
+            "enemy",
+            "car"
+        );
+
+        enemy.create();
+    }
 }

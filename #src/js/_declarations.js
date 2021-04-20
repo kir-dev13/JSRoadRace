@@ -14,18 +14,19 @@ let windowHeight = document.documentElement.clientHeight;
 // const car = document.createElement("div");
 
 class Car {
-    constructor(imgSrc, speed, ...classes) {
+    constructor(imgSrc, speed, y, ...classes) {
         this.imgSrc = imgSrc;
         this.speed = speed;
+        this.y = y;
         this.classes = [...classes];
     }
-    create() {
+    create(XChoords, YChoords) {
         this.car = document.createElement("img");
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = this.car.offsetLeft;
-        this.y = this.car.offsetTop;
+        this.x = XChoords;
+        this.y = YChoords;
         this.render();
     }
     render() {
@@ -34,7 +35,12 @@ class Car {
     }
 }
 
-let player = new Car("../img/player.png", 0, "car");
+let player = new Car(
+    "../img/player.png",
+    0,
+    (document.documentElement.clientHeight * 80) / 100,
+    "car"
+);
 player.move = function (event) {
     if (keys.ArrowLeft && this.x > -3) {
         this.x -= this.speed / 2;
