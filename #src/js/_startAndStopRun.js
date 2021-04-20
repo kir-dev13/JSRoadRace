@@ -4,7 +4,6 @@ let boostDelta = 0,
 function startRun(event) {
     event.preventDefault();
 
-    // console.log("start");
     keys[event.key] = true;
     switch (event.keyCode) {
         case 38:
@@ -15,9 +14,8 @@ function startRun(event) {
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                console.log(player.speed);
+
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
-                    console.log("предел скорости " + player.speed);
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -33,13 +31,11 @@ function startRun(event) {
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
-                console.log(player.speed);
 
                 if (
                     boostDelta <= gameSetting.boost * -1 + 1 ||
                     boostStop == true
                 ) {
-                    console.log("предел замедления " + player.speed);
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -59,10 +55,10 @@ function stopRun(event) {
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
-                console.log("отпустил кнопку газ " + player.speed);
+
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    console.log("вернулись " + player.speed);
+
                     return;
                 }
                 requestAnimationFrame(unBoosting);
@@ -79,10 +75,10 @@ function stopRun(event) {
             requestAnimationFrame(function unBoosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                console.log("отпустил кнопку тормоз " + player.speed);
+
                 if (boostDelta >= 0) {
                     player.speed = Math.round(player.speed);
-                    console.log("вернулись " + player.speed);
+
                     return;
                 }
                 requestAnimationFrame(unBoosting);

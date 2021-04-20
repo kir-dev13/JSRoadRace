@@ -247,26 +247,45 @@ function startGame() {
         requestAnimationFrame(playGame);
     }, 0);
 }
-
+let oneBackX, oneBackY;
 function moveEnemy() {
     // console.log(document.documentElement.clientHeight);
     let enemies = document.querySelectorAll(".enemy");
 
-    enemies.forEach((item, n) => {
+    for (let n = 0; n < enemies.length; n++) {
         let itemXChoord;
-        let itemYChoord = item.y;
+        let itemYChoord = enemies[n].y;
         itemYChoord += player.speed - enemy.speed;
-        item.style.top = itemYChoord + "px";
+        enemies[n].style.top = itemYChoord + "px";
 
         if (itemYChoord >= document.documentElement.clientHeight) {
             itemYChoord = random(-400, 0) - 350;
-            item.style.top = itemYChoord + "px";
-
             itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
 
-            item.style.left = itemXChoord + "px";
+            function checkCarPossibility() {
+                if (
+                    itemXChoord > oneBackX - carWidth - 10 &&
+                    itemXChoord < oneBackX + carWidth + 10 &&
+                    itemYChoord > oneBackY - 100
+                ) {
+                    itemYChoord = random(-400, 0) - 350;
+                    itemXChoord = random(
+                        carWidth,
+                        gameArea.offsetWidth - carWidth
+                    );
+                    checkCarPossibility();
+                    console.log("поменяли");
+                } else {
+                    enemies[n].style.top = itemYChoord + "px";
+                    enemies[n].style.left = itemXChoord + "px";
+                    return;
+                }
+            }
+            checkCarPossibility();
+            oneBackY = itemYChoord;
+            oneBackX = itemXChoord;
         }
-    });
+    }
 }
 
 function createEnemies() {
@@ -291,7 +310,6 @@ let boostDelta = 0,
 function startRun(event) {
     event.preventDefault();
 
-    // console.log("start");
     keys[event.key] = true;
     switch (event.keyCode) {
         case 38:
@@ -302,9 +320,8 @@ function startRun(event) {
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                console.log(player.speed);
+
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
-                    console.log("предел скорости " + player.speed);
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -320,13 +337,11 @@ function startRun(event) {
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
-                console.log(player.speed);
 
                 if (
                     boostDelta <= gameSetting.boost * -1 + 1 ||
                     boostStop == true
                 ) {
-                    console.log("предел замедления " + player.speed);
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -346,10 +361,10 @@ function stopRun(event) {
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
-                console.log("отпустил кнопку газ " + player.speed);
+
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    console.log("вернулись " + player.speed);
+
                     return;
                 }
                 requestAnimationFrame(unBoosting);
@@ -366,10 +381,10 @@ function stopRun(event) {
             requestAnimationFrame(function unBoosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                console.log("отпустил кнопку тормоз " + player.speed);
+
                 if (boostDelta >= 0) {
                     player.speed = Math.round(player.speed);
-                    console.log("вернулись " + player.speed);
+
                     return;
                 }
                 requestAnimationFrame(unBoosting);
