@@ -55,7 +55,7 @@ function prepareToStart() {
 
     //* создание машины и вставка машины
 
-    player.create(this.car.offsetLeft, this.car.offsetTop);
+    player.create(playerXStart, playerYStart);
 
     // timeToStart(); //обратный отсчёт
 }

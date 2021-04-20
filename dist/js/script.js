@@ -51,23 +51,32 @@ const userName = document.querySelector(".input__user-name");
 let windowHeight = document.documentElement.clientHeight;
 
 //вспомогательные переменные
+//*НАЧАЛЬНЫЕ КООРДИНАТЫ ИГРОКА:
+const playerYStart = (document.documentElement.clientHeight * 80) / 100,
+    playerXStart = gameArea.offsetWidth * 0.5;
 
 // const car = document.createElement("div");
 
 class Car {
-    constructor(imgSrc, speed, y, ...classes) {
+    constructor(imgSrc, speed, ...classes) {
         this.imgSrc = imgSrc;
         this.speed = speed;
-        this.y = y;
+        // this.x = x;
+        // this.y = y;
         this.classes = [...classes];
     }
-    create(XChoords, YChoords) {
+    // create() {
+
+    // }
+    create(XChoord, YChoord) {
         this.car = document.createElement("img");
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = XChoords;
-        this.y = YChoords;
+        this.x = XChoord - this.car.offsetWidth / 2;
+        // this.x = XChoord;
+        this.y = YChoord;
+
         this.render();
     }
     render() {
@@ -76,12 +85,7 @@ class Car {
     }
 }
 
-let player = new Car(
-    "../img/player.png",
-    0,
-    (document.documentElement.clientHeight * 80) / 100,
-    "car"
-);
+let player = new Car("../img/player.png", 0, "car");
 player.move = function (event) {
     if (keys.ArrowLeft && this.x > -3) {
         this.x -= this.speed / 2;
@@ -105,7 +109,7 @@ player.move = function (event) {
     this.render();
 };
 
-// let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
+let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
 
 // enemy.move = function () {
 //     // console.log(this.y);
@@ -194,7 +198,7 @@ function prepareToStart() {
 
     //* создание машины и вставка машины
 
-    player.create(this.car.offsetLeft, this.car.offsetTop);
+    player.create(playerXStart, playerYStart);
 
     // timeToStart(); //обратный отсчёт
 }
@@ -271,26 +275,50 @@ function startGame() {
 // }
 
 function moveEnemy() {
+    // console.log(document.documentElement.clientHeight);
     let enemies = document.querySelectorAll(".enemy");
-    enemies.forEach((enemy) => {
-        let enemyYChoords = enemy.y;
-        enemyYChoords += player.speed - 2;
-        enemy.style.top = enemyYChoords + "px";
+    enemies.forEach((item) => {
+        let itemYChoord = item.y;
+        itemYChoord += player.speed - enemy.speed;
+        item.style.top = itemYChoord + "px";
+        // console.log(itemYChoord);
+        if (itemYChoord >= document.documentElement.clientHeight) {
+            itemYChoord = -350;
+            item.style.top = itemYChoord + "px";
+            item.style.left =
+                randomX(carWidth, gameArea.offsetWidth - carWidth) + "px";
+        }
     });
 }
 
-function createEnemies() {
-    for (let i = 0; i <= gameSetting.traffic; i++) {
-        let enemy = new Car(
-            "../img/enemy1.png",
-            2,
-            (2 * i + 1) * -100,
-            "enemy",
-            "car"
-        );
+// function createEnemies() {
+//     for (let i = 0; i <= gameSetting.traffic; i++) {
+//         let enemy = new Car(
+//             "../img/enemy1.png",
+//             2,
+//             (2 * i + 1) * -100,
+//             "enemy",
+//             "car"
+//         );
 
-        enemy.create();
+//         enemy.create();
+//     }
+// }
+
+function createEnemies() {
+    let carWidth = document.querySelector(".car").offsetWidth;
+    for (let i = 0; i < gameSetting.traffic; i++) {
+        enemy.create(
+            randomX(carWidth, gameArea.offsetWidth - carWidth),
+            3 * (i + 1) * -150
+        );
     }
+}
+
+function randomX(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 ;
 let boostDelta = 0,

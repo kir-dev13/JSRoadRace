@@ -70,24 +70,48 @@ function startGame() {
 // }
 
 function moveEnemy() {
+    // console.log(document.documentElement.clientHeight);
     let enemies = document.querySelectorAll(".enemy");
-    enemies.forEach((enemy) => {
-        let enemyYChoords = enemy.y;
-        enemyYChoords += player.speed - 2;
-        enemy.style.top = enemyYChoords + "px";
+    enemies.forEach((item) => {
+        let itemYChoord = item.y;
+        itemYChoord += player.speed - enemy.speed;
+        item.style.top = itemYChoord + "px";
+        // console.log(itemYChoord);
+        if (itemYChoord >= document.documentElement.clientHeight) {
+            itemYChoord = -350;
+            item.style.top = itemYChoord + "px";
+            item.style.left =
+                randomX(carWidth, gameArea.offsetWidth - carWidth) + "px";
+        }
     });
 }
 
-function createEnemies() {
-    for (let i = 0; i <= gameSetting.traffic; i++) {
-        let enemy = new Car(
-            "../img/enemy1.png",
-            2,
-            (2 * i + 1) * -100,
-            "enemy",
-            "car"
-        );
+// function createEnemies() {
+//     for (let i = 0; i <= gameSetting.traffic; i++) {
+//         let enemy = new Car(
+//             "../img/enemy1.png",
+//             2,
+//             (2 * i + 1) * -100,
+//             "enemy",
+//             "car"
+//         );
 
-        enemy.create();
+//         enemy.create();
+//     }
+// }
+
+function createEnemies() {
+    let carWidth = document.querySelector(".car").offsetWidth;
+    for (let i = 0; i < gameSetting.traffic; i++) {
+        enemy.create(
+            randomX(carWidth, gameArea.offsetWidth - carWidth),
+            3 * (i + 1) * -150
+        );
     }
+}
+
+function randomX(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
