@@ -10,6 +10,8 @@ const userName = document.querySelector(".input__user-name");
 let windowHeight = document.documentElement.clientHeight;
 
 //вспомогательные переменные
+let carWidth;
+
 //*НАЧАЛЬНЫЕ КООРДИНАТЫ ИГРОКА:
 const playerYStart = (document.documentElement.clientHeight * 80) / 100,
     playerXStart = gameArea.offsetWidth * 0.5;
@@ -90,7 +92,7 @@ const gameSetting = {
     score: 0,
     speed: 4,
     boost: 2,
-    traffic: 3,
+    traffic: 4,
 };
 
 startBtn.addEventListener("click", initGame);
