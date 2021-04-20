@@ -19,7 +19,6 @@ function createRoadMarks() {
         roadMark.y = i * ((4 * windowHeight) / 20);
         roadMark.style.top = roadMark.y + "px";
         if (i === 0) {
-            roadMark.style.backgroundColor = "green";
         }
 
         gameArea.appendChild(roadMark);

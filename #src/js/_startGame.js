@@ -41,45 +41,6 @@ function startGame() {
     }, 0);
 }
 let oneBackX, oneBackY;
-function moveEnemy() {
-    // console.log(document.documentElement.clientHeight);
-    let enemies = document.querySelectorAll(".enemy");
-
-    for (let n = 0; n < enemies.length; n++) {
-        let itemXChoord;
-        let itemYChoord = enemies[n].y;
-        itemYChoord += player.speed - enemy.speed;
-        enemies[n].style.top = itemYChoord + "px";
-
-        if (itemYChoord >= document.documentElement.clientHeight) {
-            itemYChoord = random(-400, 0) - 350;
-            itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
-
-            function checkCarPossibility() {
-                if (
-                    itemXChoord > oneBackX - carWidth - 10 &&
-                    itemXChoord < oneBackX + carWidth + 10 &&
-                    itemYChoord > oneBackY - 100
-                ) {
-                    itemYChoord = random(-400, 0) - 350;
-                    itemXChoord = random(
-                        carWidth,
-                        gameArea.offsetWidth - carWidth
-                    );
-                    checkCarPossibility();
-                    console.log("поменяли");
-                } else {
-                    enemies[n].style.top = itemYChoord + "px";
-                    enemies[n].style.left = itemXChoord + "px";
-                    return;
-                }
-            }
-            checkCarPossibility();
-            oneBackY = itemYChoord;
-            oneBackX = itemXChoord;
-        }
-    }
-}
 
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;

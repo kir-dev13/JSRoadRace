@@ -47,6 +47,7 @@ class Car {
 }
 
 let player = new Car("../img/player.png", 0, "car");
+
 player.move = function (event) {
     if (keys.ArrowLeft && this.x > -3) {
         this.x -= this.speed / 2;
