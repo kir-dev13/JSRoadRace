@@ -52,6 +52,7 @@ let windowHeight = document.documentElement.clientHeight;
 
 //вспомогательные переменные
 let carWidth;
+let carHeight;
 
 //*НАЧАЛЬНЫЕ КООРДИНАТЫ ИГРОКА:
 const playerYStart = (document.documentElement.clientHeight * 80) / 100,
@@ -134,6 +135,7 @@ const gameSetting = {
     score: 0,
     speed: 4,
     boost: 2,
+    enemies: true,
     traffic: 4,
 };
 
@@ -232,7 +234,7 @@ function initGame() {
 
 function startGame() {
     gameSetting.play = false;
-
+    //! удалить всех врагов!
     player.speed = 0;
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
@@ -243,7 +245,9 @@ function startGame() {
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
         // enemy.create();
-        createEnemies();
+        if (gameSetting.enemies) {
+            createEnemies();
+        }
         requestAnimationFrame(playGame);
     }, 0);
 }
@@ -251,6 +255,7 @@ let oneBackX, oneBackY;
 
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;
+    carHeight = document.querySelector(".car").offsetHeight;
     for (let i = 0; i < gameSetting.traffic; i++) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
@@ -393,7 +398,12 @@ function moveRoad() {
 function moveEnemy() {
     // console.log(document.documentElement.clientHeight);
     let enemies = document.querySelectorAll(".enemy");
-
+    if (enemies.length < gameSetting.traffic) {
+        enemy.create(
+            random(carWidth, gameArea.offsetWidth - carWidth),
+            3 * (gameSetting.traffic + 1) * -150
+        );
+    }
     for (let n = 0; n < enemies.length; n++) {
         let itemXChoord;
         let itemYChoord = enemies[n].y;
@@ -405,18 +415,20 @@ function moveEnemy() {
             itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
 
             function checkCarPossibility() {
+                //! Сравнение должно быть не между текущим и предыдущим, а нужен массив координат Х всех елементов;
+                console.log(itemYChoord, oneBackY);
                 if (
                     itemXChoord > oneBackX - carWidth - 10 &&
                     itemXChoord < oneBackX + carWidth + 10 &&
-                    itemYChoord > oneBackY - 100
+                    itemYChoord > oneBackY - carHeight
                 ) {
-                    itemYChoord = random(-400, 0) - 350;
+                    // itemYChoord = random(-400, 0) - 350;
                     itemXChoord = random(
                         carWidth,
                         gameArea.offsetWidth - carWidth
                     );
-                    checkCarPossibility();
                     console.log("поменяли");
+                    checkCarPossibility();
                 } else {
                     enemies[n].style.top = itemYChoord + "px";
                     enemies[n].style.left = itemXChoord + "px";

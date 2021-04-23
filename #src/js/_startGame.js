@@ -25,7 +25,7 @@ function initGame() {
 
 function startGame() {
     gameSetting.play = false;
-
+    //! удалить всех врагов!
     player.speed = 0;
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
@@ -36,7 +36,9 @@ function startGame() {
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
         // enemy.create();
-        createEnemies();
+        if (gameSetting.enemies) {
+            createEnemies();
+        }
         requestAnimationFrame(playGame);
     }, 0);
 }
@@ -44,6 +46,7 @@ let oneBackX, oneBackY;
 
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;
+    carHeight = document.querySelector(".car").offsetHeight;
     for (let i = 0; i < gameSetting.traffic; i++) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),

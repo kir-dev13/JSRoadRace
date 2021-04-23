@@ -36,7 +36,12 @@ function moveRoad() {
 function moveEnemy() {
     // console.log(document.documentElement.clientHeight);
     let enemies = document.querySelectorAll(".enemy");
-
+    if (enemies.length < gameSetting.traffic) {
+        enemy.create(
+            random(carWidth, gameArea.offsetWidth - carWidth),
+            3 * (gameSetting.traffic + 1) * -150
+        );
+    }
     for (let n = 0; n < enemies.length; n++) {
         let itemXChoord;
         let itemYChoord = enemies[n].y;
@@ -48,18 +53,20 @@ function moveEnemy() {
             itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
 
             function checkCarPossibility() {
+                //! Сравнение должно быть не между текущим и предыдущим, а нужен массив координат Х всех елементов;
+                console.log(itemYChoord, oneBackY);
                 if (
                     itemXChoord > oneBackX - carWidth - 10 &&
                     itemXChoord < oneBackX + carWidth + 10 &&
-                    itemYChoord > oneBackY - 100
+                    itemYChoord > oneBackY - carHeight
                 ) {
-                    itemYChoord = random(-400, 0) - 350;
+                    // itemYChoord = random(-400, 0) - 350;
                     itemXChoord = random(
                         carWidth,
                         gameArea.offsetWidth - carWidth
                     );
-                    checkCarPossibility();
                     console.log("поменяли");
+                    checkCarPossibility();
                 } else {
                     enemies[n].style.top = itemYChoord + "px";
                     enemies[n].style.left = itemXChoord + "px";
