@@ -42,6 +42,7 @@ function checkboxChecked(params) {
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
 const gameArea = document.querySelector(".game-area");
+const leftSide = document.querySelector(".left-side");
 let title = document.querySelector(".game__title");
 let titleWord = title.querySelector(".title__word");
 let titleWords = title.querySelectorAll(".title__word");
@@ -136,7 +137,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 4,
+    traffic: 8,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -144,7 +145,6 @@ startBtn.addEventListener("click", initGame);
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
-;
 ;
 function getMenuValues() {
     //* Получение элементов со страницы
@@ -251,7 +251,6 @@ function startGame() {
         requestAnimationFrame(playGame);
     }, 0);
 }
-let oneBackX, oneBackY;
 
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;
@@ -409,25 +408,52 @@ function moveEnemy() {
         let itemYChoord = enemies[n].y;
         itemYChoord += player.speed - enemy.speed;
         enemies[n].style.top = itemYChoord + "px";
-
         if (itemYChoord >= document.documentElement.clientHeight) {
+            // console.log("Машина ушла " + enemies[n].style.left);
+
+            let arrEnemiesChoords = {
+                x: [],
+                y: [],
+            };
+
             itemYChoord = random(-400, 0) - 350;
             itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
 
-            function checkCarPossibility() {
-                //! Сравнение должно быть не между текущим и предыдущим, а нужен массив координат Х всех елементов;
-                console.log(itemYChoord, oneBackY);
-                if (
-                    itemXChoord > oneBackX - carWidth - 10 &&
-                    itemXChoord < oneBackX + carWidth + 10 &&
-                    itemYChoord > oneBackY - carHeight
-                ) {
-                    // itemYChoord = random(-400, 0) - 350;
-                    itemXChoord = random(
-                        carWidth,
-                        gameArea.offsetWidth - carWidth
+            enemies.forEach((enemy) => {
+                if (enemy.y < document.documentElement.clientHeight) {
+                    arrEnemiesChoords.x.push(
+                        enemy.getBoundingClientRect().x - leftSide.offsetWidth
                     );
+                    arrEnemiesChoords.y.push(enemy.getBoundingClientRect().y);
+                    // console.log(enemies[n].style.left, arrEnemiesChoords.x);
+                }
+            });
+
+            checkCarPossibility();
+
+            function checkCarPossibility() {
+                itemYChoord = random(-400, 0) - 350;
+                itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
+
+                let checkX = arrEnemiesChoords.x.some((item) => {
+                    return (
+                        itemXChoord > item - carWidth - 10 &&
+                        itemXChoord < item + carWidth + 10
+                    );
+                });
+
+                let checkY = arrEnemiesChoords.y.some((item) => {
+                    return (
+                        itemYChoord > item - carHeight - 10 &&
+                        itemYChoord < item + carHeight + 10
+                    );
+                });
+
+                console.log(checkX, checkY);
+
+                if (checkX && checkY) {
                     console.log("поменяли");
+
                     checkCarPossibility();
                 } else {
                     enemies[n].style.top = itemYChoord + "px";
@@ -435,9 +461,6 @@ function moveEnemy() {
                     return;
                 }
             }
-            checkCarPossibility();
-            oneBackY = itemYChoord;
-            oneBackX = itemXChoord;
         }
     }
 }

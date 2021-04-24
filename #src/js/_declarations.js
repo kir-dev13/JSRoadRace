@@ -1,6 +1,7 @@
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
 const gameArea = document.querySelector(".game-area");
+const leftSide = document.querySelector(".left-side");
 let title = document.querySelector(".game__title");
 let titleWord = title.querySelector(".title__word");
 let titleWords = title.querySelectorAll(".title__word");
@@ -95,7 +96,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 4,
+    traffic: 8,
 };
 
 startBtn.addEventListener("click", initGame);

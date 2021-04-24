@@ -42,7 +42,6 @@ function startGame() {
         requestAnimationFrame(playGame);
     }, 0);
 }
-let oneBackX, oneBackY;
 
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;
