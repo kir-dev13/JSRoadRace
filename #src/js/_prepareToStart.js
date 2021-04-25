@@ -55,4 +55,5 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
+    player.x = player.x - player.car.offsetWidth / 2;
 }

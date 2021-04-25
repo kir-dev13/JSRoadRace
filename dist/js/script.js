@@ -72,7 +72,7 @@ class Car {
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = XChoord - this.car.offsetWidth / 2;
+        this.x = XChoord;
         this.y = YChoord;
         this.render();
     }
@@ -194,6 +194,7 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
+    player.x = player.x - player.car.offsetWidth / 2;
 }
 ;
 function removeStartBtn() {
@@ -245,10 +246,13 @@ function startGame() {
         // }
         setInterval(() => {
             let targets = document.querySelectorAll(".enemy");
+            let road = document.querySelector(".road-mark");
             targets.forEach((target) => {
                 console.log(target.style.top);
             });
+
             console.log(itemYChoord);
+            console.log(road.style.top);
         }, 1000);
 
         requestAnimationFrame(playGame);
@@ -259,8 +263,13 @@ function createEnemies() {
     for (let i = 0; i < player.traffic; i++) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
-            3 * (i + 1) * -150
+
+            i * ((4 * windowHeight) / 20)
         );
+        // enemy.create(
+        //     random(carWidth, gameArea.offsetWidth - carWidth),
+        //     3 * (i + 1) * -150
+        // );
         console.log(enemy.y);
     }
 }

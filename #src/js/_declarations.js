@@ -31,7 +31,7 @@ class Car {
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = XChoord - this.car.offsetWidth / 2;
+        this.x = XChoord;
         this.y = YChoord;
         this.render();
     }
