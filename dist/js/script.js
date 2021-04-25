@@ -65,20 +65,15 @@ class Car {
     constructor(imgSrc, speed, ...classes) {
         this.imgSrc = imgSrc;
         this.speed = speed;
-        // this.x = x;
-        // this.y = y;
         this.classes = [...classes];
     }
-    // create() {
 
-    // }
     create(XChoord, YChoord) {
         this.car = document.createElement("img");
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
         this.x = XChoord - this.car.offsetWidth / 2;
-        // this.x = XChoord;
         this.y = YChoord;
 
         this.render();
@@ -106,7 +101,7 @@ player.move = function (event) {
     if (
         (!keys.ArrowRight && !keys.ArrowLeft) ||
         this.x <= -1 ||
-        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 3
+        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
@@ -115,14 +110,6 @@ player.move = function (event) {
 };
 
 let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
-
-// enemy.move = function () {
-//     // console.log(this.y);
-//     // console.log(this.speed);
-//     // console.log(this.y);
-//     this.y += player.speed - this.speed;
-//     this.render();
-// };
 
 const keys = {
     ArrowUp: false,
@@ -137,7 +124,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 8,
+    traffic: 4,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -203,8 +190,6 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
-
-    // timeToStart(); //обратный отсчёт
 }
 ;
 function removeStartBtn() {
@@ -236,6 +221,7 @@ function startGame() {
     gameSetting.play = false;
     //! удалить всех врагов!
     player.speed = 0;
+    player.traffic = gameSetting.traffic;
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
@@ -255,7 +241,7 @@ function startGame() {
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;
     carHeight = document.querySelector(".car").offsetHeight;
-    for (let i = 0; i < gameSetting.traffic; i++) {
+    for (let i = 0; i < player.traffic; i++) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
             3 * (i + 1) * -150
@@ -379,28 +365,23 @@ function stopRun(event) {
 // }
 
 function moveRoad() {
-    // задействована в playGame()
+    // вызывается в playGame()
     let lines = document.querySelectorAll(".road-mark");
-    // console.log(lines);
     lines.forEach(function (line) {
         line.y += player.speed;
         line.style.top = line.y + "px";
-        // console.log(player.speed);
-        // console.log(line.y);
         if (line.y >= document.documentElement.clientHeight) {
-            // line.y = -((3 * windowHeight) / 20);
             line.y = -((3 * windowHeight) / 20 + 35);
         }
     });
 }
 
 function moveEnemy() {
-    // console.log(document.documentElement.clientHeight);
     let enemies = document.querySelectorAll(".enemy");
-    if (enemies.length < gameSetting.traffic) {
+    if (enemies.length < player.traffic) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
-            3 * (gameSetting.traffic + 1) * -150
+            3 * (player.traffic + 1) * -150
         );
     }
     for (let n = 0; n < enemies.length; n++) {
@@ -409,8 +390,6 @@ function moveEnemy() {
         itemYChoord += player.speed - enemy.speed;
         enemies[n].style.top = itemYChoord + "px";
         if (itemYChoord >= document.documentElement.clientHeight) {
-            // console.log("Машина ушла " + enemies[n].style.left);
-
             let arrEnemiesChoords = {
                 x: [],
                 y: [],
@@ -425,7 +404,6 @@ function moveEnemy() {
                         enemy.getBoundingClientRect().x - leftSide.offsetWidth
                     );
                     arrEnemiesChoords.y.push(enemy.getBoundingClientRect().y);
-                    // console.log(enemies[n].style.left, arrEnemiesChoords.x);
                 }
             });
 
@@ -444,12 +422,10 @@ function moveEnemy() {
 
                 let checkY = arrEnemiesChoords.y.some((item) => {
                     return (
-                        itemYChoord > item - carHeight - 10 &&
-                        itemYChoord < item + carHeight + 10
+                        itemYChoord > item - carHeight - 15 &&
+                        itemYChoord < item + carHeight + 15
                     );
                 });
-
-                console.log(checkX, checkY);
 
                 if (checkX && checkY) {
                     console.log("поменяли");
@@ -469,15 +445,9 @@ function playGame() {
     if (gameSetting.play) {
         document.addEventListener("keydown", startRun);
         document.addEventListener("keyup", stopRun);
-
-        // moveElement(startBtn);
         player.move();
         moveRoad();
         moveEnemy();
-        // enemy.move();
-        // moveElement();
-        // moveElement(startBtn); // убирание кнопки
-
         requestAnimationFrame(playGame);
     }
 }

@@ -27,6 +27,7 @@ function startGame() {
     gameSetting.play = false;
     //! удалить всех врагов!
     player.speed = 0;
+    player.traffic = gameSetting.traffic;
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
@@ -46,7 +47,7 @@ function startGame() {
 function createEnemies() {
     carWidth = document.querySelector(".car").offsetWidth;
     carHeight = document.querySelector(".car").offsetHeight;
-    for (let i = 0; i < gameSetting.traffic; i++) {
+    for (let i = 0; i < player.traffic; i++) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
             3 * (i + 1) * -150

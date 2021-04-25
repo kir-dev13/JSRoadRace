@@ -8,6 +8,7 @@
 
 @import "components/checkbox.sass"
 @import "components/radio.sass"
+@import "components/range.sass"
 
 input,label, span
   // border: 1px solid red
@@ -28,18 +29,21 @@ input,label, span
     display: flex
     align-items: center
     justify-content: start
-    margin-bottom: 20px
-    flex-wrap: wrap
+    margin-bottom: 40px
+    flex-wrap: mo-wrap
     // flex-basis: 50%
     *
-      flex-basis: 50%
+      flex-basis: auto
+    span
+      // margin-right: 25%
+      min-width: 35%
   &__title
     text-align: center
     text-transform: uppercase
     margin-bottom: 20px
     font-weight: bold
     font-size: 2rem
-    color: #d47568
+    color: $primaryColor
     text-shadow: 1px 1px 2px black
     letter-spacing: .4rem
   &__name
@@ -66,13 +70,16 @@ input,label, span
       outline: none
       box-shadow: 0 0 0 3px rgba(255,255,0,.5)
       // border: 1px solid black
+  &__music
+
 .label
-  flex-basis: 40%
+  flex-basis: 20%
 .menu__difficulty
   margin-top: 30px
   // flex-direction: column
 
 .difficulty
+  flex-wrap: wrap
   &__title
     letter-spacing: .2rem
     text-transform: uppercase
@@ -84,7 +91,7 @@ input,label, span
 
   &__row
     display: flex
-    justify-content: end
+    justify-content: space-between
     flex-basis: 100%
     // label
       // flex-basis: 30%

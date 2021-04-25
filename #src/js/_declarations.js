@@ -24,20 +24,15 @@ class Car {
     constructor(imgSrc, speed, ...classes) {
         this.imgSrc = imgSrc;
         this.speed = speed;
-        // this.x = x;
-        // this.y = y;
         this.classes = [...classes];
     }
-    // create() {
 
-    // }
     create(XChoord, YChoord) {
         this.car = document.createElement("img");
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
         this.x = XChoord - this.car.offsetWidth / 2;
-        // this.x = XChoord;
         this.y = YChoord;
 
         this.render();
@@ -65,7 +60,7 @@ player.move = function (event) {
     if (
         (!keys.ArrowRight && !keys.ArrowLeft) ||
         this.x <= -1 ||
-        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 3
+        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
@@ -74,14 +69,6 @@ player.move = function (event) {
 };
 
 let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
-
-// enemy.move = function () {
-//     // console.log(this.y);
-//     // console.log(this.speed);
-//     // console.log(this.y);
-//     this.y += player.speed - this.speed;
-//     this.render();
-// };
 
 const keys = {
     ArrowUp: false,
@@ -96,7 +83,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 8,
+    traffic: 4,
 };
 
 startBtn.addEventListener("click", initGame);

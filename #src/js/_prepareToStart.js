@@ -55,6 +55,4 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
-
-    // timeToStart(); //обратный отсчёт
 }
