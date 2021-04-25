@@ -122,7 +122,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 1,
+    traffic: 4,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -252,7 +252,7 @@ function startGame() {
             });
 
             console.log(itemYChoord);
-            console.log(road.style.top);
+            // console.log(road.style.top);
         }, 1000);
 
         requestAnimationFrame(playGame);
@@ -261,15 +261,15 @@ function startGame() {
 
 function createEnemies() {
     for (let i = 0; i < player.traffic; i++) {
-        enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
-
-            i * ((4 * windowHeight) / 20)
-        );
         // enemy.create(
         //     random(carWidth, gameArea.offsetWidth - carWidth),
-        //     3 * (i + 1) * -150
+
+        //     i * ((4 * windowHeight) / 20)
         // );
+        enemy.create(
+            random(carWidth, gameArea.offsetWidth - carWidth),
+            3 * (i + 1) * -150
+        );
         console.log(enemy.y);
     }
 }
@@ -406,7 +406,8 @@ function moveEnemy() {
     }
     for (let n = 0; n < enemies.length; n++) {
         let itemXChoord;
-        itemYChoord = enemies[n].y;
+        itemYChoord = enemies[n].style.top;
+        itemYChoord = +itemYChoord.slice(0, itemYChoord.length - 2);
         itemYChoord += player.speed - enemy.speed;
         enemies[n].style.top = itemYChoord + "px";
 

@@ -81,7 +81,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 1,
+    traffic: 4,
 };
 
 startBtn.addEventListener("click", initGame);

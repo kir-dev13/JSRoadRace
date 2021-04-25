@@ -53,7 +53,7 @@ function startGame() {
             });
 
             console.log(itemYChoord);
-            console.log(road.style.top);
+            // console.log(road.style.top);
         }, 1000);
 
         requestAnimationFrame(playGame);
@@ -62,15 +62,15 @@ function startGame() {
 
 function createEnemies() {
     for (let i = 0; i < player.traffic; i++) {
-        enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
-
-            i * ((4 * windowHeight) / 20)
-        );
         // enemy.create(
         //     random(carWidth, gameArea.offsetWidth - carWidth),
-        //     3 * (i + 1) * -150
+
+        //     i * ((4 * windowHeight) / 20)
         // );
+        enemy.create(
+            random(carWidth, gameArea.offsetWidth - carWidth),
+            3 * (i + 1) * -150
+        );
         console.log(enemy.y);
     }
 }

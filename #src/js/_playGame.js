@@ -40,7 +40,8 @@ function moveEnemy() {
     }
     for (let n = 0; n < enemies.length; n++) {
         let itemXChoord;
-        itemYChoord = enemies[n].y;
+        itemYChoord = enemies[n].style.top;
+        itemYChoord = +itemYChoord.slice(0, itemYChoord.length - 2);
         itemYChoord += player.speed - enemy.speed;
         enemies[n].style.top = itemYChoord + "px";
 
