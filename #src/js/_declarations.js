@@ -13,7 +13,6 @@ let windowHeight = document.documentElement.clientHeight;
 //вспомогательные переменные
 let carWidth;
 let carHeight;
-
 //*НАЧАЛЬНЫЕ КООРДИНАТЫ ИГРОКА:
 const playerYStart = (document.documentElement.clientHeight * 80) / 100,
     playerXStart = gameArea.offsetWidth * 0.5;
@@ -34,7 +33,6 @@ class Car {
         this.car.src = this.imgSrc;
         this.x = XChoord - this.car.offsetWidth / 2;
         this.y = YChoord;
-
         this.render();
     }
     render() {
@@ -83,7 +81,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 4,
+    traffic: 1,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -91,3 +89,9 @@ startBtn.addEventListener("click", initGame);
 String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
+
+function random(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

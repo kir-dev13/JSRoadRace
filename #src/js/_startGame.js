@@ -26,8 +26,13 @@ function initGame() {
 function startGame() {
     gameSetting.play = false;
     //! удалить всех врагов!
+
+    carWidth = document.querySelector(".car").offsetWidth;
+    carHeight = document.querySelector(".car").offsetHeight;
+
     player.speed = 0;
     player.traffic = gameSetting.traffic;
+
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
@@ -37,26 +42,27 @@ function startGame() {
         //* Функция скрытия кнопки
         requestAnimationFrame(removeStartBtn);
         // enemy.create();
-        if (gameSetting.enemies) {
-            createEnemies();
-        }
+        // if (gameSetting.enemies) {
+        createEnemies();
+        // }
+        setInterval(() => {
+            let targets = document.querySelectorAll(".enemy");
+            targets.forEach((target) => {
+                console.log(target.style.top);
+            });
+            console.log(itemYChoord);
+        }, 1000);
+
         requestAnimationFrame(playGame);
     }, 0);
 }
 
 function createEnemies() {
-    carWidth = document.querySelector(".car").offsetWidth;
-    carHeight = document.querySelector(".car").offsetHeight;
     for (let i = 0; i < player.traffic; i++) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
             3 * (i + 1) * -150
         );
+        console.log(enemy.y);
     }
-}
-
-function random(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

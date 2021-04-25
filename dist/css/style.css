@@ -288,7 +288,7 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 100%;
   background: #d47568;
   cursor: pointer;
-  margin-top: -6%;
+  margin-top: -10px;
 }
 
 input[type=range]::-moz-range-thumb {
@@ -423,7 +423,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .menu__row span {
-  min-width: 35%;
+  width: 35%;
 }
 
 .menu__title {

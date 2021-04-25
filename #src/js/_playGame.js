@@ -28,9 +28,10 @@ function moveRoad() {
         }
     });
 }
-
+let itemYChoord;
 function moveEnemy() {
     let enemies = document.querySelectorAll(".enemy");
+    // console.log(enemies);
     if (enemies.length < player.traffic) {
         enemy.create(
             random(carWidth, gameArea.offsetWidth - carWidth),
@@ -39,9 +40,10 @@ function moveEnemy() {
     }
     for (let n = 0; n < enemies.length; n++) {
         let itemXChoord;
-        let itemYChoord = enemies[n].y;
+        itemYChoord = enemies[n].y;
         itemYChoord += player.speed - enemy.speed;
         enemies[n].style.top = itemYChoord + "px";
+
         if (itemYChoord >= document.documentElement.clientHeight) {
             let arrEnemiesChoords = {
                 x: [],
