@@ -16,8 +16,8 @@ function createRoadMarks() {
         const roadMark = document.createElement("div");
         roadMark.classList.add("road-mark");
         roadMark.style.height = windowHeight / 15 + "px";
-        roadMark.y = i * ((4 * windowHeight) / 20);
-        roadMark.style.top = roadMark.y + "px";
+        roadMark.yElem = i * ((4 * windowHeight) / 20);
+        roadMark.style.top = roadMark.yElem + "px";
         if (i === 0) {
         }
 
@@ -55,5 +55,6 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
-    player.x = player.x - player.car.offsetWidth / 2;
+    player.car.dataset.xElem =
+        player.car.dataset.xElem - player.car.offsetWidth / 2;
 }

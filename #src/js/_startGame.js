@@ -46,14 +46,13 @@ function startGame() {
         createEnemies();
         // }
         setInterval(() => {
-            let targets = document.querySelectorAll(".enemy");
-            let road = document.querySelector(".road-mark");
-            targets.forEach((target) => {
-                console.log(target.style.top);
-            });
-
-            console.log(itemYChoord);
-            // console.log(road.style.top);
+            // let targets = document.querySelectorAll(".enemy");
+            // let road = document.querySelector(".road-mark");
+            // targets.forEach((target) => {
+            //     console.log("style.top:  " + target.style.top);
+            // });
+            // console.log(enemy);
+            // console.log("itemYChoord: " + itemYChoord);
         }, 1000);
 
         requestAnimationFrame(playGame);
@@ -68,9 +67,17 @@ function createEnemies() {
         //     i * ((4 * windowHeight) / 20)
         // );
         enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
+            random(0, gameArea.offsetWidth - carWidth),
             3 * (i + 1) * -150
         );
-        console.log(enemy.y);
+        // console.log("enemy.yElem: " + enemy.yElem);
+        // console.log(
+        //     "🚀 ~ file: _startGame.js ~ line 78 ~ createEnemies ~ enemy",
+        //     enemy
+        // );
+        // document.querySelector(".enemy").dataset.yElem = enemy.yElem;
+        // console.log(document.querySelector(".enemy"));
+        // enemy.dataset.y = enemy.yElem;
+        // enemy.setAttribute("data-yElem", enemy.yElem);
     }
 }

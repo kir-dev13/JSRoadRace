@@ -31,34 +31,37 @@ class Car {
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = XChoord;
-        this.y = YChoord;
+        // this.xElem = XChoord;
+        // this.yElem = YChoord;
+        this.car.dataset.xElem = XChoord;
+        this.car.dataset.yElem = YChoord;
         this.render();
     }
     render() {
-        this.car.style.left = this.x + "px";
-        this.car.style.top = this.y + "px";
+        this.car.style.left = this.car.dataset.xElem + "px";
+        this.car.style.top = this.car.dataset.yElem + "px";
     }
 }
 
 let player = new Car("../img/player.png", 0, "car");
 
 player.move = function (event) {
-    if (keys.ArrowLeft && this.x > -3) {
-        this.x -= this.speed / 2;
+    if (keys.ArrowLeft && this.car.dataset.xElem > -3) {
+        this.car.dataset.xElem = +this.car.dataset.xElem - this.speed / 2;
         this.car.style.transform = "rotate(-10deg)";
     }
     if (
         keys.ArrowRight &&
-        this.x < gameArea.offsetWidth - this.car.offsetWidth + 1
+        this.car.dataset.xElem < gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
-        this.x += this.speed / 2;
+        this.car.dataset.xElem = +this.car.dataset.xElem + this.speed / 2;
         this.car.style.transform = "rotate(10deg)";
     }
     if (
         (!keys.ArrowRight && !keys.ArrowLeft) ||
-        this.x <= -1 ||
-        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 1
+        this.car.dataset.xElem <= -1 ||
+        this.car.dataset.xElem >=
+            gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
