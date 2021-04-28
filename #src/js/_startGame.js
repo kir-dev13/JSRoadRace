@@ -47,12 +47,10 @@ function startGame() {
         // }
         setInterval(() => {
             // let targets = document.querySelectorAll(".enemy");
-            // let road = document.querySelector(".road-mark");
             // targets.forEach((target) => {
             //     console.log("style.top:  " + target.style.top);
             // });
             // console.log(enemy);
-            // console.log("itemYChoord: " + itemYChoord);
         }, 1000);
 
         requestAnimationFrame(playGame);
