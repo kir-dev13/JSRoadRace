@@ -72,34 +72,37 @@ class Car {
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = XChoord;
-        this.y = YChoord;
+        // this.xElem = XChoord;
+        // this.yElem = YChoord;
+        this.car.dataset.xElem = XChoord;
+        this.car.dataset.yElem = YChoord;
         this.render();
     }
     render() {
-        this.car.style.left = this.x + "px";
-        this.car.style.top = this.y + "px";
+        this.car.style.left = this.car.dataset.xElem + "px";
+        this.car.style.top = this.car.dataset.yElem + "px";
     }
 }
 
 let player = new Car("../img/player.png", 0, "car");
 
 player.move = function (event) {
-    if (keys.ArrowLeft && this.x > -3) {
-        this.x -= this.speed / 2;
+    if (keys.ArrowLeft && this.car.dataset.xElem > -3) {
+        this.car.dataset.xElem = +this.car.dataset.xElem - this.speed / 2;
         this.car.style.transform = "rotate(-10deg)";
     }
     if (
         keys.ArrowRight &&
-        this.x < gameArea.offsetWidth - this.car.offsetWidth + 1
+        this.car.dataset.xElem < gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
-        this.x += this.speed / 2;
+        this.car.dataset.xElem = +this.car.dataset.xElem + this.speed / 2;
         this.car.style.transform = "rotate(10deg)";
     }
     if (
         (!keys.ArrowRight && !keys.ArrowLeft) ||
-        this.x <= -1 ||
-        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 1
+        this.car.dataset.xElem <= -1 ||
+        this.car.dataset.xElem >=
+            gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
@@ -122,7 +125,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 4,
+    traffic: 8,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -155,8 +158,8 @@ function createRoadMarks() {
         const roadMark = document.createElement("div");
         roadMark.classList.add("road-mark");
         roadMark.style.height = windowHeight / 15 + "px";
-        roadMark.y = i * ((4 * windowHeight) / 20);
-        roadMark.style.top = roadMark.y + "px";
+        roadMark.yElem = i * ((4 * windowHeight) / 20);
+        roadMark.style.top = roadMark.yElem + "px";
         if (i === 0) {
         }
 
@@ -194,84 +197,91 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
-    player.x = player.x - player.car.offsetWidth / 2;
+    player.car.dataset.xElem =
+        player.car.dataset.xElem - player.car.offsetWidth / 2;
 }
 ;
 function removeStartBtn() {
-    //задействована в startGame()
-    if (startBtn.y >= document.documentElement.clientHeight) {
-        startBtn.remove();
-        return;
-    }
-    startBtn.y += player.speed;
-    startBtn.style.top = startBtn.y + "px";
+  //задействована в startGame()
+  if (startBtn.y >= document.documentElement.clientHeight) {
+    startBtn.remove();
+    return;
+  }
+  startBtn.y += player.speed;
+  startBtn.style.top = startBtn.y + "px";
 
-    // console.log(startBtn.y);
+  // console.log(startBtn.y);
 
-    requestAnimationFrame(removeStartBtn);
+  requestAnimationFrame(removeStartBtn);
 }
 
 function stopGame() {
-    gameSetting.play = false;
-    player.speed = 0;
+  gameSetting.play = false;
+  player.speed = 0;
 }
 
 function initGame() {
-    //* нажатие кнопки StartBtn
-    prepareToStart();
-    startGame();
+  //* нажатие кнопки StartBtn
+  prepareToStart();
+  startGame();
 }
 
 function startGame() {
-    gameSetting.play = false;
-    //! удалить всех врагов!
+  gameSetting.play = false;
+  //! удалить всех врагов!
 
-    carWidth = document.querySelector(".car").offsetWidth;
-    carHeight = document.querySelector(".car").offsetHeight;
+  carWidth = document.querySelector(".car").offsetWidth;
+  carHeight = document.querySelector(".car").offsetHeight;
 
-    player.speed = 0;
-    player.traffic = gameSetting.traffic;
+  player.speed = 0;
+  player.traffic = gameSetting.traffic;
 
-    timeToStart(); // запуск обратный отсчёт
-    setTimeout(() => {
-        // запуск playGame после таймера
-        title.classList.add("hide"); // закрытие меню
-        gameSetting.play = true;
-        player.speed = gameSetting.speed;
-        //* Функция скрытия кнопки
-        requestAnimationFrame(removeStartBtn);
-        // enemy.create();
-        // if (gameSetting.enemies) {
-        createEnemies();
-        // }
-        setInterval(() => {
-            let targets = document.querySelectorAll(".enemy");
-            let road = document.querySelector(".road-mark");
-            targets.forEach((target) => {
-                console.log(target.style.top);
-            });
+  timeToStart(); // запуск обратный отсчёт
+  setTimeout(() => {
+    // запуск playGame после таймера
+    title.classList.add("hide"); // закрытие меню
+    gameSetting.play = true;
+    player.speed = gameSetting.speed;
+    //* Функция скрытия кнопки
+    requestAnimationFrame(removeStartBtn);
+    // enemy.create();
+    // if (gameSetting.enemies) {
+    createEnemies();
+    // }
+    setInterval(() => {
+      //   console.log(+player.car.dataset.yElem);
+      // let targets = document.querySelectorAll(".enemy");
+      // targets.forEach((target) => {
+      //     console.log("style.top:  " + target.style.top);
+      // });
+      // console.log(enemy);
+    }, 1000);
 
-            console.log(itemYChoord);
-            // console.log(road.style.top);
-        }, 1000);
-
-        requestAnimationFrame(playGame);
-    }, 0);
+    requestAnimationFrame(playGame);
+  }, 0);
 }
 
 function createEnemies() {
-    for (let i = 0; i < player.traffic; i++) {
-        // enemy.create(
-        //     random(carWidth, gameArea.offsetWidth - carWidth),
+  for (let i = 0; i < player.traffic; i++) {
+    // enemy.create(
+    //     random(carWidth, gameArea.offsetWidth - carWidth),
 
-        //     i * ((4 * windowHeight) / 20)
-        // );
-        enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
-            3 * (i + 1) * -150
-        );
-        console.log(enemy.y);
-    }
+    //     i * ((4 * windowHeight) / 20)
+    // );
+    enemy.create(
+      random(0, gameArea.offsetWidth - carWidth),
+      3 * (i + 1) * -150
+    );
+    // console.log("enemy.yElem: " + enemy.yElem);
+    // console.log(
+    //     "🚀 ~ file: _startGame.js ~ line 78 ~ createEnemies ~ enemy",
+    //     enemy
+    // );
+    // document.querySelector(".enemy").dataset.yElem = enemy.yElem;
+    // console.log(document.querySelector(".enemy"));
+    // enemy.dataset.y = enemy.yElem;
+    // enemy.setAttribute("data-yElem", enemy.yElem);
+  }
 }
 ;
 let boostDelta = 0,
@@ -384,93 +394,118 @@ function stopRun(event) {
 // }
 
 function moveRoad() {
-    // вызывается в playGame()
-    let lines = document.querySelectorAll(".road-mark");
-    lines.forEach(function (line) {
-        line.y += player.speed;
-        line.style.top = line.y + "px";
-        if (line.y >= document.documentElement.clientHeight) {
-            line.y = -((3 * windowHeight) / 20 + 35);
-        }
-    });
+  // вызывается в playGame()
+  let lines = document.querySelectorAll(".road-mark");
+  lines.forEach(function (line) {
+    line.yElem += player.speed;
+    line.style.top = line.yElem + "px";
+    if (line.yElem >= document.documentElement.clientHeight) {
+      line.yElem = -((3 * windowHeight) / 20 + 35);
+    }
+  });
 }
-let itemYChoord;
+// let itemYChoord;
 function moveEnemy() {
-    let enemies = document.querySelectorAll(".enemy");
-    // console.log(enemies);
-    if (enemies.length < player.traffic) {
-        enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
-            3 * (player.traffic + 1) * -150
-        );
+  // console.log("enemy: " + enemy);
+  let enemies = document.querySelectorAll(".enemy");
+
+  if (enemies.length < player.traffic) {
+    enemy.create(
+      random(carWidth, gameArea.offsetWidth - carWidth),
+      3 * (player.traffic + 1) * -150
+    );
+    // ! запушить ещё одного enemy
+    enemies = document.querySelectorAll(".enemy");
+  }
+
+  for (let n = 0; n < enemies.length; n++) {
+    enemies[n].dataset.yElem =
+      +enemies[n].dataset.yElem + player.speed - enemy.speed;
+
+    enemies[n].style.top = enemies[n].dataset.yElem + "px";
+
+    checkRoadAccident(createArrayEnemiesChoords(enemies));
+
+    if (+enemies[n].dataset.yElem >= document.documentElement.clientHeight) {
+      checkCarPossibility(enemies, n);
     }
-    for (let n = 0; n < enemies.length; n++) {
-        let itemXChoord;
-        itemYChoord = enemies[n].style.top;
-        itemYChoord = +itemYChoord.slice(0, itemYChoord.length - 2);
-        itemYChoord += player.speed - enemy.speed;
-        enemies[n].style.top = itemYChoord + "px";
-
-        if (itemYChoord >= document.documentElement.clientHeight) {
-            let arrEnemiesChoords = {
-                x: [],
-                y: [],
-            };
-
-            itemYChoord = random(-400, 0) - 350;
-            itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
-
-            enemies.forEach((enemy) => {
-                if (enemy.y < document.documentElement.clientHeight) {
-                    arrEnemiesChoords.x.push(
-                        enemy.getBoundingClientRect().x - leftSide.offsetWidth
-                    );
-                    arrEnemiesChoords.y.push(enemy.getBoundingClientRect().y);
-                }
-            });
-
-            checkCarPossibility();
-
-            function checkCarPossibility() {
-                itemYChoord = random(-400, 0) - 350;
-                itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
-
-                let checkX = arrEnemiesChoords.x.some((item) => {
-                    return (
-                        itemXChoord > item - carWidth - 10 &&
-                        itemXChoord < item + carWidth + 10
-                    );
-                });
-
-                let checkY = arrEnemiesChoords.y.some((item) => {
-                    return (
-                        itemYChoord > item - carHeight - 15 &&
-                        itemYChoord < item + carHeight + 15
-                    );
-                });
-
-                if (checkX && checkY) {
-                    console.log("поменяли");
-
-                    checkCarPossibility();
-                } else {
-                    enemies[n].style.top = itemYChoord + "px";
-                    enemies[n].style.left = itemXChoord + "px";
-                    return;
-                }
-            }
-        }
-    }
+  }
 }
 
 function playGame() {
-    if (gameSetting.play) {
-        document.addEventListener("keydown", startRun);
-        document.addEventListener("keyup", stopRun);
-        player.move();
-        moveRoad();
-        moveEnemy();
-        requestAnimationFrame(playGame);
+  if (gameSetting.play) {
+    document.addEventListener("keydown", startRun);
+    document.addEventListener("keyup", stopRun);
+    player.move();
+    moveRoad();
+    moveEnemy();
+
+    requestAnimationFrame(playGame);
+  }
+}
+
+function checkCarPossibility(enemies, n) {
+  // let checkX = false;
+  // let checkY = false;
+  // createArrayEnemiesChoords(enemies);
+  // console.log(carY);
+  enemies[n].dataset.yElem = random(-400, 0) - 350;
+  enemies[n].dataset.xElem = random(0, gameArea.offsetWidth - carWidth);
+
+  let checkX = createArrayEnemiesChoords(enemies).x.some((item) => {
+    return (
+      enemies[n].dataset.xElem > item - carWidth - 10 &&
+      enemies[n].dataset.xElem < item + carWidth + 10
+    );
+  });
+
+  let checkY = createArrayEnemiesChoords(enemies).y.some((item) => {
+    return (
+      enemies[n].dataset.yElem > item - carHeight - 15 &&
+      enemies[n].dataset.yElem < item + carHeight + 15
+    );
+  });
+
+  if (checkX && checkY) {
+    console.log("поменяли");
+    checkCarPossibility(enemies, n);
+  } else {
+    console.log("не поменяли");
+
+    enemies[n].style.top = enemies[n].dataset.yElem + "px";
+    enemies[n].style.left = enemies[n].dataset.xElem + "px";
+    return;
+  }
+}
+
+function createArrayEnemiesChoords(array) {
+  let arrEnemiesChoords = {
+    x: [],
+    y: [],
+  };
+
+  array.forEach((item) => {
+    if (+item.dataset.yElem < document.documentElement.clientHeight) {
+      arrEnemiesChoords.x.push(
+        item.getBoundingClientRect().x - leftSide.offsetWidth
+      );
+      arrEnemiesChoords.y.push(item.getBoundingClientRect().y);
     }
+  });
+  // console.log(arrEnemiesChoords);
+  return arrEnemiesChoords;
+}
+
+function checkRoadAccident(object) {
+  object.y.some((item) => {
+    if (
+      +player.car.dataset.yElem <= item + carHeight &&
+      +player.car.dataset.yElem + carHeight >= item &&
+
+      
+    ) {
+      console.log("абырвалг");
+    }
+  });
 }
 ;
