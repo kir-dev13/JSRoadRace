@@ -7,7 +7,7 @@
 //         }
 //         elem.y += player.speed;
 //         elem.style.top = elem.y + "px";
-//         // console.log(startBtn.y);
+//         console.log(startBtn.y);
 //         if (elem.y >= document.documentElement.clientHeight) {
 //             elem.remove();
 //             canceled = true;
@@ -28,20 +28,8 @@ function moveRoad() {
         }
     });
 }
-// let itemYChoord;
-function moveEnemy() {
-    // console.log("enemy: " + enemy);
-    let enemies = document.querySelectorAll(".enemy");
 
-    if (enemies.length < player.traffic) {
-        enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
-            3 * (player.traffic + 1) * -150
-        );
-        // ! запушить ещё одного enemy
-        enemies = document.querySelectorAll(".enemy");
-    }
-
+function moveEnemy(attemptCarAppend) {
     for (let n = 0; n < enemies.length; n++) {
         enemies[n].dataset.yElem =
             +enemies[n].dataset.yElem + player.speed - enemy.speed;
@@ -51,38 +39,44 @@ function moveEnemy() {
         if (
             +enemies[n].dataset.yElem >= document.documentElement.clientHeight
         ) {
-            checkCarPossibility(enemies, n);
+            //*удаляем машину если трафик стал меньше, проверяем и меняем координаты, чтобы машины не накладывались
+            enemyRepeat(enemies, n, attemptCarAppend);
         }
     }
 }
 
 function playGame() {
     if (gameSetting.play) {
-        document.addEventListener("keydown", startRun);
-        document.addEventListener("keyup", stopRun);
+        document.addEventListener("keydown", startBoost);
+        document.addEventListener("keyup", stopBoost);
         player.move();
         moveRoad();
-        moveEnemy();
+
+        let attemptCarAppend = 0;
+        //*увеличиваем машины, если их меньше траффика
+        if (enemies.length < player.traffic) {
+            createEnemies(enemies.length);
+            console.log("добавили");
+            checkCarPossibility(enemies, enemies.length - 1, attemptCarAppend);
+        }
+
+        moveEnemy(attemptCarAppend);
         requestAnimationFrame(playGame);
     }
 }
 
-function checkCarPossibility(enemies, n) {
-    // let checkX = false;
-    // let checkY = false;
-    // createArrayEnemiesChoords(enemies);
-    // console.log(carY);
+function checkCarPossibility(enemies, n, attemptCarAppend) {
     enemies[n].dataset.yElem = random(-400, 0) - 350;
     enemies[n].dataset.xElem = random(0, gameArea.offsetWidth - carWidth);
 
-    let checkX = createArrayEnemiesChoords(enemies).x.some((item) => {
+    let checkX = getArrayEnemiesChoords(enemies).x.some((item) => {
         return (
             enemies[n].dataset.xElem > item - carWidth - 10 &&
             enemies[n].dataset.xElem < item + carWidth + 10
         );
     });
 
-    let checkY = createArrayEnemiesChoords(enemies).y.some((item) => {
+    let checkY = getArrayEnemiesChoords(enemies).y.some((item) => {
         return (
             enemies[n].dataset.yElem > item - carHeight - 15 &&
             enemies[n].dataset.yElem < item + carHeight + 15
@@ -91,17 +85,26 @@ function checkCarPossibility(enemies, n) {
 
     if (checkX && checkY) {
         console.log("поменяли");
-        checkCarPossibility(enemies, n);
+        attemptCarAppend = attemptCarAppend + 1;
+
+        if (attemptCarAppend === 5) {
+            console.log("УДАЛИЛИ");
+            enemies[n].remove();
+            enemies.splice(n, 1);
+            return;
+        }
+        checkCarPossibility(enemies, n, attemptCarAppend);
     } else {
         console.log("не поменяли");
 
         enemies[n].style.top = enemies[n].dataset.yElem + "px";
         enemies[n].style.left = enemies[n].dataset.xElem + "px";
+        // enemy.enemies[n].render();
         return;
     }
 }
 
-function createArrayEnemiesChoords(array) {
+function getArrayEnemiesChoords(array) {
     let arrEnemiesChoords = {
         x: [],
         y: [],
@@ -117,4 +120,14 @@ function createArrayEnemiesChoords(array) {
     });
     // console.log(arrEnemiesChoords);
     return arrEnemiesChoords;
+}
+
+function enemyRepeat(enemies, n, attemptCarAppend) {
+    if (enemies.length > player.traffic) {
+        console.log("УДАЛИЛИ");
+        enemies[n].remove();
+        enemies.splice(n, 1);
+        return;
+    }
+    checkCarPossibility(enemies, n, attemptCarAppend);
 }

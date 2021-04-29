@@ -58,7 +58,7 @@ let carHeight;
 const playerYStart = (document.documentElement.clientHeight * 80) / 100,
     playerXStart = gameArea.offsetWidth * 0.5;
 
-// const car = document.createElement("div");
+let enemies = [];
 
 class Car {
     constructor(imgSrc, speed, ...classes) {
@@ -72,34 +72,40 @@ class Car {
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        this.x = XChoord;
-        this.y = YChoord;
+        // this.xElem = XChoord;
+        // this.yElem = YChoord;
+        this.car.dataset.xElem = XChoord;
+        this.car.dataset.yElem = YChoord;
         this.render();
+        if (this.car.classList.contains("enemy")) {
+            enemies.push(this.car);
+        }
     }
     render() {
-        this.car.style.left = this.x + "px";
-        this.car.style.top = this.y + "px";
+        this.car.style.left = this.car.dataset.xElem + "px";
+        this.car.style.top = this.car.dataset.yElem + "px";
     }
 }
 
 let player = new Car("../img/player.png", 0, "car");
 
 player.move = function (event) {
-    if (keys.ArrowLeft && this.x > -3) {
-        this.x -= this.speed / 2;
+    if (keys.ArrowLeft && this.car.dataset.xElem > -3) {
+        this.car.dataset.xElem = +this.car.dataset.xElem - this.speed / 2;
         this.car.style.transform = "rotate(-10deg)";
     }
     if (
         keys.ArrowRight &&
-        this.x < gameArea.offsetWidth - this.car.offsetWidth + 1
+        this.car.dataset.xElem < gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
-        this.x += this.speed / 2;
+        this.car.dataset.xElem = +this.car.dataset.xElem + this.speed / 2;
         this.car.style.transform = "rotate(10deg)";
     }
     if (
         (!keys.ArrowRight && !keys.ArrowLeft) ||
-        this.x <= -1 ||
-        this.x >= gameArea.offsetWidth - this.car.offsetWidth + 1
+        this.car.dataset.xElem <= -1 ||
+        this.car.dataset.xElem >=
+            gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
@@ -122,7 +128,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 4,
+    traffic: 3,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -155,8 +161,8 @@ function createRoadMarks() {
         const roadMark = document.createElement("div");
         roadMark.classList.add("road-mark");
         roadMark.style.height = windowHeight / 15 + "px";
-        roadMark.y = i * ((4 * windowHeight) / 20);
-        roadMark.style.top = roadMark.y + "px";
+        roadMark.yElem = i * ((4 * windowHeight) / 20);
+        roadMark.style.top = roadMark.yElem + "px";
         if (i === 0) {
         }
 
@@ -194,7 +200,8 @@ function prepareToStart() {
     //* создание машины и вставка машины
 
     player.create(playerXStart, playerYStart);
-    player.x = player.x - player.car.offsetWidth / 2;
+    player.car.dataset.xElem =
+        player.car.dataset.xElem - player.car.offsetWidth / 2;
 }
 ;
 function removeStartBtn() {
@@ -242,42 +249,34 @@ function startGame() {
         requestAnimationFrame(removeStartBtn);
         // enemy.create();
         // if (gameSetting.enemies) {
-        createEnemies();
+        createEnemies(0);
         // }
         setInterval(() => {
-            let targets = document.querySelectorAll(".enemy");
-            let road = document.querySelector(".road-mark");
-            targets.forEach((target) => {
-                console.log(target.style.top);
-            });
-
-            console.log(itemYChoord);
-            // console.log(road.style.top);
-        }, 1000);
+            // let targets = document.querySelectorAll(".enemy");
+            // targets.forEach((target) => {
+            //     console.log("style.top:  " + target.style.top);
+            // });
+            // console.log(enemies);
+            // console.log(document.querySelectorAll(".enemy"));
+        }, 3000);
 
         requestAnimationFrame(playGame);
     }, 0);
 }
 
-function createEnemies() {
-    for (let i = 0; i < player.traffic; i++) {
-        // enemy.create(
-        //     random(carWidth, gameArea.offsetWidth - carWidth),
-
-        //     i * ((4 * windowHeight) / 20)
-        // );
+function createEnemies(count) {
+    for (let i = count; i < player.traffic; i++) {
         enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
+            random(0, gameArea.offsetWidth - carWidth),
             3 * (i + 1) * -150
         );
-        console.log(enemy.y);
     }
 }
 ;
 let boostDelta = 0,
     boostStop = false;
 
-function startRun(event) {
+function startBoost(event) {
     event.preventDefault();
 
     keys[event.key] = true;
@@ -319,7 +318,7 @@ function startRun(event) {
             break;
     }
 }
-function stopRun(event) {
+function stopBoost(event) {
     event.preventDefault();
     keys[event.key] = false;
     switch (event.keyCode) {
@@ -373,7 +372,7 @@ function stopRun(event) {
 //         }
 //         elem.y += player.speed;
 //         elem.style.top = elem.y + "px";
-//         // console.log(startBtn.y);
+//         console.log(startBtn.y);
 //         if (elem.y >= document.documentElement.clientHeight) {
 //             elem.remove();
 //             canceled = true;
@@ -387,90 +386,114 @@ function moveRoad() {
     // вызывается в playGame()
     let lines = document.querySelectorAll(".road-mark");
     lines.forEach(function (line) {
-        line.y += player.speed;
-        line.style.top = line.y + "px";
-        if (line.y >= document.documentElement.clientHeight) {
-            line.y = -((3 * windowHeight) / 20 + 35);
+        line.yElem += player.speed;
+        line.style.top = line.yElem + "px";
+        if (line.yElem >= document.documentElement.clientHeight) {
+            line.yElem = -((3 * windowHeight) / 20 + 35);
         }
     });
 }
-let itemYChoord;
-function moveEnemy() {
-    let enemies = document.querySelectorAll(".enemy");
-    // console.log(enemies);
-    if (enemies.length < player.traffic) {
-        enemy.create(
-            random(carWidth, gameArea.offsetWidth - carWidth),
-            3 * (player.traffic + 1) * -150
-        );
-    }
+
+function moveEnemy(attemptCarAppend) {
     for (let n = 0; n < enemies.length; n++) {
-        let itemXChoord;
-        itemYChoord = enemies[n].style.top;
-        itemYChoord = +itemYChoord.slice(0, itemYChoord.length - 2);
-        itemYChoord += player.speed - enemy.speed;
-        enemies[n].style.top = itemYChoord + "px";
+        enemies[n].dataset.yElem =
+            +enemies[n].dataset.yElem + player.speed - enemy.speed;
 
-        if (itemYChoord >= document.documentElement.clientHeight) {
-            let arrEnemiesChoords = {
-                x: [],
-                y: [],
-            };
+        enemies[n].style.top = enemies[n].dataset.yElem + "px";
 
-            itemYChoord = random(-400, 0) - 350;
-            itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
-
-            enemies.forEach((enemy) => {
-                if (enemy.y < document.documentElement.clientHeight) {
-                    arrEnemiesChoords.x.push(
-                        enemy.getBoundingClientRect().x - leftSide.offsetWidth
-                    );
-                    arrEnemiesChoords.y.push(enemy.getBoundingClientRect().y);
-                }
-            });
-
-            checkCarPossibility();
-
-            function checkCarPossibility() {
-                itemYChoord = random(-400, 0) - 350;
-                itemXChoord = random(carWidth, gameArea.offsetWidth - carWidth);
-
-                let checkX = arrEnemiesChoords.x.some((item) => {
-                    return (
-                        itemXChoord > item - carWidth - 10 &&
-                        itemXChoord < item + carWidth + 10
-                    );
-                });
-
-                let checkY = arrEnemiesChoords.y.some((item) => {
-                    return (
-                        itemYChoord > item - carHeight - 15 &&
-                        itemYChoord < item + carHeight + 15
-                    );
-                });
-
-                if (checkX && checkY) {
-                    console.log("поменяли");
-
-                    checkCarPossibility();
-                } else {
-                    enemies[n].style.top = itemYChoord + "px";
-                    enemies[n].style.left = itemXChoord + "px";
-                    return;
-                }
-            }
+        if (
+            +enemies[n].dataset.yElem >= document.documentElement.clientHeight
+        ) {
+            //*удаляем машину если трафик стал меньше, проверяем и меняем координаты, чтобы машины не накладывались
+            enemyRepeat(enemies, n, attemptCarAppend);
         }
     }
 }
 
 function playGame() {
     if (gameSetting.play) {
-        document.addEventListener("keydown", startRun);
-        document.addEventListener("keyup", stopRun);
+        document.addEventListener("keydown", startBoost);
+        document.addEventListener("keyup", stopBoost);
         player.move();
         moveRoad();
-        moveEnemy();
+
+        let attemptCarAppend = 0;
+        //*увеличиваем машины, если их меньше траффика
+        if (enemies.length < player.traffic) {
+            createEnemies(enemies.length);
+            console.log("добавили");
+            checkCarPossibility(enemies, enemies.length - 1, attemptCarAppend);
+        }
+
+        moveEnemy(attemptCarAppend);
         requestAnimationFrame(playGame);
     }
+}
+
+function checkCarPossibility(enemies, n, attemptCarAppend) {
+    enemies[n].dataset.yElem = random(-400, 0) - 350;
+    enemies[n].dataset.xElem = random(0, gameArea.offsetWidth - carWidth);
+
+    let checkX = getArrayEnemiesChoords(enemies).x.some((item) => {
+        return (
+            enemies[n].dataset.xElem > item - carWidth - 10 &&
+            enemies[n].dataset.xElem < item + carWidth + 10
+        );
+    });
+
+    let checkY = getArrayEnemiesChoords(enemies).y.some((item) => {
+        return (
+            enemies[n].dataset.yElem > item - carHeight - 15 &&
+            enemies[n].dataset.yElem < item + carHeight + 15
+        );
+    });
+
+    if (checkX && checkY) {
+        console.log("поменяли");
+        attemptCarAppend = attemptCarAppend + 1;
+
+        if (attemptCarAppend === 5) {
+            console.log("УДАЛИЛИ");
+            enemies[n].remove();
+            enemies.splice(n, 1);
+            return;
+        }
+        checkCarPossibility(enemies, n, attemptCarAppend);
+    } else {
+        console.log("не поменяли");
+
+        enemies[n].style.top = enemies[n].dataset.yElem + "px";
+        enemies[n].style.left = enemies[n].dataset.xElem + "px";
+        // enemy.enemies[n].render();
+        return;
+    }
+}
+
+function getArrayEnemiesChoords(array) {
+    let arrEnemiesChoords = {
+        x: [],
+        y: [],
+    };
+
+    array.forEach((item) => {
+        if (+item.dataset.yElem < document.documentElement.clientHeight) {
+            arrEnemiesChoords.x.push(
+                item.getBoundingClientRect().x - leftSide.offsetWidth
+            );
+            arrEnemiesChoords.y.push(item.getBoundingClientRect().y);
+        }
+    });
+    // console.log(arrEnemiesChoords);
+    return arrEnemiesChoords;
+}
+
+function enemyRepeat(enemies, n, attemptCarAppend) {
+    if (enemies.length > player.traffic) {
+        console.log("УДАЛИЛИ");
+        enemies[n].remove();
+        enemies.splice(n, 1);
+        return;
+    }
+    checkCarPossibility(enemies, n, attemptCarAppend);
 }
 ;

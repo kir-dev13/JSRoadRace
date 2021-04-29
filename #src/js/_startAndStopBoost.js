@@ -1,7 +1,7 @@
 let boostDelta = 0,
     boostStop = false;
 
-function startRun(event) {
+function startBoost(event) {
     event.preventDefault();
 
     keys[event.key] = true;
@@ -43,7 +43,7 @@ function startRun(event) {
             break;
     }
 }
-function stopRun(event) {
+function stopBoost(event) {
     event.preventDefault();
     keys[event.key] = false;
     switch (event.keyCode) {

@@ -17,7 +17,7 @@ let carHeight;
 const playerYStart = (document.documentElement.clientHeight * 80) / 100,
     playerXStart = gameArea.offsetWidth * 0.5;
 
-// const car = document.createElement("div");
+let enemies = [];
 
 class Car {
     constructor(imgSrc, speed, ...classes) {
@@ -36,6 +36,9 @@ class Car {
         this.car.dataset.xElem = XChoord;
         this.car.dataset.yElem = YChoord;
         this.render();
+        if (this.car.classList.contains("enemy")) {
+            enemies.push(this.car);
+        }
     }
     render() {
         this.car.style.left = this.car.dataset.xElem + "px";
@@ -84,7 +87,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 8,
+    traffic: 3,
 };
 
 startBtn.addEventListener("click", initGame);

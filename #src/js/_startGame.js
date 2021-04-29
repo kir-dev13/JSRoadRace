@@ -43,39 +43,26 @@ function startGame() {
         requestAnimationFrame(removeStartBtn);
         // enemy.create();
         // if (gameSetting.enemies) {
-        createEnemies();
+        createEnemies(0);
         // }
         setInterval(() => {
             // let targets = document.querySelectorAll(".enemy");
             // targets.forEach((target) => {
             //     console.log("style.top:  " + target.style.top);
             // });
-            // console.log(enemy);
-        }, 1000);
+            // console.log(enemies);
+            // console.log(document.querySelectorAll(".enemy"));
+        }, 3000);
 
         requestAnimationFrame(playGame);
     }, 0);
 }
 
-function createEnemies() {
-    for (let i = 0; i < player.traffic; i++) {
-        // enemy.create(
-        //     random(carWidth, gameArea.offsetWidth - carWidth),
-
-        //     i * ((4 * windowHeight) / 20)
-        // );
+function createEnemies(count) {
+    for (let i = count; i < player.traffic; i++) {
         enemy.create(
             random(0, gameArea.offsetWidth - carWidth),
             3 * (i + 1) * -150
         );
-        // console.log("enemy.yElem: " + enemy.yElem);
-        // console.log(
-        //     "🚀 ~ file: _startGame.js ~ line 78 ~ createEnemies ~ enemy",
-        //     enemy
-        // );
-        // document.querySelector(".enemy").dataset.yElem = enemy.yElem;
-        // console.log(document.querySelector(".enemy"));
-        // enemy.dataset.y = enemy.yElem;
-        // enemy.setAttribute("data-yElem", enemy.yElem);
     }
 }
