@@ -131,3 +131,13 @@ function enemyRepeat(enemies, n, attemptCarAppend) {
     }
     checkCarPossibility(enemies, n, attemptCarAppend);
 }
+function checkRoadAccident(object) {
+    object.y.some((item) => {
+        if (
+            +player.car.dataset.yElem <= item + carHeight &&
+            +player.car.dataset.yElem + carHeight >= item
+        ) {
+            console.log("абырвалг");
+        }
+    });
+}
