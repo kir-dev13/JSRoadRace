@@ -53,7 +53,7 @@ function playGame() {
         moveRoad();
 
         let attemptCarAppend = 0;
-        //*увеличиваем машины, если их меньше траффика
+
         if (enemies.length < player.traffic) {
             createEnemies(enemies.length);
             console.log("добавили");
