@@ -45,16 +45,17 @@ function timeToStart() {
 
 function prepareToStart() {
     getMenuValues();
+    createRoadMarks();
+    createPlayer();
+    player.speed = gameSetting.speed;
+    player.traffic = gameSetting.traffic;
+}
 
-    //* трансформация кнопки старт
-    startBtn.style.height = startBtn.offsetHeight + "px";
-    startBtn.innerHTML = "";
-
-    createRoadMarks(); //* создание и вставка полосок
-
-    //* создание машины и вставка машины
-
+function createPlayer() {
     player.create(playerXStart, playerYStart);
     player.car.dataset.xElem =
         player.car.dataset.xElem - player.car.offsetWidth / 2;
+    player.render();
+    carWidth = document.querySelector(".car").offsetWidth;
+    carHeight = document.querySelector(".car").offsetHeight;
 }

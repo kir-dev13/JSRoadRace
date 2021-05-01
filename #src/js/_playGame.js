@@ -61,6 +61,7 @@ function playGame() {
         }
 
         moveEnemy(attemptCarAppend);
+        checkRoadAccident(enemies);
         requestAnimationFrame(playGame);
     }
 }
@@ -84,22 +85,17 @@ function checkCarPossibility(enemies, n, attemptCarAppend) {
     });
 
     if (checkX && checkY) {
-        console.log("поменяли");
         attemptCarAppend = attemptCarAppend + 1;
 
         if (attemptCarAppend === 5) {
-            console.log("УДАЛИЛИ");
             enemies[n].remove();
             enemies.splice(n, 1);
             return;
         }
         checkCarPossibility(enemies, n, attemptCarAppend);
     } else {
-        console.log("не поменяли");
-
         enemies[n].style.top = enemies[n].dataset.yElem + "px";
         enemies[n].style.left = enemies[n].dataset.xElem + "px";
-        // enemy.enemies[n].render();
         return;
     }
 }
@@ -118,26 +114,40 @@ function getArrayEnemiesChoords(array) {
             arrEnemiesChoords.y.push(item.getBoundingClientRect().y);
         }
     });
-    // console.log(arrEnemiesChoords);
     return arrEnemiesChoords;
 }
 
 function enemyRepeat(enemies, n, attemptCarAppend) {
     if (enemies.length > player.traffic) {
-        console.log("УДАЛИЛИ");
         enemies[n].remove();
         enemies.splice(n, 1);
         return;
     }
     checkCarPossibility(enemies, n, attemptCarAppend);
 }
-function checkRoadAccident(object) {
-    object.y.some((item) => {
+
+function checkRoadAccident(array) {
+    for (let i = 0; i < array.length; i++) {
         if (
-            +player.car.dataset.yElem <= item + carHeight &&
-            +player.car.dataset.yElem + carHeight >= item
+            +player.car.dataset.yElem <=
+                array[i].getBoundingClientRect().y + carHeight &&
+            +player.car.dataset.yElem + carHeight >=
+                array[i].getBoundingClientRect().y &&
+            player.car.dataset.xElem <=
+                array[i].getBoundingClientRect().x -
+                    leftSide.offsetWidth +
+                    carWidth &&
+            +player.car.dataset.xElem >=
+                array[i].getBoundingClientRect().x -
+                    leftSide.offsetWidth -
+                    carWidth
         ) {
-            console.log("абырвалг");
+            title.classList.remove("hide");
+            titleWord.innerHTML = "Авария!";
+            // console.error("ДТП!");
+            stopGame();
+            setTimeout(restartGame, 2000);
+            // gameSetting.play = false;
         }
-    });
+    }
 }
