@@ -546,7 +546,7 @@ input[type=range]:focus::-ms-fill-upper {
   font-family: 'Lora', serif;
   font-size: 4rem;
   font-weight: bold;
-  z-index: 3;
+  z-index: 10;
 }
 
 .game__title .title__word {
@@ -556,7 +556,7 @@ input[type=range]:focus::-ms-fill-upper {
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(0, 0, 0, 0);
   color: #0B2349;
-  z-index: 3;
+  z-index: 10;
 }
 
 .car {
@@ -579,11 +579,11 @@ input[type=range]:focus::-ms-fill-upper {
   z-index: 1;
 }
 
-.rigth-side {
+.right-side {
   position: relative;
 }
 
-.rigth-side .hint {
+.right-side .hint {
   position: absolute;
   display: none;
   left: 50%;
@@ -591,6 +591,14 @@ input[type=range]:focus::-ms-fill-upper {
   -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.right-side .score {
+  position: absolute;
+  left: 10%;
+  top: 40%;
   font-size: 2rem;
   font-weight: 400;
 }

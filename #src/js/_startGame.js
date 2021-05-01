@@ -17,6 +17,7 @@ function initGame() {
     //* нажатие кнопки StartBtn
     startBtn.style.height = startBtn.offsetHeight + "px";
     startBtn.innerHTML = "";
+    rightSide.appendChild(scoreDiv);
     prepareToStart();
     startGame();
 }
@@ -28,12 +29,11 @@ function restartGame() {
     enemies = [];
     player.car.remove();
     createPlayer();
-    console.log(player.car);
-    console.log(player);
     startGame();
 }
 
 function startGame() {
+    player.score = 0;
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера

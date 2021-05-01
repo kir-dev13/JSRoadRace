@@ -43,10 +43,14 @@ const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
 const gameArea = document.querySelector(".game-area");
 const leftSide = document.querySelector(".left-side");
+const rightSide = document.querySelector(".right-side");
 let title = document.querySelector(".game__title");
 let titleWord = title.querySelector(".title__word");
 let titleWords = title.querySelectorAll(".title__word");
 const userName = document.querySelector(".input__user-name");
+let scoreDiv = document.createElement("div");
+scoreDiv.classList.add("score");
+
 // Элементы страницы
 
 let windowHeight = document.documentElement.clientHeight;
@@ -88,6 +92,8 @@ class Car {
 }
 
 let player = new Car("../img/player.png", 0, "car");
+
+player.score = 0;
 
 player.move = function (event) {
     if (keys.ArrowLeft && this.car.dataset.xElem > -3) {
@@ -148,7 +154,7 @@ function getMenuValues() {
 
     //*имя игрока
     if (!userName.value) {
-        userName.value = "player";
+        userName.value = "Игрок";
     }
     player.name = userName.value.capitalize();
     userName.disabled = "true";
@@ -224,6 +230,7 @@ function initGame() {
     //* нажатие кнопки StartBtn
     startBtn.style.height = startBtn.offsetHeight + "px";
     startBtn.innerHTML = "";
+    rightSide.appendChild(scoreDiv);
     prepareToStart();
     startGame();
 }
@@ -235,12 +242,11 @@ function restartGame() {
     enemies = [];
     player.car.remove();
     createPlayer();
-    console.log(player.car);
-    console.log(player);
     startGame();
 }
 
 function startGame() {
+    player.score = 0;
     timeToStart(); // запуск обратный отсчёт
     setTimeout(() => {
         // запуск playGame после таймера
@@ -412,7 +418,7 @@ function playGame() {
             console.log("добавили");
             checkCarPossibility(enemies, enemies.length - 1, attemptCarAppend);
         }
-
+        scoreCalc();
         moveEnemy(attemptCarAppend);
         checkRoadAccident(enemies);
         requestAnimationFrame(playGame);
@@ -503,5 +509,18 @@ function checkRoadAccident(array) {
             // gameSetting.play = false;
         }
     }
+}
+
+function scoreCalc() {
+    player.score += Math.round(player.speed);
+    // player.score = (player.score / 100).toFixed(0);
+    // player.score += Math.round(player.speed);
+    // player.score = player.score.toString();
+    // player.score = player.score.slice(0, -2);
+    scoreDiv.innerText = `Набрано очков: ${player.score}`;
+    // if ((player.score / 100).toFixed(0) % 200 == 0 && player.score > 1000) {
+    //     console.log("добавим машинку");
+    //     player.traffic++;
+    // }
 }
 ;

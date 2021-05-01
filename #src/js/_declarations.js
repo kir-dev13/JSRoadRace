@@ -2,10 +2,14 @@ const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
 const gameArea = document.querySelector(".game-area");
 const leftSide = document.querySelector(".left-side");
+const rightSide = document.querySelector(".right-side");
 let title = document.querySelector(".game__title");
 let titleWord = title.querySelector(".title__word");
 let titleWords = title.querySelectorAll(".title__word");
 const userName = document.querySelector(".input__user-name");
+let scoreDiv = document.createElement("div");
+scoreDiv.classList.add("score");
+
 // Элементы страницы
 
 let windowHeight = document.documentElement.clientHeight;
@@ -47,6 +51,8 @@ class Car {
 }
 
 let player = new Car("../img/player.png", 0, "car");
+
+player.score = 0;
 
 player.move = function (event) {
     if (keys.ArrowLeft && this.car.dataset.xElem > -3) {

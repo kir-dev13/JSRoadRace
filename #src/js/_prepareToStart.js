@@ -3,7 +3,7 @@ function getMenuValues() {
 
     //*имя игрока
     if (!userName.value) {
-        userName.value = "player";
+        userName.value = "Игрок";
     }
     player.name = userName.value.capitalize();
     userName.disabled = "true";
