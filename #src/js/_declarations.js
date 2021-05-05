@@ -1,3 +1,50 @@
+let soundExample = new Howl({
+    src: ["audio/exampleSound2.mp3"],
+    // loop: true,
+    // autoplay: true,
+    volume: 0.5,
+    onend: function () {
+        console.log("finished");
+    },
+});
+// let soundStart = new Howl({
+//     src: ["audio/engineStart.mp3"],
+//     // loop: true,
+
+//     // volume: 0.5,
+// });
+// let soundMove = new Howl({
+//     src: ["audio/engineMove.mp3"],
+//     // loop: true,
+//     onend: function () {
+//         console.log("finish");
+//     },
+//     sprite: {
+//         main: [9, 3999, true],
+//     },
+//     // fade: [0, 1, 1000],
+
+//     volume: 0.5,
+// });
+
+let engine = new Howl({
+    src: ["audio/engine.mp3"],
+    onend: function () {
+        console.log("finish");
+    },
+    sprite: {
+        start: [0, 2000],
+        slow: [],
+        move: [40700, 3500, true],
+        boost: [48000, 4000, true],
+        fast: [51000, 3000, true],
+    },
+    volume: 0.5,
+});
+
+// let sound1 = soundEngine.play();
+// soundExample.fade(1, 0.2, 1000, sound1);
+
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
 const gameArea = document.querySelector(".game-area");
@@ -50,21 +97,21 @@ class Car {
     }
 }
 
-let player = new Car("../img/player.png", 0, "car");
+let player = new Car("img/player.png", 0, "car");
 
 player.score = 0;
 
 player.move = function (event) {
     if (keys.ArrowLeft && this.car.dataset.xElem > -3) {
         this.car.dataset.xElem = +this.car.dataset.xElem - this.speed / 2;
-        this.car.style.transform = "rotate(-10deg)";
+        this.car.style.transform = "rotate(-2deg)";
     }
     if (
         keys.ArrowRight &&
         this.car.dataset.xElem < gameArea.offsetWidth - this.car.offsetWidth + 1
     ) {
         this.car.dataset.xElem = +this.car.dataset.xElem + this.speed / 2;
-        this.car.style.transform = "rotate(10deg)";
+        this.car.style.transform = "rotate(2deg)";
     }
     if (
         (!keys.ArrowRight && !keys.ArrowLeft) ||
@@ -78,7 +125,7 @@ player.move = function (event) {
     this.render();
 };
 
-let enemy = new Car("../img/enemy1.png", 2, "enemy", "car");
+let enemy = new Car("img/enemy1.png", 2, "enemy", "car");
 
 const keys = {
     ArrowUp: false,

@@ -10,6 +10,8 @@ function removeStartBtn() {
 
 function stopGame() {
     gameSetting.play = false;
+    // soundMove.stop();
+    engine.stop();
     // player.speed = 0;
 }
 
@@ -34,15 +36,20 @@ function restartGame() {
 
 function startGame() {
     player.score = 0;
+    // soundStart.fade(0, 1, 1000);
+    // soundStart.play();
     timeToStart(); // запуск обратный отсчёт
+
     setTimeout(() => {
         // запуск playGame после таймера
         title.classList.add("hide"); // закрытие меню
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
+        // soundMove.play("main");
+        engine.play("move");
         requestAnimationFrame(playGame);
-    }, 3000);
+    }, 0);
 }
 
 function createEnemies(countEnemy) {

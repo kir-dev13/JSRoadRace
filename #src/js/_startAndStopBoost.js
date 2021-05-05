@@ -10,12 +10,15 @@ function startBoost(event) {
             if (event.repeat) {
                 break;
             }
+            engine.stop();
+            engine.fade(0.32, 0.5, 1000, engine.play("boost"));
             boostStop = false;
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
+                    engine.stop();
+                    engine.play("fast");
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -51,13 +54,17 @@ function stopBoost(event) {
             if (event.repeat) {
                 break;
             }
+            engine.fade(0.5, 0, 900, engine.stop());
+            engine.fade(0.32, 0.5, 1000, engine.play("move"));
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
-
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
+                    // engine.stop();
+                    engine.fade(0.5, 0, 900, engine.stop());
+                    engine.fade(0.32, 0.5, 1000, engine.play("move"));
 
                     return;
                 }

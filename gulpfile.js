@@ -122,6 +122,7 @@ function css() {
 }
 
 function clean(params) {
+    // del(path.clean);
     return del(path.clean);
 }
 

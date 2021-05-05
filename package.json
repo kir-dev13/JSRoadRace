@@ -1,5 +1,5 @@
 {
-  "name": "fls-gulp",
+  "name": "jsroadracer",
   "version": "1.0.0",
   "description": "Сборка Gulp",
   "main": "index.html",
@@ -34,5 +34,17 @@
   "dependencies": {
     "gulp-fonter": "^0.3.0",
     "jshint": "^2.12.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kir-dev13/JSRoadRace.git"
+  },
+  "keywords": [
+    "race",
+    "js"
+  ],
+  "bugs": {
+    "url": "https://github.com/kir-dev13/JSRoadRace/issues"
+  },
+  "homepage": "https://github.com/kir-dev13/JSRoadRace#readme"
 }
