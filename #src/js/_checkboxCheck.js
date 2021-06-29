@@ -1,17 +1,28 @@
-function checkboxSoundCheck(e) {
-    // if (e.target.checked) {
-    //     console.log("Выбран");
-    //     obj[param] = e.target.checked;
-    // } else {
-    //     console.log("Не Выбран");
-    //     param = false;
-    // }
-    // obj[param] = e.target.checked;
-    // console.log(e.target.checked);
-    gameSetting.sound = e.target.checked;
-    if (!gameSetting.sound) {
-        engine.mute(true);
-    } else {
-        engine.mute(false);
-    }
+function checkboxSoundCheck() {
+    gameSetting.sound = checkboxSound.checked;
+    engine.mute(!gameSetting.sound);
 }
+
+const checkboxSound = document.querySelector("#checkbox-sound");
+if (
+    sessionStorage.getItem("checkboxSound") &&
+    sessionStorage.getItem("checkboxSound") === "false"
+) {
+    checkboxSound.checked = false;
+} else {
+    checkboxSound.checked = true;
+}
+
+checkboxSoundCheck();
+checkboxSound.addEventListener("change", () => {
+    checkboxSoundCheck();
+    sessionStorage.setItem("checkboxSound", checkboxSound.checked);
+});
+const soundControlBar = document.querySelector(".sound__volume");
+soundControlBar.value = sessionStorage.getItem("volume") * 100 || 50;
+soundControlBar.addEventListener("input", () => {
+    Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+});
+soundControlBar.addEventListener("change", () => {
+    sessionStorage.setItem("volume", Howler._volume);
+});

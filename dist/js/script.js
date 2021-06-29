@@ -3242,6 +3242,7 @@ testWebP(function (support) {
   };
 })();
 ;
+
 function displayHint(hintClass) {
   document.querySelector(`.hint__${hintClass}`).style.display = "block";
 }
@@ -3249,24 +3250,7 @@ function hideHint(hintClass) {
   document.querySelector(`.hint__${hintClass}`).style.display = "none";
 }
 ;
-function checkboxSoundCheck(e) {
-    // if (e.target.checked) {
-    //     console.log("Выбран");
-    //     obj[param] = e.target.checked;
-    // } else {
-    //     console.log("Не Выбран");
-    //     param = false;
-    // }
-    // obj[param] = e.target.checked;
-    // console.log(e.target.checked);
-    gameSetting.sound = e.target.checked;
-    if (!gameSetting.sound) {
-        engine.mute(true);
-    } else {
-        engine.mute(false);
-    }
-}
-;
+
 const gameSetting = {
     play: false,
     score: 0,
@@ -3289,9 +3273,7 @@ const gameSetting = {
 
 let engine = new Howl({
     src: ["audio/engine.mp3"],
-    onend: function () {
-        console.log("finish");
-    },
+    onend: function () {},
     sprite: {
         start: [0, 2000],
         slow: [],
@@ -3299,12 +3281,7 @@ let engine = new Howl({
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
-    volume: 0.5,
-});
-
-const checkboxSound = document.querySelector("#checkbox-sound");
-checkboxSound.addEventListener("change", (e) => {
-    checkboxSoundCheck(e);
+    volume: sessionStorage.getItem("volume") || 0.5,
 });
 
 const startBtn = document.querySelector(".game-area__button");
@@ -3407,6 +3384,35 @@ function random(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+;
+function checkboxSoundCheck() {
+    gameSetting.sound = checkboxSound.checked;
+    engine.mute(!gameSetting.sound);
+}
+
+const checkboxSound = document.querySelector("#checkbox-sound");
+if (
+    sessionStorage.getItem("checkboxSound") &&
+    sessionStorage.getItem("checkboxSound") === "false"
+) {
+    checkboxSound.checked = false;
+} else {
+    checkboxSound.checked = true;
+}
+
+checkboxSoundCheck();
+checkboxSound.addEventListener("change", () => {
+    checkboxSoundCheck();
+    sessionStorage.setItem("checkboxSound", checkboxSound.checked);
+});
+const soundControlBar = document.querySelector(".sound__volume");
+soundControlBar.value = sessionStorage.getItem("volume") * 100 || 50;
+soundControlBar.addEventListener("input", () => {
+    Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+});
+soundControlBar.addEventListener("change", () => {
+    sessionStorage.setItem("volume", Howler._volume);
+});
 ;
 function getMenuValues() {
     //* Получение элементов со страницы

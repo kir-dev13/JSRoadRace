@@ -20,9 +20,7 @@ const gameSetting = {
 
 let engine = new Howl({
     src: ["audio/engine.mp3"],
-    onend: function () {
-        console.log("finish");
-    },
+    onend: function () {},
     sprite: {
         start: [0, 2000],
         slow: [],
@@ -30,12 +28,7 @@ let engine = new Howl({
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
-    volume: 0.5,
-});
-
-const checkboxSound = document.querySelector("#checkbox-sound");
-checkboxSound.addEventListener("change", (e) => {
-    checkboxSoundCheck(e);
+    volume: sessionStorage.getItem("volume") || 0.5,
 });
 
 const startBtn = document.querySelector(".game-area__button");
