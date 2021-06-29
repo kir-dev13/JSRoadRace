@@ -42,14 +42,13 @@ function startGame() {
 
     setTimeout(() => {
         // запуск playGame после таймера
-        title.classList.add("hide"); // закрытие меню
+        title.classList.add("hide"); // скрытие заголовка
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
-        // soundMove.play("main");
-        engine.play("move");
+        engine.stop();
         requestAnimationFrame(playGame);
-    }, 0);
+    }, 10);
 }
 
 function createEnemies(countEnemy) {

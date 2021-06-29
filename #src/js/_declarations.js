@@ -1,30 +1,21 @@
-let soundExample = new Howl({
-    src: ["audio/exampleSound2.mp3"],
-    // loop: true,
-    // autoplay: true,
-    volume: 0.5,
-    onend: function () {
-        console.log("finished");
-    },
-});
-// let soundStart = new Howl({
-//     src: ["audio/engineStart.mp3"],
-//     // loop: true,
+const gameSetting = {
+    play: false,
+    score: 0,
+    speed: 4,
+    boost: 2,
+    enemies: true,
+    traffic: 3,
+    sound: true,
+};
 
-//     // volume: 0.5,
-// });
-// let soundMove = new Howl({
-//     src: ["audio/engineMove.mp3"],
+// let soundExample = new Howl({
+//     src: ["audio/exampleSound2.mp3"],
 //     // loop: true,
-//     onend: function () {
-//         console.log("finish");
-//     },
-//     sprite: {
-//         main: [9, 3999, true],
-//     },
-//     // fade: [0, 1, 1000],
-
+//     // autoplay: true,
 //     volume: 0.5,
+//     onend: function () {
+//         console.log("finished");
+//     },
 // });
 
 let engine = new Howl({
@@ -42,8 +33,10 @@ let engine = new Howl({
     volume: 0.5,
 });
 
-// let sound1 = soundEngine.play();
-// soundExample.fade(1, 0.2, 1000, sound1);
+const checkboxSound = document.querySelector("#checkbox-sound");
+checkboxSound.addEventListener("change", (e) => {
+    checkboxSoundCheck(e);
+});
 
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
@@ -132,15 +125,6 @@ const keys = {
     ArrowDown: false,
     ArrowRight: false,
     ArrowLeft: false,
-};
-
-const gameSetting = {
-    play: false,
-    score: 0,
-    speed: 4,
-    boost: 2,
-    enemies: true,
-    traffic: 3,
 };
 
 startBtn.addEventListener("click", initGame);

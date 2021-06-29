@@ -3249,49 +3249,42 @@ function hideHint(hintClass) {
   document.querySelector(`.hint__${hintClass}`).style.display = "none";
 }
 ;
-function checkboxChecked(params) {
-    let musicSelectors = document.querySelectorAll(".music__radio");
-    let checkboxMusic = document.querySelector("#checkbox-music");
-    if (checkboxMusic.checked) {
-        console.log("Выбран");
-        musicSelectors.forEach((elem) => elem.removeAttribute("disabled"));
+function checkboxSoundCheck(e) {
+    // if (e.target.checked) {
+    //     console.log("Выбран");
+    //     obj[param] = e.target.checked;
+    // } else {
+    //     console.log("Не Выбран");
+    //     param = false;
+    // }
+    // obj[param] = e.target.checked;
+    // console.log(e.target.checked);
+    gameSetting.sound = e.target.checked;
+    if (!gameSetting.sound) {
+        engine.mute(true);
     } else {
-        musicSelectors.forEach((elem) => {
-            // elem.setAttribute("disabled", "disabled");
-            elem.disabled = true;
-            // elem.removeAttribute("checked");
-        });
-        console.log("Не Выбран");
+        engine.mute(false);
     }
 }
 ;
-let soundExample = new Howl({
-    src: ["audio/exampleSound2.mp3"],
-    // loop: true,
-    // autoplay: true,
-    volume: 0.5,
-    onend: function () {
-        console.log("finished");
-    },
-});
-// let soundStart = new Howl({
-//     src: ["audio/engineStart.mp3"],
-//     // loop: true,
+const gameSetting = {
+    play: false,
+    score: 0,
+    speed: 4,
+    boost: 2,
+    enemies: true,
+    traffic: 3,
+    sound: true,
+};
 
-//     // volume: 0.5,
-// });
-// let soundMove = new Howl({
-//     src: ["audio/engineMove.mp3"],
+// let soundExample = new Howl({
+//     src: ["audio/exampleSound2.mp3"],
 //     // loop: true,
-//     onend: function () {
-//         console.log("finish");
-//     },
-//     sprite: {
-//         main: [9, 3999, true],
-//     },
-//     // fade: [0, 1, 1000],
-
+//     // autoplay: true,
 //     volume: 0.5,
+//     onend: function () {
+//         console.log("finished");
+//     },
 // });
 
 let engine = new Howl({
@@ -3309,8 +3302,10 @@ let engine = new Howl({
     volume: 0.5,
 });
 
-// let sound1 = soundEngine.play();
-// soundExample.fade(1, 0.2, 1000, sound1);
+const checkboxSound = document.querySelector("#checkbox-sound");
+checkboxSound.addEventListener("change", (e) => {
+    checkboxSoundCheck(e);
+});
 
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
@@ -3399,15 +3394,6 @@ const keys = {
     ArrowDown: false,
     ArrowRight: false,
     ArrowLeft: false,
-};
-
-const gameSetting = {
-    play: false,
-    score: 0,
-    speed: 4,
-    boost: 2,
-    enemies: true,
-    traffic: 3,
 };
 
 startBtn.addEventListener("click", initGame);
@@ -3528,14 +3514,13 @@ function startGame() {
 
     setTimeout(() => {
         // запуск playGame после таймера
-        title.classList.add("hide"); // закрытие меню
+        title.classList.add("hide"); // скрытие заголовка
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
-        // soundMove.play("main");
-        engine.play("move");
+        engine.stop();
         requestAnimationFrame(playGame);
-    }, 0);
+    }, 10);
 }
 
 function createEnemies(countEnemy) {
@@ -3604,6 +3589,7 @@ function stopBoost(event) {
                 break;
             }
             engine.fade(0.5, 0, 900, engine.stop());
+            // engine.stop();
             engine.fade(0.32, 0.5, 1000, engine.play("move"));
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
@@ -3693,6 +3679,9 @@ function moveEnemy(attemptCarAppend) {
 
 function playGame() {
     if (gameSetting.play) {
+        if (!engine.playing("move") && gameSetting.sound) {
+            engine.play("move");
+        }
         document.addEventListener("keydown", startBoost);
         document.addEventListener("keyup", stopBoost);
         player.move();
@@ -3791,6 +3780,7 @@ function checkRoadAccident(array) {
             title.classList.remove("hide");
             titleWord.innerHTML = "Авария!";
             // console.error("ДТП!");
+            player.car.style.border = "1px solid red";
             stopGame();
             setTimeout(restartGame, 2000);
             // gameSetting.play = false;

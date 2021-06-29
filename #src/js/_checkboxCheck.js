@@ -1,15 +1,17 @@
-function checkboxChecked(params) {
-    let musicSelectors = document.querySelectorAll(".music__radio");
-    let checkboxMusic = document.querySelector("#checkbox-music");
-    if (checkboxMusic.checked) {
-        console.log("Выбран");
-        musicSelectors.forEach((elem) => elem.removeAttribute("disabled"));
+function checkboxSoundCheck(e) {
+    // if (e.target.checked) {
+    //     console.log("Выбран");
+    //     obj[param] = e.target.checked;
+    // } else {
+    //     console.log("Не Выбран");
+    //     param = false;
+    // }
+    // obj[param] = e.target.checked;
+    // console.log(e.target.checked);
+    gameSetting.sound = e.target.checked;
+    if (!gameSetting.sound) {
+        engine.mute(true);
     } else {
-        musicSelectors.forEach((elem) => {
-            // elem.setAttribute("disabled", "disabled");
-            elem.disabled = true;
-            // elem.removeAttribute("checked");
-        });
-        console.log("Не Выбран");
+        engine.mute(false);
     }
 }

@@ -47,6 +47,9 @@ function moveEnemy(attemptCarAppend) {
 
 function playGame() {
     if (gameSetting.play) {
+        if (!engine.playing("move") && gameSetting.sound) {
+            engine.play("move");
+        }
         document.addEventListener("keydown", startBoost);
         document.addEventListener("keyup", stopBoost);
         player.move();
@@ -145,6 +148,7 @@ function checkRoadAccident(array) {
             title.classList.remove("hide");
             titleWord.innerHTML = "Авария!";
             // console.error("ДТП!");
+            player.car.style.border = "1px solid red";
             stopGame();
             setTimeout(restartGame, 2000);
             // gameSetting.play = false;

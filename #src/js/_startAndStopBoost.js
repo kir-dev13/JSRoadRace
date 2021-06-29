@@ -55,6 +55,7 @@ function stopBoost(event) {
                 break;
             }
             engine.fade(0.5, 0, 900, engine.stop());
+            // engine.stop();
             engine.fade(0.32, 0.5, 1000, engine.play("move"));
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
