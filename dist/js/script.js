@@ -3270,6 +3270,10 @@ const gameSetting = {
 //         console.log("finished");
 //     },
 // });
+const soundControlBar = document.querySelector(".sound__volume");
+let volumeValue = sessionStorage.getItem("volume") * 100;
+volumeValue === 0 ? (volumeValue += 0.01) : volumeValue;
+soundControlBar.value = volumeValue || 50;
 
 let engine = new Howl({
     src: ["audio/engine.mp3"],
@@ -3281,8 +3285,9 @@ let engine = new Howl({
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
-    volume: sessionStorage.getItem("volume") || 0.5,
 });
+Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+console.log(Howler._volume);
 
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
@@ -3405,13 +3410,14 @@ checkboxSound.addEventListener("change", () => {
     checkboxSoundCheck();
     sessionStorage.setItem("checkboxSound", checkboxSound.checked);
 });
-const soundControlBar = document.querySelector(".sound__volume");
-soundControlBar.value = sessionStorage.getItem("volume") * 100 || 50;
+
 soundControlBar.addEventListener("input", () => {
     Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+    console.log(Howler._volume);
 });
 soundControlBar.addEventListener("change", () => {
     sessionStorage.setItem("volume", Howler._volume);
+    console.log(sessionStorage.getItem("volume"));
 });
 ;
 function getMenuValues() {

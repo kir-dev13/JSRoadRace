@@ -18,11 +18,12 @@ checkboxSound.addEventListener("change", () => {
     checkboxSoundCheck();
     sessionStorage.setItem("checkboxSound", checkboxSound.checked);
 });
-const soundControlBar = document.querySelector(".sound__volume");
-soundControlBar.value = sessionStorage.getItem("volume") * 100 || 50;
+
 soundControlBar.addEventListener("input", () => {
     Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+    console.log(Howler._volume);
 });
 soundControlBar.addEventListener("change", () => {
     sessionStorage.setItem("volume", Howler._volume);
+    console.log(sessionStorage.getItem("volume"));
 });
