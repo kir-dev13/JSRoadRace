@@ -50,7 +50,7 @@ function startGame() {
         // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
 
         requestAnimationFrame(playGame);
-    }, 3000);
+    }, 0);
 }
 
 function createEnemies(countEnemy) {

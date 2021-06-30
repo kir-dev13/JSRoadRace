@@ -30,9 +30,9 @@ function timeToStart() {
     //startGame()
     engine.play("start");
     setTimeout(() => {
-        engine.fade(0, Howler.volume(), 1000, engine.play("move"));
+        engine.fade(0, Howler.volume(), 2000, engine.play("move"));
         // engine.play("move");
-    }, 2500);
+    }, 1000);
 
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));

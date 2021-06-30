@@ -3284,7 +3284,7 @@ let engine = new Howl({
     sprite: {
         start: [100, 3000],
         startMove: [10000, 3000],
-        slow: [32000, 2000, true],
+        slow: [33300, 2000, true],
         move: [40700, 3500, true],
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
@@ -3455,9 +3455,9 @@ function timeToStart() {
     //startGame()
     engine.play("start");
     setTimeout(() => {
-        engine.fade(0, Howler.volume(), 1000, engine.play("move"));
+        engine.fade(0, Howler.volume(), 2000, engine.play("move"));
         // engine.play("move");
-    }, 2500);
+    }, 1000);
 
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));
@@ -3542,7 +3542,7 @@ function startGame() {
         // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
 
         requestAnimationFrame(playGame);
-    }, 3000);
+    }, 0);
 }
 
 function createEnemies(countEnemy) {
@@ -3599,7 +3599,6 @@ function startBoost(event) {
             boostStop = false;
             engine.stop();
             engine.play("slow");
-
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
@@ -3638,7 +3637,7 @@ function stopBoost(event) {
                 player.speed -= 0.01;
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    engine.stop();
+                    // engine.stop();
                     // engine.fade(Howler._volume, 0, 500, engine.play("fast"));
                     // engine.fade(
                     //     Howler._volume - 0.1,
@@ -3646,7 +3645,7 @@ function stopBoost(event) {
                     //     1000,
                     //     engine.play("move")
                     // );
-                    engine.play("move");
+                    // engine.play("move"); //!!!!!!!!!!!
 
                     return;
                 }
@@ -3730,10 +3729,10 @@ function moveEnemy(attemptCarAppend) {
 
 function playGame() {
     if (gameSetting.play) {
-        if (!engine.playing("move") && gameSetting.sound) {
-            engine.stop();
-            engine.fade(0, Howler._volume, 2000, engine.play("move"));
-        }
+        // if (!engine.playing() && gameSetting.sound) {
+        //     engine.stop();
+        //     engine.fade(0, Howler._volume, 2000, engine.play("move"));
+        // }
         document.addEventListener("keydown", startBoost);
         document.addEventListener("keyup", stopBoost);
         player.move();

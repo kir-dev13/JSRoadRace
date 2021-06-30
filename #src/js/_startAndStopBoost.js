@@ -43,7 +43,6 @@ function startBoost(event) {
             boostStop = false;
             engine.stop();
             engine.play("slow");
-
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
@@ -82,7 +81,7 @@ function stopBoost(event) {
                 player.speed -= 0.01;
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    engine.stop();
+                    // engine.stop();
                     // engine.fade(Howler._volume, 0, 500, engine.play("fast"));
                     // engine.fade(
                     //     Howler._volume - 0.1,
@@ -90,7 +89,7 @@ function stopBoost(event) {
                     //     1000,
                     //     engine.play("move")
                     // );
-                    engine.play("move");
+                    // engine.play("move"); //!!!!!!!!!!!
 
                     return;
                 }
