@@ -3257,7 +3257,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 3,
+    traffic: 0,
     sound: true,
 };
 
@@ -3275,19 +3275,22 @@ let volumeValue = sessionStorage.getItem("volume") * 100;
 volumeValue === 0 ? (volumeValue += 0.01) : volumeValue;
 soundControlBar.value = volumeValue || 50;
 
+Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+console.log(Howler._volume);
+
 let engine = new Howl({
     src: ["audio/engine.mp3"],
     onend: function () {},
     sprite: {
-        start: [0, 2000],
-        slow: [],
+        start: [100, 3000],
+        startMove: [10000, 3000],
+        slow: [32000, 2000, true],
         move: [40700, 3500, true],
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
+    volume: Howler.volume(),
 });
-Howler.volume((soundControlBar.value * 0.01).toFixed(2));
-console.log(Howler._volume);
 
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;
@@ -3450,6 +3453,11 @@ function createRoadMarks() {
 
 function timeToStart() {
     //startGame()
+    engine.play("start");
+    setTimeout(() => {
+        engine.fade(0, Howler.volume(), 1000, engine.play("move"));
+        // engine.play("move");
+    }, 2500);
 
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));
@@ -3522,6 +3530,7 @@ function startGame() {
     player.score = 0;
     // soundStart.fade(0, 1, 1000);
     // soundStart.play();
+    engine.stop();
     timeToStart(); // запуск обратный отсчёт
 
     setTimeout(() => {
@@ -3530,9 +3539,10 @@ function startGame() {
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
-        engine.stop();
+        // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
+
         requestAnimationFrame(playGame);
-    }, 10);
+    }, 3000);
 }
 
 function createEnemies(countEnemy) {
@@ -3557,14 +3567,26 @@ function startBoost(event) {
                 break;
             }
             engine.stop();
-            engine.fade(0.32, 0.5, 1000, engine.play("boost"));
+            // engine.fade(Howler._volume, 0, 1000, engine.play("move"));
+            // engine.fade(0, Howler._volume, 3000, engine.play("boost"));
+            engine.play("boost");
             boostStop = false;
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                if (boostDelta >= gameSetting.boost || boostStop == true) {
+                if (boostDelta >= gameSetting.boost) {
                     engine.stop();
+                    // engine.play("fast");
+                    // engine.fade(Howler._volume, 0, 3000, engine.play("boost"));
+                    // engine.fade(
+                    //     Howler._volume - 0.1,
+                    //     Howler._volume,
+                    //     1000,
+                    //     engine.play("fast")
+                    // );
                     engine.play("fast");
+                }
+                if (boostDelta >= gameSetting.boost || boostStop == true) {
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -3575,8 +3597,9 @@ function startBoost(event) {
                 break;
             }
             boostStop = false;
-            // player.speed -= gameSetting.boost - 1;
-            // break;
+            engine.stop();
+            engine.play("slow");
+
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
@@ -3600,18 +3623,30 @@ function stopBoost(event) {
             if (event.repeat) {
                 break;
             }
-            engine.fade(0.5, 0, 900, engine.stop());
-            // engine.stop();
-            engine.fade(0.32, 0.5, 1000, engine.play("move"));
+            // engine.fade(Howler._volume, 0, 900, engine.stop());
+            engine.stop();
+            // engine.fade(
+            //     Howler._volume - 0.1,
+            //     Howler._volume,
+            //     1000,
+            //     engine.play("move")
+            // );
+            engine.play("move");
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    // engine.stop();
-                    engine.fade(0.5, 0, 900, engine.stop());
-                    engine.fade(0.32, 0.5, 1000, engine.play("move"));
+                    engine.stop();
+                    // engine.fade(Howler._volume, 0, 500, engine.play("fast"));
+                    // engine.fade(
+                    //     Howler._volume - 0.1,
+                    //     Howler._volume,
+                    //     1000,
+                    //     engine.play("move")
+                    // );
+                    engine.play("move");
 
                     return;
                 }
@@ -3623,9 +3658,13 @@ function stopBoost(event) {
             if (event.repeat) {
                 break;
             }
-            // player.speed += gameSetting.boost - 1;
+            // engine.fade(Howler._volume, 0, 500, engine.play("slow"));
+            engine.stop();
+            // engine.fade(0, Howler._volume, 1000, engine.play("move"));
+            engine.play("move");
+
             boostStop = true;
-            // player.speed -= gameSetting.boost;
+
             requestAnimationFrame(function unBoosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
@@ -3692,7 +3731,8 @@ function moveEnemy(attemptCarAppend) {
 function playGame() {
     if (gameSetting.play) {
         if (!engine.playing("move") && gameSetting.sound) {
-            engine.play("move");
+            engine.stop();
+            engine.fade(0, Howler._volume, 2000, engine.play("move"));
         }
         document.addEventListener("keydown", startBoost);
         document.addEventListener("keyup", stopBoost);

@@ -4,7 +4,7 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 3,
+    traffic: 0,
     sound: true,
 };
 
@@ -22,19 +22,22 @@ let volumeValue = sessionStorage.getItem("volume") * 100;
 volumeValue === 0 ? (volumeValue += 0.01) : volumeValue;
 soundControlBar.value = volumeValue || 50;
 
+Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+console.log(Howler._volume);
+
 let engine = new Howl({
     src: ["audio/engine.mp3"],
     onend: function () {},
     sprite: {
-        start: [0, 2000],
-        slow: [],
+        start: [100, 3000],
+        startMove: [10000, 3000],
+        slow: [32000, 2000, true],
         move: [40700, 3500, true],
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
+    volume: Howler.volume(),
 });
-Howler.volume((soundControlBar.value * 0.01).toFixed(2));
-console.log(Howler._volume);
 
 const startBtn = document.querySelector(".game-area__button");
 startBtn.y = 20;

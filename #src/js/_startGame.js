@@ -38,6 +38,7 @@ function startGame() {
     player.score = 0;
     // soundStart.fade(0, 1, 1000);
     // soundStart.play();
+    engine.stop();
     timeToStart(); // запуск обратный отсчёт
 
     setTimeout(() => {
@@ -46,9 +47,10 @@ function startGame() {
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
-        engine.stop();
+        // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
+
         requestAnimationFrame(playGame);
-    }, 10);
+    }, 3000);
 }
 
 function createEnemies(countEnemy) {

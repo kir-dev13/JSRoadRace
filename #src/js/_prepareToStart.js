@@ -28,6 +28,11 @@ function createRoadMarks() {
 
 function timeToStart() {
     //startGame()
+    engine.play("start");
+    setTimeout(() => {
+        engine.fade(0, Howler.volume(), 1000, engine.play("move"));
+        // engine.play("move");
+    }, 2500);
 
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));

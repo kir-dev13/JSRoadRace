@@ -48,7 +48,8 @@ function moveEnemy(attemptCarAppend) {
 function playGame() {
     if (gameSetting.play) {
         if (!engine.playing("move") && gameSetting.sound) {
-            engine.play("move");
+            engine.stop();
+            engine.fade(0, Howler._volume, 2000, engine.play("move"));
         }
         document.addEventListener("keydown", startBoost);
         document.addEventListener("keyup", stopBoost);

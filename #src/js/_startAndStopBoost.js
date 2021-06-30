@@ -11,14 +11,26 @@ function startBoost(event) {
                 break;
             }
             engine.stop();
-            engine.fade(0.32, 0.5, 1000, engine.play("boost"));
+            // engine.fade(Howler._volume, 0, 1000, engine.play("move"));
+            // engine.fade(0, Howler._volume, 3000, engine.play("boost"));
+            engine.play("boost");
             boostStop = false;
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
-                if (boostDelta >= gameSetting.boost || boostStop == true) {
+                if (boostDelta >= gameSetting.boost) {
                     engine.stop();
+                    // engine.play("fast");
+                    // engine.fade(Howler._volume, 0, 3000, engine.play("boost"));
+                    // engine.fade(
+                    //     Howler._volume - 0.1,
+                    //     Howler._volume,
+                    //     1000,
+                    //     engine.play("fast")
+                    // );
                     engine.play("fast");
+                }
+                if (boostDelta >= gameSetting.boost || boostStop == true) {
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -29,8 +41,9 @@ function startBoost(event) {
                 break;
             }
             boostStop = false;
-            // player.speed -= gameSetting.boost - 1;
-            // break;
+            engine.stop();
+            engine.play("slow");
+
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
@@ -54,18 +67,30 @@ function stopBoost(event) {
             if (event.repeat) {
                 break;
             }
-            engine.fade(0.5, 0, 900, engine.stop());
-            // engine.stop();
-            engine.fade(0.32, 0.5, 1000, engine.play("move"));
+            // engine.fade(Howler._volume, 0, 900, engine.stop());
+            engine.stop();
+            // engine.fade(
+            //     Howler._volume - 0.1,
+            //     Howler._volume,
+            //     1000,
+            //     engine.play("move")
+            // );
+            engine.play("move");
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
                 if (boostDelta <= 0) {
                     player.speed = Math.round(player.speed);
-                    // engine.stop();
-                    engine.fade(0.5, 0, 900, engine.stop());
-                    engine.fade(0.32, 0.5, 1000, engine.play("move"));
+                    engine.stop();
+                    // engine.fade(Howler._volume, 0, 500, engine.play("fast"));
+                    // engine.fade(
+                    //     Howler._volume - 0.1,
+                    //     Howler._volume,
+                    //     1000,
+                    //     engine.play("move")
+                    // );
+                    engine.play("move");
 
                     return;
                 }
@@ -77,9 +102,13 @@ function stopBoost(event) {
             if (event.repeat) {
                 break;
             }
-            // player.speed += gameSetting.boost - 1;
+            // engine.fade(Howler._volume, 0, 500, engine.play("slow"));
+            engine.stop();
+            // engine.fade(0, Howler._volume, 1000, engine.play("move"));
+            engine.play("move");
+
             boostStop = true;
-            // player.speed -= gameSetting.boost;
+
             requestAnimationFrame(function unBoosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
