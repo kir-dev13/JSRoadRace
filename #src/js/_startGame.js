@@ -13,6 +13,11 @@ function stopGame() {
     // soundMove.stop();
     engine.stop();
     // player.speed = 0;
+    document.removeEventListener("keydown", startBoost);
+    document.removeEventListener("keyup", stopBoost);
+    for (let key in keys) {
+        keys[key] = false;
+    }
 }
 
 function initGame() {
@@ -21,6 +26,7 @@ function initGame() {
     startBtn.innerHTML = "";
     rightSide.appendChild(scoreDiv);
     prepareToStart();
+
     startGame();
 }
 
@@ -50,7 +56,7 @@ function startGame() {
         // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
 
         requestAnimationFrame(playGame);
-    }, 0);
+    }, 3000);
 }
 
 function createEnemies(countEnemy) {

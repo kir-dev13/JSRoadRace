@@ -51,9 +51,8 @@ function playGame() {
         //     engine.stop();
         //     engine.fade(0, Howler._volume, 2000, engine.play("move"));
         // }
-        document.addEventListener("keydown", startBoost);
-        document.addEventListener("keyup", stopBoost);
         player.move();
+
         moveRoad();
 
         let attemptCarAppend = 0;
@@ -150,6 +149,8 @@ function checkRoadAccident(array) {
             titleWord.innerHTML = "Авария!";
             // console.error("ДТП!");
             player.car.style.border = "1px solid red";
+            // engine.stop();
+            crush.play();
             stopGame();
             setTimeout(restartGame, 2000);
             // gameSetting.play = false;

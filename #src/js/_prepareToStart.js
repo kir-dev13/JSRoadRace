@@ -28,7 +28,8 @@ function createRoadMarks() {
 
 function timeToStart() {
     //startGame()
-    engine.play("start");
+    // engine.play("start");
+    soundPlay(engine.play("start"));
     setTimeout(() => {
         engine.fade(0, Howler.volume(), 2000, engine.play("move"));
         // engine.play("move");
@@ -37,6 +38,8 @@ function timeToStart() {
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));
     //*Обратный отсчёт до старта
+    document.addEventListener("keydown", startBoost);
+    document.addEventListener("keyup", stopBoost);
     title.style.fontSize = "6rem";
     title.classList.remove("hide");
     titleWord.innerHTML = "3";

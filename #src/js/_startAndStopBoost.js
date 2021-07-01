@@ -10,16 +10,18 @@ function startBoost(event) {
             if (event.repeat) {
                 break;
             }
-            engine.stop();
+
             // engine.fade(Howler._volume, 0, 1000, engine.play("move"));
             // engine.fade(0, Howler._volume, 3000, engine.play("boost"));
-            engine.play("boost");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("boost");
+            }
             boostStop = false;
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
                 if (boostDelta >= gameSetting.boost) {
-                    engine.stop();
                     // engine.play("fast");
                     // engine.fade(Howler._volume, 0, 3000, engine.play("boost"));
                     // engine.fade(
@@ -28,7 +30,10 @@ function startBoost(event) {
                     //     1000,
                     //     engine.play("fast")
                     // );
-                    engine.play("fast");
+                    if (gameSetting.play) {
+                        engine.stop();
+                        engine.play("fast");
+                    }
                 }
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
                     return;
@@ -41,8 +46,10 @@ function startBoost(event) {
                 break;
             }
             boostStop = false;
-            engine.stop();
-            engine.play("slow");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("slow");
+            }
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
@@ -67,14 +74,18 @@ function stopBoost(event) {
                 break;
             }
             // engine.fade(Howler._volume, 0, 900, engine.stop());
-            engine.stop();
+
             // engine.fade(
             //     Howler._volume - 0.1,
             //     Howler._volume,
             //     1000,
             //     engine.play("move")
             // );
-            engine.play("move");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("move");
+            }
+
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
@@ -102,9 +113,12 @@ function stopBoost(event) {
                 break;
             }
             // engine.fade(Howler._volume, 0, 500, engine.play("slow"));
-            engine.stop();
+
             // engine.fade(0, Howler._volume, 1000, engine.play("move"));
-            engine.play("move");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("move");
+            }
 
             boostStop = true;
 

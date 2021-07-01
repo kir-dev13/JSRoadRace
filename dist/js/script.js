@@ -3257,19 +3257,29 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 0,
+    traffic: 3,
     sound: true,
 };
 
-// let soundExample = new Howl({
-//     src: ["audio/exampleSound2.mp3"],
-//     // loop: true,
-//     // autoplay: true,
-//     volume: 0.5,
-//     onend: function () {
-//         console.log("finished");
-//     },
-// });
+function getBooleanDataFromSessionStorage(item) {
+    if (
+        sessionStorage.getItem(item) &&
+        sessionStorage.getItem(item) === "false"
+    ) {
+        return false;
+    } else if (sessionStorage.getItem(item)) {
+        return sessionStorage.getItem(item);
+    } else {
+        return false;
+    }
+}
+
+const checkboxMusic = document.querySelector("#checkbox-music");
+checkboxMusic.checked = !!getBooleanDataFromSessionStorage("checkboxMusic");
+
+const checkboxSound = document.querySelector("#checkbox-sound");
+checkboxSound.checked = !!getBooleanDataFromSessionStorage("checkboxSound");
+
 const soundControlBar = document.querySelector(".sound__volume");
 let volumeValue = sessionStorage.getItem("volume") * 100;
 volumeValue === 0 ? (volumeValue += 0.01) : volumeValue;
@@ -3289,6 +3299,11 @@ let engine = new Howl({
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
+    volume: Howler.volume(),
+});
+
+let crush = new Howl({
+    src: ["audio/crush1.mp3"],
     volume: Howler.volume(),
 });
 
@@ -3368,7 +3383,6 @@ player.move = function (event) {
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
-
     this.render();
 };
 
@@ -3393,22 +3407,20 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 ;
+;
+function soundPlay(sound) {
+    if (gameSetting.sound) {
+        sound;
+    }
+}
+
 function checkboxSoundCheck() {
     gameSetting.sound = checkboxSound.checked;
     engine.mute(!gameSetting.sound);
 }
 
-const checkboxSound = document.querySelector("#checkbox-sound");
-if (
-    sessionStorage.getItem("checkboxSound") &&
-    sessionStorage.getItem("checkboxSound") === "false"
-) {
-    checkboxSound.checked = false;
-} else {
-    checkboxSound.checked = true;
-}
-
 checkboxSoundCheck();
+
 checkboxSound.addEventListener("change", () => {
     checkboxSoundCheck();
     sessionStorage.setItem("checkboxSound", checkboxSound.checked);
@@ -3416,11 +3428,9 @@ checkboxSound.addEventListener("change", () => {
 
 soundControlBar.addEventListener("input", () => {
     Howler.volume((soundControlBar.value * 0.01).toFixed(2));
-    console.log(Howler._volume);
 });
 soundControlBar.addEventListener("change", () => {
     sessionStorage.setItem("volume", Howler._volume);
-    console.log(sessionStorage.getItem("volume"));
 });
 ;
 function getMenuValues() {
@@ -3453,7 +3463,8 @@ function createRoadMarks() {
 
 function timeToStart() {
     //startGame()
-    engine.play("start");
+    // engine.play("start");
+    soundPlay(engine.play("start"));
     setTimeout(() => {
         engine.fade(0, Howler.volume(), 2000, engine.play("move"));
         // engine.play("move");
@@ -3462,6 +3473,8 @@ function timeToStart() {
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));
     //*Обратный отсчёт до старта
+    document.addEventListener("keydown", startBoost);
+    document.addEventListener("keyup", stopBoost);
     title.style.fontSize = "6rem";
     title.classList.remove("hide");
     titleWord.innerHTML = "3";
@@ -3505,6 +3518,11 @@ function stopGame() {
     // soundMove.stop();
     engine.stop();
     // player.speed = 0;
+    document.removeEventListener("keydown", startBoost);
+    document.removeEventListener("keyup", stopBoost);
+    for (let key in keys) {
+        keys[key] = false;
+    }
 }
 
 function initGame() {
@@ -3513,6 +3531,7 @@ function initGame() {
     startBtn.innerHTML = "";
     rightSide.appendChild(scoreDiv);
     prepareToStart();
+
     startGame();
 }
 
@@ -3542,7 +3561,7 @@ function startGame() {
         // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
 
         requestAnimationFrame(playGame);
-    }, 0);
+    }, 3000);
 }
 
 function createEnemies(countEnemy) {
@@ -3566,16 +3585,18 @@ function startBoost(event) {
             if (event.repeat) {
                 break;
             }
-            engine.stop();
+
             // engine.fade(Howler._volume, 0, 1000, engine.play("move"));
             // engine.fade(0, Howler._volume, 3000, engine.play("boost"));
-            engine.play("boost");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("boost");
+            }
             boostStop = false;
             requestAnimationFrame(function boosting() {
                 boostDelta += 0.01;
                 player.speed += 0.01;
                 if (boostDelta >= gameSetting.boost) {
-                    engine.stop();
                     // engine.play("fast");
                     // engine.fade(Howler._volume, 0, 3000, engine.play("boost"));
                     // engine.fade(
@@ -3584,7 +3605,10 @@ function startBoost(event) {
                     //     1000,
                     //     engine.play("fast")
                     // );
-                    engine.play("fast");
+                    if (gameSetting.play) {
+                        engine.stop();
+                        engine.play("fast");
+                    }
                 }
                 if (boostDelta >= gameSetting.boost || boostStop == true) {
                     return;
@@ -3597,8 +3621,10 @@ function startBoost(event) {
                 break;
             }
             boostStop = false;
-            engine.stop();
-            engine.play("slow");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("slow");
+            }
             requestAnimationFrame(function boosting() {
                 boostDelta -= 0.01;
                 player.speed -= 0.01;
@@ -3623,14 +3649,18 @@ function stopBoost(event) {
                 break;
             }
             // engine.fade(Howler._volume, 0, 900, engine.stop());
-            engine.stop();
+
             // engine.fade(
             //     Howler._volume - 0.1,
             //     Howler._volume,
             //     1000,
             //     engine.play("move")
             // );
-            engine.play("move");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("move");
+            }
+
             boostStop = true;
             requestAnimationFrame(function unBoosting() {
                 boostDelta -= 0.01;
@@ -3658,9 +3688,12 @@ function stopBoost(event) {
                 break;
             }
             // engine.fade(Howler._volume, 0, 500, engine.play("slow"));
-            engine.stop();
+
             // engine.fade(0, Howler._volume, 1000, engine.play("move"));
-            engine.play("move");
+            if (gameSetting.play) {
+                engine.stop();
+                engine.play("move");
+            }
 
             boostStop = true;
 
@@ -3733,9 +3766,8 @@ function playGame() {
         //     engine.stop();
         //     engine.fade(0, Howler._volume, 2000, engine.play("move"));
         // }
-        document.addEventListener("keydown", startBoost);
-        document.addEventListener("keyup", stopBoost);
         player.move();
+
         moveRoad();
 
         let attemptCarAppend = 0;
@@ -3832,6 +3864,8 @@ function checkRoadAccident(array) {
             titleWord.innerHTML = "Авария!";
             // console.error("ДТП!");
             player.car.style.border = "1px solid red";
+            // engine.stop();
+            crush.play();
             stopGame();
             setTimeout(restartGame, 2000);
             // gameSetting.play = false;

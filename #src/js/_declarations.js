@@ -4,19 +4,29 @@ const gameSetting = {
     speed: 4,
     boost: 2,
     enemies: true,
-    traffic: 0,
+    traffic: 3,
     sound: true,
 };
 
-// let soundExample = new Howl({
-//     src: ["audio/exampleSound2.mp3"],
-//     // loop: true,
-//     // autoplay: true,
-//     volume: 0.5,
-//     onend: function () {
-//         console.log("finished");
-//     },
-// });
+function getBooleanDataFromSessionStorage(item) {
+    if (
+        sessionStorage.getItem(item) &&
+        sessionStorage.getItem(item) === "false"
+    ) {
+        return false;
+    } else if (sessionStorage.getItem(item)) {
+        return sessionStorage.getItem(item);
+    } else {
+        return false;
+    }
+}
+
+const checkboxMusic = document.querySelector("#checkbox-music");
+checkboxMusic.checked = !!getBooleanDataFromSessionStorage("checkboxMusic");
+
+const checkboxSound = document.querySelector("#checkbox-sound");
+checkboxSound.checked = !!getBooleanDataFromSessionStorage("checkboxSound");
+
 const soundControlBar = document.querySelector(".sound__volume");
 let volumeValue = sessionStorage.getItem("volume") * 100;
 volumeValue === 0 ? (volumeValue += 0.01) : volumeValue;
@@ -36,6 +46,11 @@ let engine = new Howl({
         boost: [48000, 4000, true],
         fast: [51000, 3000, true],
     },
+    volume: Howler.volume(),
+});
+
+let crush = new Howl({
+    src: ["audio/crush1.mp3"],
     volume: Howler.volume(),
 });
 
@@ -115,7 +130,6 @@ player.move = function (event) {
     ) {
         this.car.style.transform = "rotate(0deg)";
     }
-
     this.render();
 };
 

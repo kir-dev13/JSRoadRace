@@ -5,7 +5,8 @@
 @@include("_displayHints.js");
 
 @@include("_declarations.js");
-@@include("_checkboxCheck.js");
+@@include("_checkboxMusicCheck.js");
+@@include("_checkboxSoundCheck.js");
 @@include("_prepareToStart.js");
 @@include("_startGame.js");
 @@include("_startAndStopBoost.js");
