@@ -23,10 +23,6 @@ function startGame() {
         requestAnimationFrame(removeStartBtn);
 
         requestAnimationFrame(playGame);
-        setInterval(() => {
-            console.log("boostDelta: ", boostDelta);
-            console.log(`%c${"player.speed: " + player.speed}`, `color: pink`);
-        }, 1000);
     });
 }
 

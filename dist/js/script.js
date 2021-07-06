@@ -3342,6 +3342,8 @@ const gameSetting = {
     boost: 2,
     enemies: true,
     traffic: 3,
+    boostDelta: 0,
+    boostLimit: false,
 };
 
 const enemies = [];
@@ -3561,10 +3563,6 @@ function startGame() {
         requestAnimationFrame(removeStartBtn);
 
         requestAnimationFrame(playGame);
-        setInterval(() => {
-            console.log("boostDelta: ", boostDelta);
-            console.log(`%c${"player.speed: " + player.speed}`, `color: pink`);
-        }, 1000);
     });
 }
 
@@ -3599,38 +3597,32 @@ function createEnemies(countEnemy) {
     }
 }
 ;
-let boostDelta = 0,
-    boostLimit = false;
-
 function startBoost(e) {
-    // e.preventDefault();
-
-    // keys[e.key] = true;
-
     switch (e.keyCode) {
         case 38:
             if (e.repeat) {
                 break;
             }
-            boostLimit = false;
-            console.log("%c BOOSTING! ", "background: #222; color: #bada55");
+            gameSetting.boostLimit = false;
+
             engine.stop();
             engine.play("boost");
 
             requestAnimationFrame(function boosting() {
-                boostDelta += 0.01;
-                boostDelta = +boostDelta.toFixed(2);
+                gameSetting.boostDelta += 0.01;
+                gameSetting.boostDelta = +gameSetting.boostDelta.toFixed(2);
                 player.speed += 0.01;
                 player.speed = +player.speed.toFixed(2);
-                if (boostDelta >= gameSetting.boost) {
+                if (gameSetting.boostDelta >= gameSetting.boost) {
                     if (gameSetting.play) {
                         engine.stop();
                         engine.play("fast");
                     }
                 }
-                if (boostDelta >= gameSetting.boost || boostLimit === true) {
-                    console.log("LIMIT!!!!");
-
+                if (
+                    gameSetting.boostDelta >= gameSetting.boost ||
+                    gameSetting.boostLimit === true
+                ) {
                     return;
                 }
                 requestAnimationFrame(boosting);
@@ -3640,20 +3632,20 @@ function startBoost(e) {
             if (e.repeat) {
                 break;
             }
-            boostLimit = false;
+            gameSetting.boostLimit = false;
             if (gameSetting.play) {
                 engine.stop();
                 engine.play("slow");
             }
             requestAnimationFrame(function boosting() {
-                boostDelta -= 0.01;
-                boostDelta = +boostDelta.toFixed(2);
+                gameSetting.boostDelta -= 0.01;
+                gameSetting.boostDelta = +gameSetting.boostDelta.toFixed(2);
                 player.speed -= 0.01;
                 player.speed = +player.speed.toFixed(2);
 
                 if (
-                    boostDelta <= gameSetting.boost * -1 + 1 ||
-                    boostLimit === true
+                    gameSetting.boostDelta <= gameSetting.boost * -1 + 1 ||
+                    gameSetting.boostLimit === true
                 ) {
                     return;
                 }
@@ -3672,15 +3664,17 @@ function stopBoost(e) {
                 engine.play("move");
             }
 
-            boostLimit = true;
+            gameSetting.boostLimit = true;
             requestAnimationFrame(function unBoosting() {
-                boostDelta -= 0.01;
-                boostDelta = +boostDelta.toFixed(2);
+                gameSetting.boostDelta -= 0.01;
+                gameSetting.boostDelta = +gameSetting.boostDelta.toFixed(2);
                 player.speed -= 0.01;
                 player.speed = +player.speed.toFixed(2);
-                if (boostDelta <= 0 || boostLimit === false) {
-                    player.speed = Math.round(player.speed);
-                    boostLimit = false;
+                if (
+                    gameSetting.boostDelta <= 0 ||
+                    gameSetting.boostLimit === false
+                ) {
+                    gameSetting.boostLimit = false;
                     return;
                 }
                 requestAnimationFrame(unBoosting);
@@ -3693,17 +3687,19 @@ function stopBoost(e) {
                 engine.play("move");
             }
 
-            boostLimit = true;
+            gameSetting.boostLimit = true;
 
             requestAnimationFrame(function unBoosting() {
-                boostDelta += 0.01;
-                boostDelta = +boostDelta.toFixed(2);
+                gameSetting.boostDelta += 0.01;
+                gameSetting.boostDelta = +gameSetting.boostDelta.toFixed(2);
                 player.speed += 0.01;
                 player.speed = +player.speed.toFixed(2);
 
-                if (boostDelta >= 0 || boostLimit === false) {
-                    player.speed = Math.round(player.speed);
-                    boostLimit = false;
+                if (
+                    gameSetting.boostDelta >= 0 ||
+                    gameSetting.boostLimit === false
+                ) {
+                    gameSetting.boostLimit = false;
                     return;
                 }
                 requestAnimationFrame(unBoosting);

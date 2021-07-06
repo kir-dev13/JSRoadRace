@@ -11,6 +11,8 @@ const gameSetting = {
     boost: 2,
     enemies: true,
     traffic: 3,
+    boostDelta: 0,
+    boostLimit: false,
 };
 
 const enemies = [];
