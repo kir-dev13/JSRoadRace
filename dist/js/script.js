@@ -3275,14 +3275,22 @@ function getBooleanDataFromSessionStorage(item) {
 }
 
 const checkboxMusic = document.querySelector("#checkbox-music");
-checkboxMusic.checked = !!getBooleanDataFromSessionStorage("checkboxMusic");
+checkboxMusic.checked = getBooleanDataFromSessionStorage("checkboxMusic");
 
 const checkboxSound = document.querySelector("#checkbox-sound");
-checkboxSound.checked = !!getBooleanDataFromSessionStorage("checkboxSound");
+checkboxSound.checked = !getBooleanDataFromSessionStorage("checkboxSound");
 
 const soundControlBar = document.querySelector(".sound__volume");
-let volumeValue = sessionStorage.getItem("volume") * 100;
-volumeValue === 0 ? (volumeValue += 0.01) : volumeValue;
+let volumeValue = undefined;
+console.log(
+    "🚀 ~ file: _declarations.js ~ line 32 ~ sessionStorage.getItem(volume)",
+    sessionStorage.getItem("volume")
+);
+if (sessionStorage.getItem("volume")) {
+    volumeValue = sessionStorage.getItem("volume") * 100;
+}
+volumeValue === 0 ? (volumeValue += 0.01) : volumeValue * 1;
+console.log("🚀 ~ file: _declarations.js ~ line 33 ~ volumeValue", volumeValue);
 soundControlBar.value = volumeValue || 50;
 
 Howler.volume((soundControlBar.value * 0.01).toFixed(2));
@@ -3554,7 +3562,7 @@ function startGame() {
 
     setTimeout(() => {
         // запуск playGame после таймера
-        title.classList.add("hide"); // скрытие заголовка
+        title.classList.add("hide");
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);

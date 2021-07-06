@@ -49,7 +49,7 @@ function startGame() {
 
     setTimeout(() => {
         // запуск playGame после таймера
-        title.classList.add("hide"); // скрытие заголовка
+        title.classList.add("hide");
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
