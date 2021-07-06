@@ -51,8 +51,8 @@ function playGame() {
         //     engine.stop();
         //     engine.fade(0, Howler._volume, 2000, engine.play("move"));
         // }
+        // delay(1000).then(() => console.log(boostDelta));
         player.move();
-
         moveRoad();
 
         let attemptCarAppend = 0;

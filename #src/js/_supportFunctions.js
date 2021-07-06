@@ -4,6 +4,10 @@ function soundPlay(sound) {
     }
 }
 
+const delay = (ms) => {
+    return new Promise((resolve) => setTimeout(() => resolve(), ms));
+};
+
 function setSoundControlBar() {
     let volumeValue = undefined;
     if (sessionStorage.getItem("volume")) {

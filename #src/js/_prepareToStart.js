@@ -1,13 +1,12 @@
 function getMenuValues() {
     //* Получение элементов со страницы
-
     //*имя игрока
     if (!userName.value) {
         userName.value = "Игрок";
     }
     player.name = userName.value.capitalize();
     userName.disabled = "true";
-    //TODO сложность, музыка
+    //TODO сложность
 }
 
 function createRoadMarks() {
@@ -22,36 +21,46 @@ function createRoadMarks() {
         }
 
         gameArea.appendChild(roadMark);
-        // console.log(roadMark);
     }
 }
 
 function timeToStart() {
-    soundPlay(engine.fade(0, Howler.volume() + 0.2, 100, engine.play("start")));
-    setTimeout(() => {
-        engine.fade(0, Howler.volume(), 500, engine.play("move"));
-    }, 2500);
-
-    //*Скрытие меню
-    titleWords.forEach((word) => (word.innerText = ""));
     //*Обратный отсчёт до старта
-    document.addEventListener("keydown", startBoost);
-    document.addEventListener("keyup", stopBoost);
+    // звук зажигания
+    soundPlay(engine.fade(0, Howler.volume() + 0.2, 100, engine.play("start")));
+    delay(2500).then(() => {
+        engine.fade(0, Howler.volume(), 500, engine.play("move"));
+    });
+
+    // включаем обратный отсчёт
+    titleWords.forEach((word) => (word.innerText = ""));
     title.style.fontSize = "6rem";
     title.classList.remove("hide");
     titleWord.innerHTML = "3";
-    setTimeout(() => {
-        titleWord.innerHTML = "2";
-    }, 1000);
-    setTimeout(() => {
-        titleWord.innerHTML = "1";
-    }, 2000);
+    console.log("sound 3");
+
+    return delay(1000)
+        .then(() => {
+            return (titleWord.innerHTML = "2"), console.log(`sound 2`);
+        })
+        .then(() => {
+            return delay(1000);
+        })
+        .then(() => {
+            return (titleWord.innerHTML = "1"), console.log(`sound 1`);
+        })
+        .then(() => {
+            return delay(1000);
+        });
 }
 
 function prepareToStart() {
     getMenuValues();
     createRoadMarks();
     createPlayer();
+
+    rightSide.appendChild(scoreDiv);
+
     player.speed = gameSetting.speed;
     player.traffic = gameSetting.traffic;
 }

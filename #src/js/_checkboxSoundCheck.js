@@ -1,6 +1,6 @@
 function checkboxSoundCheck() {
     gameSetting.sound = checkboxSound.checked;
-    engine.mute(!gameSetting.sound);
+    Howler.mute(!gameSetting.sound);
 }
 
 checkboxSoundCheck();

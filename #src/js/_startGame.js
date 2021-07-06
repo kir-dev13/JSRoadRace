@@ -2,9 +2,12 @@ startBtn.addEventListener("click", initGame);
 
 function initGame() {
     //* нажатие кнопки StartBtn
+    startBtn.removeEventListener("click", initGame);
     startBtn.style.height = startBtn.offsetHeight + "px";
     startBtn.innerHTML = "";
-    rightSide.appendChild(scoreDiv);
+    document.addEventListener("keydown", keyboardDownHandler);
+    document.addEventListener("keyup", keyboardUpHandler);
+
     prepareToStart();
 
     startGame();
@@ -12,21 +15,19 @@ function initGame() {
 
 function startGame() {
     player.score = 0;
-    // soundStart.fade(0, 1, 1000);
-    // soundStart.play();
     engine.stop();
-    timeToStart(); // запуск обратный отсчёт
-
-    setTimeout(() => {
-        // запуск playGame после таймера
+    timeToStart().then(() => {
         title.classList.add("hide");
         gameSetting.play = true;
         createEnemies(0);
         requestAnimationFrame(removeStartBtn);
-        // engine.fade(Howler._volume, 0, 3000, engine.play("start"));
 
         requestAnimationFrame(playGame);
-    }, 3000);
+        setInterval(() => {
+            console.log("boostDelta: ", boostDelta);
+            console.log(`%c${"player.speed: " + player.speed}`, `color: pink`);
+        }, 1000);
+    });
 }
 
 function stopGame() {
@@ -45,7 +46,7 @@ function restartGame() {
     enemies.forEach((enemy) => {
         enemy.remove();
     });
-    enemies = [];
+    enemies.length = 0;
     player.car.remove();
     createPlayer();
     startGame();

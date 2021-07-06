@@ -11,7 +11,6 @@ const gameSetting = {
     boost: 2,
     enemies: true,
     traffic: 3,
-    sound: true,
 };
 
 const enemies = [];
@@ -77,4 +76,16 @@ const keys = {
     ArrowLeft: false,
 };
 
-
+function keyboardDownHandler(e) {
+    keys[e.key] = true;
+    if (Object.values(keys).some((value) => value === true)) {
+        e.preventDefault();
+    }
+    if (gameSetting.play) {
+        startBoost(e);
+    }
+}
+function keyboardUpHandler(e) {
+    keys[e.key] = false;
+    stopBoost(e);
+}
