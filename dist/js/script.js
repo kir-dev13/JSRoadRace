@@ -3250,6 +3250,86 @@ function hideHint(hintClass) {
   document.querySelector(`.hint__${hintClass}`).style.display = "none";
 }
 ;
+function soundPlay(sound) {
+    if (gameSetting.sound) {
+        sound;
+    }
+}
+
+function setSoundControlBar() {
+    let volumeValue = undefined;
+    if (sessionStorage.getItem("volume")) {
+        volumeValue = sessionStorage.getItem("volume") * 100;
+    }
+    volumeValue === 0 ? (volumeValue += 0.01) : volumeValue * 1;
+    soundControlBar.value = volumeValue || 50;
+
+    Howler.volume((soundControlBar.value * 0.01).toFixed(2));
+    console.log(Howler._volume);
+}
+
+function getBooleanDataFromSessionStorage(item, defaultValue = false) {
+    switch (sessionStorage.getItem(item)) {
+        case "false":
+            return false;
+            break;
+        case "true":
+            return true;
+            break;
+        default:
+            return defaultValue;
+    }
+}
+
+String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+function random(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function removeStartBtn() {
+    if (startBtn.y >= document.documentElement.clientHeight || !startBtn) {
+        startBtn.remove();
+        return;
+    }
+    startBtn.y += player.speed;
+    startBtn.style.top = startBtn.y + "px";
+    requestAnimationFrame(removeStartBtn);
+}
+;
+
+const checkboxMusic = document.querySelector("#checkbox-music");
+// checkboxMusic.checked = getBooleanDataFromSessionStorage("checkboxMusic");
+
+const checkboxSound = document.querySelector("#checkbox-sound");
+checkboxSound.checked = getBooleanDataFromSessionStorage("checkboxSound", true);
+
+const soundControlBar = document.querySelector(".sound__volume");
+setSoundControlBar();
+
+const startBtn = document.querySelector(".game-area__button");
+startBtn.y = 20;
+const gameArea = document.querySelector(".game-area");
+const leftSide = document.querySelector(".left-side");
+const rightSide = document.querySelector(".right-side");
+const title = document.querySelector(".game__title");
+const titleWord = title.querySelector(".title__word");
+const titleWords = title.querySelectorAll(".title__word");
+const userName = document.querySelector(".input__user-name");
+const scoreDiv = document.createElement("div");
+scoreDiv.classList.add("score");
+
+const windowHeight = document.documentElement.clientHeight;
+;
+//вспомогательные переменные
+let carWidth;
+let carHeight;
+const playerYStart = (document.documentElement.clientHeight * 80) / 100,
+    playerXStart = gameArea.offsetWidth * 0.5;
 
 const gameSetting = {
     play: false,
@@ -3261,84 +3341,7 @@ const gameSetting = {
     sound: true,
 };
 
-function getBooleanDataFromSessionStorage(item) {
-    if (
-        sessionStorage.getItem(item) &&
-        sessionStorage.getItem(item) === "false"
-    ) {
-        return false;
-    } else if (sessionStorage.getItem(item)) {
-        return sessionStorage.getItem(item);
-    } else {
-        return false;
-    }
-}
-
-const checkboxMusic = document.querySelector("#checkbox-music");
-checkboxMusic.checked = getBooleanDataFromSessionStorage("checkboxMusic");
-
-const checkboxSound = document.querySelector("#checkbox-sound");
-checkboxSound.checked = !getBooleanDataFromSessionStorage("checkboxSound");
-
-const soundControlBar = document.querySelector(".sound__volume");
-let volumeValue = undefined;
-console.log(
-    "🚀 ~ file: _declarations.js ~ line 32 ~ sessionStorage.getItem(volume)",
-    sessionStorage.getItem("volume")
-);
-if (sessionStorage.getItem("volume")) {
-    volumeValue = sessionStorage.getItem("volume") * 100;
-}
-volumeValue === 0 ? (volumeValue += 0.01) : volumeValue * 1;
-console.log("🚀 ~ file: _declarations.js ~ line 33 ~ volumeValue", volumeValue);
-soundControlBar.value = volumeValue || 50;
-
-Howler.volume((soundControlBar.value * 0.01).toFixed(2));
-console.log(Howler._volume);
-
-let engine = new Howl({
-    src: ["audio/engine.mp3"],
-    onend: function () {},
-    sprite: {
-        start: [100, 3000],
-        startMove: [10000, 3000],
-        slow: [33300, 2000, true],
-        move: [40700, 3500, true],
-        boost: [48000, 4000, true],
-        fast: [51000, 3000, true],
-    },
-    volume: Howler.volume(),
-});
-
-let crush = new Howl({
-    src: ["audio/crush1.mp3"],
-    volume: Howler.volume(),
-});
-
-const startBtn = document.querySelector(".game-area__button");
-startBtn.y = 20;
-const gameArea = document.querySelector(".game-area");
-const leftSide = document.querySelector(".left-side");
-const rightSide = document.querySelector(".right-side");
-let title = document.querySelector(".game__title");
-let titleWord = title.querySelector(".title__word");
-let titleWords = title.querySelectorAll(".title__word");
-const userName = document.querySelector(".input__user-name");
-let scoreDiv = document.createElement("div");
-scoreDiv.classList.add("score");
-
-// Элементы страницы
-
-let windowHeight = document.documentElement.clientHeight;
-
-//вспомогательные переменные
-let carWidth;
-let carHeight;
-//*НАЧАЛЬНЫЕ КООРДИНАТЫ ИГРОКА:
-const playerYStart = (document.documentElement.clientHeight * 80) / 100,
-    playerXStart = gameArea.offsetWidth * 0.5;
-
-let enemies = [];
+const enemies = [];
 
 class Car {
     constructor(imgSrc, speed, ...classes) {
@@ -3352,8 +3355,6 @@ class Car {
         gameArea.appendChild(this.car);
         this.classes.forEach((className) => this.car.classList.add(className));
         this.car.src = this.imgSrc;
-        // this.xElem = XChoord;
-        // this.yElem = YChoord;
         this.car.dataset.xElem = XChoord;
         this.car.dataset.yElem = YChoord;
         this.render();
@@ -3367,11 +3368,11 @@ class Car {
     }
 }
 
-let player = new Car("img/player.png", 0, "car");
+const player = new Car("img/player.png", 0, "car");
 
 player.score = 0;
 
-player.move = function (event) {
+player.move = function () {
     if (keys.ArrowLeft && this.car.dataset.xElem > -3) {
         this.car.dataset.xElem = +this.car.dataset.xElem - this.speed / 2;
         this.car.style.transform = "rotate(-2deg)";
@@ -3403,25 +3404,28 @@ const keys = {
     ArrowLeft: false,
 };
 
-startBtn.addEventListener("click", initGame);
 
-String.prototype.capitalize = function () {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
+;
+const engine = new Howl({
+    src: ["audio/engine.mp3"],
+    onend: function () {},
+    sprite: {
+        start: [100, 3000],
+        startMove: [10000, 3000],
+        slow: [33300, 2000, true],
+        move: [40700, 3500, true],
+        boost: [48000, 4000, true],
+        fast: [51000, 3000, true],
+    },
+    volume: Howler.volume(),
+});
 
-function random(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const crush = new Howl({
+    src: ["audio/crush1.mp3"],
+    volume: Howler.volume(),
+});
 ;
 ;
-function soundPlay(sound) {
-    if (gameSetting.sound) {
-        sound;
-    }
-}
-
 function checkboxSoundCheck() {
     gameSetting.sound = checkboxSound.checked;
     engine.mute(!gameSetting.sound);
@@ -3470,13 +3474,10 @@ function createRoadMarks() {
 }
 
 function timeToStart() {
-    //startGame()
-    // engine.play("start");
-    soundPlay(engine.play("start"));
+    soundPlay(engine.fade(0, Howler.volume() + 0.2, 100, engine.play("start")));
     setTimeout(() => {
-        engine.fade(0, Howler.volume(), 2000, engine.play("move"));
-        // engine.play("move");
-    }, 1000);
+        engine.fade(0, Howler.volume(), 500, engine.play("move"));
+    }, 2500);
 
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));
@@ -3511,27 +3512,7 @@ function createPlayer() {
     carHeight = document.querySelector(".car").offsetHeight;
 }
 ;
-function removeStartBtn() {
-    if (startBtn.y >= document.documentElement.clientHeight || !startBtn) {
-        startBtn.remove();
-        return;
-    }
-    startBtn.y += player.speed;
-    startBtn.style.top = startBtn.y + "px";
-    requestAnimationFrame(removeStartBtn);
-}
-
-function stopGame() {
-    gameSetting.play = false;
-    // soundMove.stop();
-    engine.stop();
-    // player.speed = 0;
-    document.removeEventListener("keydown", startBoost);
-    document.removeEventListener("keyup", stopBoost);
-    for (let key in keys) {
-        keys[key] = false;
-    }
-}
+startBtn.addEventListener("click", initGame);
 
 function initGame() {
     //* нажатие кнопки StartBtn
@@ -3540,16 +3521,6 @@ function initGame() {
     rightSide.appendChild(scoreDiv);
     prepareToStart();
 
-    startGame();
-}
-
-function restartGame() {
-    enemies.forEach((enemy) => {
-        enemy.remove();
-    });
-    enemies = [];
-    player.car.remove();
-    createPlayer();
     startGame();
 }
 
@@ -3570,6 +3541,28 @@ function startGame() {
 
         requestAnimationFrame(playGame);
     }, 3000);
+}
+
+function stopGame() {
+    gameSetting.play = false;
+    // soundMove.stop();
+    engine.stop();
+    // player.speed = 0;
+    document.removeEventListener("keydown", startBoost);
+    document.removeEventListener("keyup", stopBoost);
+    for (let key in keys) {
+        keys[key] = false;
+    }
+}
+
+function restartGame() {
+    enemies.forEach((enemy) => {
+        enemy.remove();
+    });
+    enemies = [];
+    player.car.remove();
+    createPlayer();
+    startGame();
 }
 
 function createEnemies(countEnemy) {

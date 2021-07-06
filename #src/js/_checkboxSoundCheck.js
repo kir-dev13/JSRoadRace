@@ -1,9 +1,3 @@
-function soundPlay(sound) {
-    if (gameSetting.sound) {
-        sound;
-    }
-}
-
 function checkboxSoundCheck() {
     gameSetting.sound = checkboxSound.checked;
     engine.mute(!gameSetting.sound);

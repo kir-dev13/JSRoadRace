@@ -27,13 +27,10 @@ function createRoadMarks() {
 }
 
 function timeToStart() {
-    //startGame()
-    // engine.play("start");
-    soundPlay(engine.play("start"));
+    soundPlay(engine.fade(0, Howler.volume() + 0.2, 100, engine.play("start")));
     setTimeout(() => {
-        engine.fade(0, Howler.volume(), 2000, engine.play("move"));
-        // engine.play("move");
-    }, 1000);
+        engine.fade(0, Howler.volume(), 500, engine.play("move"));
+    }, 2500);
 
     //*Скрытие меню
     titleWords.forEach((word) => (word.innerText = ""));

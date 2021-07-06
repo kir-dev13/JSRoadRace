@@ -1,24 +1,4 @@
-function removeStartBtn() {
-    if (startBtn.y >= document.documentElement.clientHeight || !startBtn) {
-        startBtn.remove();
-        return;
-    }
-    startBtn.y += player.speed;
-    startBtn.style.top = startBtn.y + "px";
-    requestAnimationFrame(removeStartBtn);
-}
-
-function stopGame() {
-    gameSetting.play = false;
-    // soundMove.stop();
-    engine.stop();
-    // player.speed = 0;
-    document.removeEventListener("keydown", startBoost);
-    document.removeEventListener("keyup", stopBoost);
-    for (let key in keys) {
-        keys[key] = false;
-    }
-}
+startBtn.addEventListener("click", initGame);
 
 function initGame() {
     //* нажатие кнопки StartBtn
@@ -27,16 +7,6 @@ function initGame() {
     rightSide.appendChild(scoreDiv);
     prepareToStart();
 
-    startGame();
-}
-
-function restartGame() {
-    enemies.forEach((enemy) => {
-        enemy.remove();
-    });
-    enemies = [];
-    player.car.remove();
-    createPlayer();
     startGame();
 }
 
@@ -57,6 +27,28 @@ function startGame() {
 
         requestAnimationFrame(playGame);
     }, 3000);
+}
+
+function stopGame() {
+    gameSetting.play = false;
+    // soundMove.stop();
+    engine.stop();
+    // player.speed = 0;
+    document.removeEventListener("keydown", startBoost);
+    document.removeEventListener("keyup", stopBoost);
+    for (let key in keys) {
+        keys[key] = false;
+    }
+}
+
+function restartGame() {
+    enemies.forEach((enemy) => {
+        enemy.remove();
+    });
+    enemies = [];
+    player.car.remove();
+    createPlayer();
+    startGame();
 }
 
 function createEnemies(countEnemy) {

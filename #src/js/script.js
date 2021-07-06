@@ -3,8 +3,11 @@
 @@include("howler.js");
 
 @@include("_displayHints.js");
+@@include("_supportFunctions.js");
 
+@@include("_getDOMElements.js");
 @@include("_declarations.js");
+@@include("_soundSettings.js");
 @@include("_checkboxMusicCheck.js");
 @@include("_checkboxSoundCheck.js");
 @@include("_prepareToStart.js");
