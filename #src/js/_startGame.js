@@ -1,6 +1,10 @@
 startBtn.addEventListener("click", initGame);
 
 function initGame() {
+    playerYStart = (document.documentElement.clientHeight * 80) / 100;
+    playerXStart = gameArea.offsetWidth * 0.5;
+    windowHeight = document.documentElement.clientHeight;
+
     //* нажатие кнопки StartBtn
     startBtn.removeEventListener("click", initGame);
     startBtn.style.height = startBtn.offsetHeight + "px";
@@ -39,6 +43,7 @@ function stopGame() {
 }
 
 function restartGame() {
+    getDefaulSettingtValues();
     enemies.forEach((enemy) => {
         enemy.remove();
     });

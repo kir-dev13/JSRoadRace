@@ -1,8 +1,9 @@
 //вспомогательные переменные
 let carWidth;
 let carHeight;
-const playerYStart = (document.documentElement.clientHeight * 80) / 100,
-    playerXStart = gameArea.offsetWidth * 0.5;
+let playerYStart, playerXStart;
+let gameScore = 0;
+let increment = 1;
 
 const gameSetting = {
     play: false,

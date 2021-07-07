@@ -3243,13 +3243,6 @@ testWebP(function (support) {
 })();
 ;
 
-function displayHint(hintClass) {
-  document.querySelector(`.hint__${hintClass}`).style.display = "block";
-}
-function hideHint(hintClass) {
-  document.querySelector(`.hint__${hintClass}`).style.display = "none";
-}
-;
 function soundPlay(sound) {
     if (gameSetting.sound) {
         sound;
@@ -3269,7 +3262,6 @@ function setSoundControlBar() {
     soundControlBar.value = volumeValue || 50;
 
     Howler.volume((soundControlBar.value * 0.01).toFixed(2));
-    console.log(Howler._volume);
 }
 
 function getBooleanDataFromSessionStorage(item, defaultValue = false) {
@@ -3324,16 +3316,15 @@ const title = document.querySelector(".game__title");
 const titleWord = title.querySelector(".title__word");
 const titleWords = title.querySelectorAll(".title__word");
 const userName = document.querySelector(".input__user-name");
-const scoreDiv = document.createElement("div");
-scoreDiv.classList.add("score");
-
-const windowHeight = document.documentElement.clientHeight;
+const scoreView = rightSide.querySelector(".score");
+let windowHeight;
 ;
 //вспомогательные переменные
 let carWidth;
 let carHeight;
-const playerYStart = (document.documentElement.clientHeight * 80) / 100,
-    playerXStart = gameArea.offsetWidth * 0.5;
+let playerYStart, playerXStart;
+let gameScore = 0;
+let increment = 1;
 
 const gameSetting = {
     play: false,
@@ -3442,7 +3433,6 @@ const crush = new Howl({
     volume: Howler.volume(),
 });
 ;
-;
 function checkboxSoundCheck() {
     gameSetting.sound = checkboxSound.checked;
     Howler.mute(!gameSetting.sound);
@@ -3501,17 +3491,16 @@ function timeToStart() {
     title.style.fontSize = "6rem";
     title.classList.remove("hide");
     titleWord.innerHTML = "3";
-    console.log("sound 3");
 
     return delay(1000)
         .then(() => {
-            return (titleWord.innerHTML = "2"), console.log(`sound 2`);
+            return (titleWord.innerHTML = "2");
         })
         .then(() => {
             return delay(1000);
         })
         .then(() => {
-            return (titleWord.innerHTML = "1"), console.log(`sound 1`);
+            return (titleWord.innerHTML = "1");
         })
         .then(() => {
             return delay(1000);
@@ -3522,11 +3511,7 @@ function prepareToStart() {
     getMenuValues();
     createRoadMarks();
     createPlayer();
-
-    rightSide.appendChild(scoreDiv);
-
-    player.speed = gameSetting.speed;
-    player.traffic = gameSetting.traffic;
+    getDefaulSettingtValues();
 }
 
 function createPlayer() {
@@ -3537,10 +3522,19 @@ function createPlayer() {
     carWidth = document.querySelector(".car").offsetWidth;
     carHeight = document.querySelector(".car").offsetHeight;
 }
+
+function getDefaulSettingtValues() {
+    player.speed = gameSetting.speed;
+    player.traffic = gameSetting.traffic;
+}
 ;
 startBtn.addEventListener("click", initGame);
 
 function initGame() {
+    playerYStart = (document.documentElement.clientHeight * 80) / 100;
+    playerXStart = gameArea.offsetWidth * 0.5;
+    windowHeight = document.documentElement.clientHeight;
+
     //* нажатие кнопки StartBtn
     startBtn.removeEventListener("click", initGame);
     startBtn.style.height = startBtn.offsetHeight + "px";
@@ -3579,6 +3573,7 @@ function stopGame() {
 }
 
 function restartGame() {
+    getDefaulSettingtValues();
     enemies.forEach((enemy) => {
         enemy.remove();
     });
@@ -3769,7 +3764,7 @@ function playGame() {
 
         if (enemies.length < player.traffic) {
             createEnemies(enemies.length);
-            console.log("добавили");
+            console.log("траффик увеличен");
             checkCarPossibility(enemies, enemies.length - 1, attemptCarAppend);
         }
         scoreCalc();
@@ -3870,14 +3865,12 @@ function checkRoadAccident(array) {
 
 function scoreCalc() {
     player.score += Math.round(player.speed);
-    // player.score = (player.score / 100).toFixed(0);
-    // player.score += Math.round(player.speed);
-    // player.score = player.score.toString();
-    // player.score = player.score.slice(0, -2);
-    scoreDiv.innerText = `Набрано очков: ${player.score}`;
-    // if ((player.score / 100).toFixed(0) % 200 == 0 && player.score > 1000) {
-    //     console.log("добавим машинку");
-    //     player.traffic++;
-    // }
+    gameScore += Math.round(player.speed);
+    if (gameScore >= 5000 * increment) {
+        gameScore = 0;
+        increment += 1;
+        player.traffic += 1;
+    }
+    scoreView.innerText = `Набрано очков: ${player.score}`;
 }
 ;

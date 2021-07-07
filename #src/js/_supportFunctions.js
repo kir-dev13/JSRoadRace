@@ -17,7 +17,6 @@ function setSoundControlBar() {
     soundControlBar.value = volumeValue || 50;
 
     Howler.volume((soundControlBar.value * 0.01).toFixed(2));
-    console.log(Howler._volume);
 }
 
 function getBooleanDataFromSessionStorage(item, defaultValue = false) {

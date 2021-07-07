@@ -37,17 +37,16 @@ function timeToStart() {
     title.style.fontSize = "6rem";
     title.classList.remove("hide");
     titleWord.innerHTML = "3";
-    console.log("sound 3");
 
     return delay(1000)
         .then(() => {
-            return (titleWord.innerHTML = "2"), console.log(`sound 2`);
+            return (titleWord.innerHTML = "2");
         })
         .then(() => {
             return delay(1000);
         })
         .then(() => {
-            return (titleWord.innerHTML = "1"), console.log(`sound 1`);
+            return (titleWord.innerHTML = "1");
         })
         .then(() => {
             return delay(1000);
@@ -58,11 +57,7 @@ function prepareToStart() {
     getMenuValues();
     createRoadMarks();
     createPlayer();
-
-    rightSide.appendChild(scoreDiv);
-
-    player.speed = gameSetting.speed;
-    player.traffic = gameSetting.traffic;
+    getDefaulSettingtValues();
 }
 
 function createPlayer() {
@@ -72,4 +67,9 @@ function createPlayer() {
     player.render();
     carWidth = document.querySelector(".car").offsetWidth;
     carHeight = document.querySelector(".car").offsetHeight;
+}
+
+function getDefaulSettingtValues() {
+    player.speed = gameSetting.speed;
+    player.traffic = gameSetting.traffic;
 }

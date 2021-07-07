@@ -190,83 +190,6 @@ input {
           box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
 }
 
-.radio {
-  vertical-align: top;
-  width: 17px;
-  height: 17px;
-  margin: 0 3px 0 0;
-}
-
-.radio + label {
-  cursor: pointer;
-  -webkit-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
-}
-
-.radio[disabled] + label {
-  color: grey;
-  cursor: default;
-  opacity: 0;
-}
-
-.radio[disabled] + label::after {
-  opacity: 0 !important;
-}
-
-.radio:not(checked) {
-  position: absolute;
-  z-index: -100;
-  opacity: 0;
-}
-
-.radio:not(checked) + label {
-  position: relative;
-  padding: 0 0 0 35px;
-}
-
-.radio:not(checked) + label:before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: 0;
-  width: 22px;
-  height: 22px;
-  border: 1px solid #CDD1DA;
-  border-radius: 50%;
-  background: #FFF;
-}
-
-.radio:not(checked) + label:after {
-  content: '';
-  position: absolute;
-  top: center;
-  left: 3px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #d47568;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  -webkit-transition: all .2s;
-  -o-transition: all .2s;
-  transition: all .2s;
-}
-
-.radio:checked + label:after {
-  opacity: 1;
-}
-
-.radio:focus + label:before {
-  -webkit-box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
-          box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5);
-}
-
-.difficulty__radio:not(checked) + label {
-  padding-left: 25px;
-}
-
 input[type=range] {
   -webkit-appearance: none;
   width: 50%;
@@ -299,7 +222,6 @@ input[type=range]::-moz-range-thumb {
   background: #ffffff;
   cursor: pointer;
   margin-top: -8%;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 
 input[type=range]::-ms-thumb {
@@ -310,7 +232,6 @@ input[type=range]::-ms-thumb {
   background: #ffffff;
   cursor: pointer;
   margin-top: -8%;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 
 input[type=range]:focus::-ms-track {
@@ -334,6 +255,8 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 60%;
   height: 8.4px;
   cursor: pointer;
+  -webkit-box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+          box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
   background: #fff;
   border-radius: 8px;
   border: 0.2px solid #010101;
@@ -413,8 +336,8 @@ input[type=range]:focus::-ms-fill-upper {
       -ms-flex-pack: start;
           justify-content: start;
   margin-bottom: 40px;
-  -ms-flex-wrap: mo-wrap;
-      flex-wrap: mo-wrap;
+  -ms-flex-wrap: no-wrap;
+      flex-wrap: no-wrap;
 }
 
 .menu__row * {
@@ -469,40 +392,6 @@ input[type=range]:focus::-ms-fill-upper {
 .label {
   -ms-flex-preferred-size: 20%;
       flex-basis: 20%;
-}
-
-.menu__difficulty {
-  margin-top: 30px;
-}
-
-.difficulty {
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-
-.difficulty__title {
-  letter-spacing: .2rem;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-  margin-bottom: 20px;
-}
-
-.difficulty__row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-}
-
-.difficulty__row label:nth-child(4) {
-  margin-left: 8px;
 }
 
 .game-area {
@@ -601,4 +490,51 @@ input[type=range]:focus::-ms-fill-upper {
   top: 40%;
   font-size: 2rem;
   font-weight: 400;
+}
+
+@media (max-width: 1200px) {
+  .menu__row {
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: start;
+    align-item: stretch;
+    -webkit-box-flex: no-wrap;
+        -ms-flex: no-wrap;
+            flex: no-wrap;
+    -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .menu__title {
+    margin-bottom: 10px;
+  }
+
+  .menu__name .input__user-name {
+    margin-top: 10px;
+    width: 90%;
+  }
+
+  .menu__sound {
+    width: 100%;
+    height: 100%;
+  }
+
+  .menu__sound span {
+    margin-bottom: 40px;
+  }
+
+  .menu__sound label {
+    margin-bottom: 40px;
+    width: 25%;
+  }
+
+  .menu__sound input {
+    margin-bottom: 10px;
+    width: 100%;
+  }
 }

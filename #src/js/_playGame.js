@@ -59,7 +59,7 @@ function playGame() {
 
         if (enemies.length < player.traffic) {
             createEnemies(enemies.length);
-            console.log("добавили");
+            console.log("траффик увеличен");
             checkCarPossibility(enemies, enemies.length - 1, attemptCarAppend);
         }
         scoreCalc();
@@ -160,13 +160,11 @@ function checkRoadAccident(array) {
 
 function scoreCalc() {
     player.score += Math.round(player.speed);
-    // player.score = (player.score / 100).toFixed(0);
-    // player.score += Math.round(player.speed);
-    // player.score = player.score.toString();
-    // player.score = player.score.slice(0, -2);
-    scoreDiv.innerText = `Набрано очков: ${player.score}`;
-    // if ((player.score / 100).toFixed(0) % 200 == 0 && player.score > 1000) {
-    //     console.log("добавим машинку");
-    //     player.traffic++;
-    // }
+    gameScore += Math.round(player.speed);
+    if (gameScore >= 5000 * increment) {
+        gameScore = 0;
+        increment += 1;
+        player.traffic += 1;
+    }
+    scoreView.innerText = `Набрано очков: ${player.score}`;
 }

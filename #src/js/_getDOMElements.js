@@ -16,7 +16,5 @@ const title = document.querySelector(".game__title");
 const titleWord = title.querySelector(".title__word");
 const titleWords = title.querySelectorAll(".title__word");
 const userName = document.querySelector(".input__user-name");
-const scoreDiv = document.createElement("div");
-scoreDiv.classList.add("score");
-
-const windowHeight = document.documentElement.clientHeight;
+const scoreView = rightSide.querySelector(".score");
+let windowHeight;
